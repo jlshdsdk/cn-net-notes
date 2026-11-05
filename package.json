@@ -1,0 +1,30 @@
+{
+  "name": "cn-net-notes",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@preact/signals": "^2.0.1",
+    "@supabase/supabase-js": "^2.49.4",
+    "@tiptap/core": "^2.14.0",
+    "@tiptap/extension-color": "^2.14.0",
+    "@tiptap/extension-highlight": "^2.14.0",
+    "@tiptap/extension-text-style": "^2.14.0",
+    "@tiptap/pm": "^2.14.0",
+    "@tiptap/starter-kit": "^2.14.0",
+    "idb": "^8.0.2",
+    "katex": "^0.16.11",
+    "preact": "^10.26.4"
+  },
+  "devDependencies": {
+    "@preact/preset-vite": "^2.10.1",
+    "typescript": "~5.8.3",
+    "vite": "^6.3.5"
+  }
+}
