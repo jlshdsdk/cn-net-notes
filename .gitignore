@@ -3,3 +3,4 @@ dist/
 *.local
 .DS_Store
 scripts/_note_backups/
+.github/workflows/deploy.yml 

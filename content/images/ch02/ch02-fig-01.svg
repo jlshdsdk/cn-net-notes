@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="400" viewBox="0 0 960 400" font-family="'Microsoft YaHei', 'PingFang SC', sans-serif">
+  <defs>
+    <marker id="ar201" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#0f766e"/>
+    </marker>
+    <marker id="ar201r" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <text x="480" y="34" text-anchor="middle" font-size="20" font-weight="bold" fill="#0f766e">通信系统模型（数据通信系统）</text>
+
+  <rect x="430" y="84" width="96" height="36" rx="8" fill="#ffffff" stroke="#dc2626" stroke-width="2"/>
+  <text x="478" y="108" text-anchor="middle" font-size="15" font-weight="bold" fill="#dc2626">噪声源</text>
+  <line x1="478" y1="122" x2="478" y2="166" stroke="#dc2626" stroke-width="2" marker-end="url(#ar201r)"/>
+
+  <rect x="40" y="170" width="80" height="54" rx="8" fill="#f8fafc" stroke="#0f766e" stroke-width="2"/>
+  <text x="80" y="202" text-anchor="middle" font-size="16" fill="#1f2328">信源</text>
+  <line x1="122" y1="197" x2="142" y2="197" stroke="#0f766e" stroke-width="2" marker-end="url(#ar201)"/>
+  <rect x="146" y="170" width="96" height="54" rx="8" fill="#f8fafc" stroke="#0f766e" stroke-width="2"/>
+  <text x="194" y="192" text-anchor="middle" font-size="16" fill="#1f2328">发送器</text>
+  <text x="194" y="212" text-anchor="middle" font-size="12" fill="#64748b">编码+加密</text>
+  <line x1="244" y1="197" x2="264" y2="197" stroke="#0f766e" stroke-width="2" marker-end="url(#ar201)"/>
+  <rect x="268" y="170" width="84" height="54" rx="8" fill="#f8fafc" stroke="#0f766e" stroke-width="2"/>
+  <text x="310" y="202" text-anchor="middle" font-size="16" fill="#1f2328">调制器</text>
+  <line x1="354" y1="197" x2="374" y2="197" stroke="#0f766e" stroke-width="2" marker-end="url(#ar201)"/>
+
+  <rect x="378" y="170" width="200" height="54" rx="8" fill="#f8fafc" stroke="#0f766e" stroke-width="2" stroke-dasharray="7 5"/>
+  <text x="478" y="190" text-anchor="middle" font-size="13" fill="#64748b">传输系统</text>
+  <rect x="408" y="196" width="140" height="24" rx="4" fill="#ffffff" stroke="#7c3aed" stroke-width="1.5"/>
+  <text x="478" y="213" text-anchor="middle" font-size="15" fill="#7c3aed">信 道</text>
+
+  <line x1="580" y1="197" x2="600" y2="197" stroke="#0f766e" stroke-width="2" marker-end="url(#ar201)"/>
+  <rect x="604" y="170" width="84" height="54" rx="8" fill="#f8fafc" stroke="#0f766e" stroke-width="2"/>
+  <text x="646" y="202" text-anchor="middle" font-size="16" fill="#1f2328">解调器</text>
+  <line x1="690" y1="197" x2="710" y2="197" stroke="#0f766e" stroke-width="2" marker-end="url(#ar201)"/>
+  <rect x="714" y="170" width="96" height="54" rx="8" fill="#f8fafc" stroke="#0f766e" stroke-width="2"/>
+  <text x="762" y="192" text-anchor="middle" font-size="16" fill="#1f2328">接收器</text>
+  <text x="762" y="212" text-anchor="middle" font-size="12" fill="#64748b">译码+解密</text>
+  <line x1="812" y1="197" x2="832" y2="197" stroke="#0f766e" stroke-width="2" marker-end="url(#ar201)"/>
+  <rect x="836" y="170" width="80" height="54" rx="8" fill="#f8fafc" stroke="#0f766e" stroke-width="2"/>
+  <text x="876" y="202" text-anchor="middle" font-size="16" fill="#1f2328">信宿</text>
+
+  <text x="478" y="252" text-anchor="middle" font-size="14" fill="#7c3aed">信道中传送的是信号：模拟信号（取值连续）/ 数字信号（取值离散）</text>
+  <text x="480" y="292" text-anchor="middle" font-size="14" fill="#1f2328">发送器 = 信源编码器 + 加密器（简化）；接收器 = 信源译码器 + 解密器（简化）</text>
+  <text x="480" y="320" text-anchor="middle" font-size="14" fill="#64748b">信源产生数据，数据以信号形式经信道传输；噪声叠加在信号上会造成失真与差错</text>
+  <text x="480" y="348" text-anchor="middle" font-size="14" fill="#64748b">调制器：把基带信号搬移到适合信道传输的频段；解调为其逆过程（见调制方式图）</text>
+  <text x="480" y="376" text-anchor="middle" font-size="14" fill="#64748b">串行/并行、单工/半双工/全双工、同步/异步 —— 描述通信方式的常用术语</text>
+</svg>

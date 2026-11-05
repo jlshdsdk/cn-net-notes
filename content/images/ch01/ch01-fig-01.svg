@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="410" viewBox="0 0 960 410" font-family="'Microsoft YaHei', 'PingFang SC', sans-serif">
+  <defs>
+    <marker id="ar101" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#0f766e"/>
+    </marker>
+  </defs>
+  <text x="480" y="34" text-anchor="middle" font-size="20" font-weight="bold" fill="#0f766e">互联网的边缘部分与核心部分</text>
+
+  <rect x="40" y="72" width="410" height="225" rx="10" fill="none" stroke="#0f766e" stroke-width="1.5" stroke-dasharray="7 5"/>
+  <text x="56" y="98" font-size="15" font-weight="bold" fill="#0f766e">边缘部分（端系统）</text>
+  <rect x="90" y="150" width="120" height="56" rx="8" fill="#f8fafc" stroke="#0f766e" stroke-width="2"/>
+  <text x="150" y="184" text-anchor="middle" font-size="16" fill="#1f2328">主机 A</text>
+  <rect x="300" y="150" width="120" height="56" rx="8" fill="#f8fafc" stroke="#0f766e" stroke-width="2"/>
+  <text x="360" y="184" text-anchor="middle" font-size="16" fill="#1f2328">主机 B</text>
+  <line x1="212" y1="170" x2="296" y2="170" stroke="#0f766e" stroke-width="2" marker-end="url(#ar101)"/>
+  <line x1="298" y1="188" x2="214" y2="188" stroke="#0f766e" stroke-width="2" marker-end="url(#ar101)"/>
+  <text x="254" y="142" text-anchor="middle" font-size="15" fill="#1f2328">资源共享</text>
+  <text x="254" y="228" text-anchor="middle" font-size="13" fill="#64748b">通信方式：C/S 或 P2P</text>
+
+  <rect x="510" y="72" width="410" height="225" rx="10" fill="none" stroke="#0f766e" stroke-width="1.5" stroke-dasharray="7 5"/>
+  <text x="526" y="98" font-size="15" font-weight="bold" fill="#0f766e">核心部分（网络 + 路由器）</text>
+
+  <line x1="210" y1="176" x2="582" y2="168" stroke="#0f766e" stroke-width="1.5"/>
+  <line x1="420" y1="192" x2="585" y2="202" stroke="#0f766e" stroke-width="1.5"/>
+
+  <path d="M 585 205 C 560 190 565 155 595 150 C 600 122 645 112 665 132 C 690 115 725 130 722 158 C 748 165 748 200 722 210 C 730 235 695 250 672 238 C 650 255 605 250 597 228 C 570 230 560 218 585 205 Z" fill="#f8fafc" stroke="#0f766e" stroke-width="2"/>
+  <line x1="616" y1="164" x2="650" y2="182" stroke="#0f766e" stroke-width="1.5"/>
+  <line x1="656" y1="199" x2="640" y2="204" stroke="#0f766e" stroke-width="1.5"/>
+  <line x1="616" y1="170" x2="628" y2="203" stroke="#0f766e" stroke-width="1.5"/>
+  <circle cx="601" cy="161" r="15" fill="#ffffff" stroke="#0f766e" stroke-width="2"/>
+  <text x="601" y="166" text-anchor="middle" font-size="12" font-weight="bold" fill="#1f2328">R1</text>
+  <circle cx="665" cy="186" r="15" fill="#ffffff" stroke="#0f766e" stroke-width="2"/>
+  <text x="665" y="191" text-anchor="middle" font-size="12" font-weight="bold" fill="#1f2328">R2</text>
+  <circle cx="631" cy="215" r="15" fill="#ffffff" stroke="#0f766e" stroke-width="2"/>
+  <text x="631" y="220" text-anchor="middle" font-size="12" font-weight="bold" fill="#1f2328">R3</text>
+
+  <line x1="680" y1="192" x2="832" y2="202" stroke="#0f766e" stroke-width="2" marker-end="url(#ar101)"/>
+  <text x="756" y="185" text-anchor="middle" font-size="13" fill="#64748b">链路</text>
+
+  <path d="M 838 218 C 820 208 822 185 842 180 C 845 162 872 158 882 170 C 898 160 915 172 910 188 C 924 194 920 215 902 218 C 906 234 884 242 870 232 C 852 242 830 234 838 218 Z" fill="#f8fafc" stroke="#0f766e" stroke-width="2"/>
+  <circle cx="868" cy="200" r="13" fill="#ffffff" stroke="#0f766e" stroke-width="2"/>
+  <text x="868" y="205" text-anchor="middle" font-size="11" font-weight="bold" fill="#1f2328">R4</text>
+
+  <text x="715" y="288" text-anchor="middle" font-size="14" fill="#1f2328">由大量网络和路由器组成，为边缘部分提供连通性与交换</text>
+
+  <line x1="40" y1="316" x2="920" y2="316" stroke="#e2e8f0" stroke-width="1.5"/>
+  <text x="40" y="344" font-size="15" font-weight="bold" fill="#0f766e">要点</text>
+  <text x="88" y="344" font-size="15" fill="#1f2328">① 边缘部分 = 所有连接在互联网上的主机（端系统），运行用户程序，通信方式有 C/S、P2P；</text>
+  <text x="88" y="374" font-size="15" fill="#1f2328">② 核心部分 = 大量网络和路由器，关键功能是<tspan fill="#dc2626">分组交换（存储转发）</tspan>，为主机间通信提供连通性与交换。</text>
+</svg>

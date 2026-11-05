@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="470" viewBox="0 0 960 470" font-family="'Microsoft YaHei', 'PingFang SC', sans-serif">
+  <text x="480" y="34" text-anchor="middle" font-size="20" font-weight="bold" fill="#0f766e">传输介质与物理层设备</text>
+
+  <rect x="40" y="62" width="600" height="186" rx="10" fill="none" stroke="#0f766e" stroke-width="1.5" stroke-dasharray="7 5"/>
+  <text x="56" y="86" font-size="15" font-weight="bold" fill="#0f766e">导向传输介质（有线）</text>
+
+  <rect x="60" y="104" width="178" height="130" rx="8" fill="#f8fafc" stroke="#0f766e" stroke-width="2"/>
+  <text x="149" y="128" text-anchor="middle" font-size="15" font-weight="bold" fill="#1f2328">双绞线</text>
+  <path d="M 78 156 q 18 22 36 0 q 18 -22 36 0 q 18 22 36 0 q 18 -22 36 0" fill="none" stroke="#0f766e" stroke-width="1.8"/>
+  <path d="M 78 170 q 18 -22 36 0 q 18 22 36 0 q 18 -22 36 0 q 18 22 36 0" fill="none" stroke="#7c3aed" stroke-width="1.8"/>
+  <text x="149" y="198" text-anchor="middle" font-size="13" fill="#1f2328">UTP（非屏蔽）/ STP（屏蔽）</text>
+  <text x="149" y="220" text-anchor="middle" font-size="13" fill="#64748b">便宜，传输距离约 100 m</text>
+
+  <rect x="252" y="104" width="178" height="130" rx="8" fill="#f8fafc" stroke="#0f766e" stroke-width="2"/>
+  <text x="341" y="128" text-anchor="middle" font-size="15" font-weight="bold" fill="#1f2328">同轴电缆</text>
+  <circle cx="341" cy="162" r="25" fill="none" stroke="#0f766e" stroke-width="2"/>
+  <circle cx="341" cy="162" r="16" fill="none" stroke="#cbd5e1" stroke-width="1.5" stroke-dasharray="4 3"/>
+  <circle cx="341" cy="162" r="6" fill="#0f766e"/>
+  <text x="341" y="206" text-anchor="middle" font-size="13" fill="#1f2328">内芯 + 屏蔽层（抗干扰强）</text>
+  <text x="341" y="224" text-anchor="middle" font-size="13" fill="#64748b">基带 50Ω / 宽带 75Ω</text>
+
+  <rect x="444" y="104" width="178" height="130" rx="8" fill="#f8fafc" stroke="#0f766e" stroke-width="2"/>
+  <text x="533" y="128" text-anchor="middle" font-size="15" font-weight="bold" fill="#1f2328">光纤</text>
+  <path d="M 462 180 L 480 145 L 505 180 L 530 145 L 555 180 L 580 145" fill="none" stroke="#7c3aed" stroke-width="1.8"/>
+  <text x="533" y="204" text-anchor="middle" font-size="13" fill="#dc2626">单模：芯细、激光、距离远</text>
+  <text x="533" y="224" text-anchor="middle" font-size="13" fill="#dc2626">多模：芯粗、发光二极管、近</text>
+
+  <rect x="40" y="262" width="600" height="140" rx="10" fill="none" stroke="#0f766e" stroke-width="1.5" stroke-dasharray="7 5"/>
+  <text x="56" y="286" font-size="15" font-weight="bold" fill="#0f766e">非导向传输介质（无线）</text>
+  <rect x="60" y="300" width="178" height="84" rx="8" fill="#f8fafc" stroke="#0f766e" stroke-width="2"/>
+  <text x="149" y="326" text-anchor="middle" font-size="15" font-weight="bold" fill="#1f2328">无线电</text>
+  <text x="149" y="350" text-anchor="middle" font-size="13" fill="#64748b">全向传播</text>
+  <text x="149" y="370" text-anchor="middle" font-size="13" fill="#64748b">中/长波绕射穿透强</text>
+  <rect x="252" y="300" width="178" height="84" rx="8" fill="#f8fafc" stroke="#0f766e" stroke-width="2"/>
+  <text x="341" y="326" text-anchor="middle" font-size="15" font-weight="bold" fill="#1f2328">微波</text>
+  <text x="341" y="350" text-anchor="middle" font-size="13" fill="#64748b">直线（视线）传播</text>
+  <text x="341" y="370" text-anchor="middle" font-size="13" fill="#64748b">地面接力 / 卫星通信</text>
+  <rect x="444" y="300" width="178" height="84" rx="8" fill="#f8fafc" stroke="#0f766e" stroke-width="2"/>
+  <text x="533" y="326" text-anchor="middle" font-size="15" font-weight="bold" fill="#1f2328">红外</text>
+  <text x="533" y="350" text-anchor="middle" font-size="13" fill="#64748b">短距离、方向性强</text>
+  <text x="533" y="370" text-anchor="middle" font-size="13" fill="#64748b">不能穿透坚实障碍</text>
+
+  <rect x="670" y="62" width="250" height="340" rx="10" fill="none" stroke="#0f766e" stroke-width="1.5" stroke-dasharray="7 5"/>
+  <text x="686" y="86" font-size="15" font-weight="bold" fill="#0f766e">物理层设备</text>
+
+  <rect x="690" y="104" width="210" height="118" rx="8" fill="#f8fafc" stroke="#0f766e" stroke-width="2"/>
+  <text x="795" y="130" text-anchor="middle" font-size="16" font-weight="bold" fill="#1f2328">中继器</text>
+  <text x="795" y="156" text-anchor="middle" font-size="13" fill="#1f2328">对衰减的数字信号再生整形</text>
+  <text x="795" y="180" text-anchor="middle" font-size="13" fill="#64748b">放大器：放大模拟信号</text>
+  <text x="795" y="202" text-anchor="middle" font-size="13" fill="#64748b">（信号与噪声一起被放大）</text>
+
+  <rect x="690" y="240" width="210" height="140" rx="8" fill="#f8fafc" stroke="#0f766e" stroke-width="2"/>
+  <text x="795" y="264" text-anchor="middle" font-size="16" font-weight="bold" fill="#1f2328">集线器 Hub</text>
+  <rect x="779" y="282" width="32" height="22" rx="4" fill="#ffffff" stroke="#0f766e" stroke-width="2"/>
+  <line x1="786" y1="304" x2="750" y2="326" stroke="#0f766e" stroke-width="1.5"/>
+  <line x1="795" y1="304" x2="795" y2="330" stroke="#0f766e" stroke-width="1.5"/>
+  <line x1="804" y1="304" x2="840" y2="326" stroke="#0f766e" stroke-width="1.5"/>
+  <circle cx="750" cy="326" r="4" fill="#0f766e"/>
+  <circle cx="795" cy="330" r="4" fill="#0f766e"/>
+  <circle cx="840" cy="326" r="4" fill="#0f766e"/>
+  <text x="795" y="352" text-anchor="middle" font-size="13" fill="#1f2328">多端口中继器（逐比特再生转发）</text>
+  <text x="795" y="372" text-anchor="middle" font-size="13" font-weight="bold" fill="#dc2626">扩大冲突域，不能隔离冲突域</text>
+
+  <text x="480" y="444" text-anchor="middle" font-size="14" fill="#dc2626">易错：集线器连接的所有站点同属一个冲突域、共享总线带宽、只能半双工工作</text>
+</svg>

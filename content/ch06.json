@@ -2,34 +2,388 @@
   "chapter": "第6章 应用层",
   "docs": [
     {
-      "tree": ["第6章 应用层", "6.1 应用层模型", "客户/服务器模型与 P2P 模型"],
-      "noteHtml": "<p><span style=\"font-size:20px;color:#7c3aed\"><strong>应用层模型（王道 6.1）</strong></span></p><p>应用层是网络体系结构的<strong>最高层</strong>，直接为用户的应用进程提供服务。应用层协议要约定两部分内容：交换的<strong>报文类型</strong>（如请求/响应报文）以及各报文的<strong>语法与语义</strong>。经典应用层协议：DNS、FTP、SMTP/POP3/IMAP、HTTP 等，本章按王道 6.1～6.5 逐一展开。</p><p><strong>一、客户/服务器（C/S）模型</strong></p><ul><li><strong>客户（Client）</strong>：请求服务的一方。<strong>间歇接入</strong>网络、可使用<strong>动态 IP 地址</strong>、客户之间<strong>不直接通信</strong>。</li><li><strong>服务器（Server）</strong>：提供服务的一方。<span style=\"color:#dc2626\"><strong>永久在线、拥有固定 IP 地址、可扩展为服务器集群</strong></span>。</li><li>特点：网络中各计算机<strong>地位不平等</strong>，服务器处于中心、集中掌控；<mark><strong>服务器是性能瓶颈与故障焦点，可扩展性较差</strong></mark>。</li></ul><p><strong>二、P2P（对等）模型</strong></p><ul><li>不存在永远在线的中心服务器，<span style=\"color:#dc2626\"><strong>任意一对主机（对等方）直接通信，每个结点既当客户又当服务器</strong></span>（408 真题高频判断点）。</li><li>对等方既是请求方也是服务方：<mark><strong>自扩展性——新结点既带来新的服务请求，也带来新的服务能力</strong></mark>，用户越多系统越强。</li><li>优点：成本低、可扩展性好、资源共享充分；缺点：<strong>管理困难</strong>（去中心化），版权与安全难控制。</li></ul><img data-img-id=\"ch06-fig-01\" class=\"ds-note-img\" alt=\"图：C/S 与 P2P 模型对比\"><p><span style=\"color:#7c3aed\">助记：C/S 像"店里点餐"——顾客（客户）只管点单，后厨（服务器）常年开门；P2P 像"拼单互喂"——人人既点菜又上菜。</span></p><p>典型应用：Web、FTP、电子邮件采用 C/S 模式；BT 下载、迅雷等文件分发采用 P2P 模式。</p>",
-      "images": [ { "imgId": "ch06-fig-01", "file": "images/ch06/ch06-fig-01.jpg" } ]
+      "tree": [
+        "第6章 应用层",
+        "6.1 网络应用模型",
+        "6.1 网络应用模型"
+      ],
+      "noteHtml": "<p><span style=\"font-size:20px;color:#7c3aed\"><strong>P87 6.1 网络应用模型（王道 6.1）</strong></span></p>\n<p>应用层直接为用户的应用进程提供服务，本节回答一个问题：网络应用按什么<strong>模型</strong>组织。两大主流：<strong>客户/服务器（C/S）模型</strong>与<strong>P2P（Peer-to-Peer，对等）模型</strong>。</p>\n<img data-img-id=\"fig-p87-01\" class=\"ds-note-img\" alt=\"图：6.1节内容总览——网络应用模型的两大分支\">\n<p><strong>一、客户/服务器（C/S）模型</strong>：服务器提供服务，客户发起请求。以百度网盘为例，工作流程三步：①服务器启动后一直监听、等待请求；②客户（A/B/C/D）需要服务时主动向服务器发出请求；③服务器处理请求并返回结果。</p>\n<ul>\n<li>特点：<strong>各计算机地位不平等</strong>，服务器是中心，客户之间不直接通信。</li>\n<li>优点：内容与服务<strong>集中管理</strong>，安全可控、便于维护。</li>\n<li><span style=\"color:#dc2626\"><strong>缺点：服务器压力大，是性能瓶颈与故障焦点，可扩展性较差。</strong></span></li>\n</ul>\n<p>典型 C/S 应用：<strong>DNS、电子邮件、FTP、Web</strong>。</p>\n<img data-img-id=\"fig-p87-02\" class=\"ds-note-img\" alt=\"图：C/S模型——服务器与客户A/B/C/D交互、流程与优缺点\">\n<p><strong>二、P2P（对等）模型</strong>：<strong>去中心化</strong>，没有永远在线的中心服务器，<span style=\"color:#dc2626\"><strong>任意两台主机（对等方）直接通信，每台主机既是客户又是服务器、地位平等</strong></span>。以 BT 种子下载为例：A/B/C/D 互相传送同一文件的不同部分，彼此既是请求方也是服务方，负载由全体节点分担。</p>\n<ul>\n<li>优点：<mark><strong>自扩展性——新节点既带来新请求、也带来新服务能力，用户越多资源越丰富</strong></mark>，成本低。</li>\n<li><span style=\"color:#dc2626\"><strong>缺点：每台主机既要请求又要服务、负担重；管理困难，流量大时网络易拥塞。</strong></span></li>\n</ul>\n<img data-img-id=\"fig-p87-03\" class=\"ds-note-img\" alt=\"图：P2P模型——主机互传文件、特点与缺点\">\n<p><span style=\"color:#7c3aed\">助记：C/S 像“店里点餐”——后厨常年开门、集中出餐；P2P 像“拼单互喂”——人人既点菜又上菜，人越多菜越足。</span></p>",
+      "images": [
+        {
+          "imgId": "fig-p87-01",
+          "file": "images/ch06/fig-p87-01.jpg"
+        },
+        {
+          "imgId": "fig-p87-02",
+          "file": "images/ch06/fig-p87-02.jpg"
+        },
+        {
+          "imgId": "fig-p87-03",
+          "file": "images/ch06/fig-p87-03.jpg"
+        }
+      ]
     },
     {
-      "tree": ["第6章 应用层", "6.2 DNS", "域名层次结构、解析方式与完整解析例题"],
-      "noteHtml": "<p><span style=\"font-size:20px;color:#7c3aed\"><strong>域名系统 DNS（王道 6.2）</strong></span></p><p><strong>一、DNS 的作用与传输层选择</strong></p><p>DNS 是一个<strong>分布式数据库</strong>（不是一台集中式服务器），完成<strong>域名 → IP 地址</strong>的解析。<mark><strong>DNS 查询默认使用 UDP，熟知端口 53</strong></mark>；只有<span style=\"color:#dc2626\"><strong>区域传送（主域名服务器把数据库内容整个传送给辅域名服务器）才使用 TCP</strong></span>——408 选择题高频坑点。</p><p><strong>二、域名服务器的层次结构</strong></p><ul><li><strong>根域名服务器</strong>：最高层次，<strong>知道所有顶级域名服务器的地址</strong>；逻辑上共 13 个（编号 A～M，借助任播部署了更多实例）。它通常不直接给出最终 IP，而是"告诉你下一步去问谁"。</li><li><strong>顶级（一级）域名服务器 TLD</strong>：负责 com、org、net、edu、gov 等通用顶级域和 cn、us 等国家顶级域，返回权限域名服务器的地址。</li><li><strong>权限（授权）域名服务器</strong>：保存其管辖区域内域名到 IP 的映射，能给出<strong>最终答案</strong>。</li><li><strong>本地域名服务器</strong>：<span style=\"color:#dc2626\"><strong>严格来说不属于 DNS 的层次结构</strong></span>，是主机的"第一跳代理"——主机发出的 DNS 查询报文首先被送往这里。</li></ul><p>域名书写从左到右级别递增：www.cskaoyan.com 中 com 是顶级域，cskaoyan 是二级域，www 是三级域（主机名）。</p><p><strong>三、递归查询与迭代查询</strong>（红色必考）</p><ul><li><span style=\"color:#dc2626\"><strong>递归查询：主机 → 本地域名服务器</strong></span>——"你必须给我最终答案"：若本地服务器不知道结果，就代替主机继续向下逐级代问，答案逐级返回。</li><li><span style=\"color:#dc2626\"><strong>迭代查询：本地域名服务器 → 根/顶级/权限服务器</strong></span>（通常情况）——"我不知道，但你可以去问 XX"：每次返回下一次应查询的服务器地址，由本地服务器自己接着问。</li></ul><p><strong>四、高速缓存</strong></p><p>域名服务器（以及主机）把最近查询过的域名-IP 映射缓存下来，并给每条缓存记录设置 TTL；再次查询直接命中，<mark><strong>大大缩短解析时延、减少 DNS 网络流量</strong></mark>。缓存中还可以保存"顶级/权限域名服务器地址"这类中间结果。</p><p><strong>五、域名资源记录类型</strong></p><ul><li><strong>A</strong>：域名 → IPv4 地址；<strong>AAAA</strong>：域名 → IPv6 地址。</li><li><strong>NS</strong>：本域的权限域名服务器是哪台。</li><li><strong>CNAME</strong>：别名 → 规范（真实）域名。</li><li><strong>MX</strong>：本域的邮件服务器地址。</li><li><strong>PTR</strong>：IP 地址 → 域名（反向解析）。</li></ul><img data-img-id=\"ch06-fig-02\" class=\"ds-note-img\" alt=\"图：DNS 层次结构与递归/迭代查询\"><p><span style=\"color:#7c3aed\"><strong>【例题 6.2】</strong></span>主机 H 的本地域名服务器为 L（无任何相关缓存）。H 要访问 www.abc.com，L 采用迭代方式向上查询。请给出完整解析流程，并计算 DNS 解析引入的往返时延（每次交互计 1 个 RTT，忽略其他时延）。</p><p>流程：① H → L 递归查询；② L → 根服务器（迭代），根返回 com 顶级域名服务器的地址；③ L → 顶级域名服务器，返回 abc.com 权限域名服务器的地址；④ L → 权限域名服务器，返回 www.abc.com 的 IP 地址；⑤ L 把 IP 地址返回给 H。</p>$$T_{\\text{DNS}} = 1 \\times \\text{RTT（H 与 L 交互）} + 3 \\times \\text{RTT（L 依次问根、顶级、权限）} = 4\\ \\text{RTT}$$<p><span style=\"color:#dc2626\"><strong>答案：共 4 个 RTT。若 L 已缓存该域名映射，H 只需与 L 交互 1 次（1 RTT）；若 H 本机缓存直接命中，则完全无需发起 DNS 查询——这就是高速缓存的价值。</strong></span></p>",
-      "images": [ { "imgId": "ch06-fig-02", "file": "images/ch06/ch06-fig-02.jpg" } ]
+      "tree": [
+        "第6章 应用层",
+        "6.2 域名系统DNS",
+        "6.2_1 DNS概述"
+      ],
+      "noteHtml": "<p><span style=\"font-size:20px;color:#7c3aed\"><strong>P88 6.2_1 DNS概述（王道 6.2）</strong></span></p>\n<p>DNS = Domain Name System，<strong>域名系统</strong>。本节三件事：何为域名、DNS 的作用、DNS 的基本特点。</p>\n<img data-img-id=\"fig-p88-01\" class=\"ds-note-img\" alt=\"图：本节内容——DNS域名系统开篇\">\n<p><strong>一、何为域名</strong>：域名是主机的<strong>层次化名字</strong>，好记好用；IP 地址唯一但难记——正如“人名 vs 身份证号”。每个域名对应一个 IP 地址，如 www.baidu.com 与 110.242.68.66。从左到右级别依次升高：www（三级域名）. baidu（二级域名）. com（顶级域名）。</p>\n<p><mark><strong>域名是主机的名字；DNS 负责完成域名到 IP 地址的转换（解析）。</strong></mark></p>\n<img data-img-id=\"fig-p88-02\" class=\"ds-note-img\" alt=\"图：域名与IP对应关系、人名身份证号类比、三级/二级/顶级域名划分\">\n<p><strong>二、DNS 的作用</strong>：用户习惯用域名访问，而网络通信只认 IP。以浏览器访问 www.baidu.com 为例：先向域名服务器查询该域名的 IP，获知 IP 后才能与 Web 服务器建立 TCP 连接、取回网页。主机联网时通常经 <strong>DHCP</strong> 获知默认（本地）域名服务器的地址。</p>\n<img data-img-id=\"fig-p88-03\" class=\"ds-note-img\" alt=\"图：DNS作用——查询IP后建立TCP连接取回网页的全过程\">\n<p><strong>三、DNS 的基本特点</strong>：</p>\n<ul>\n<li><strong>分布式系统</strong>：全球大量域名服务器分层协同，而非一台集中式服务器（集中式：单点故障、性能瓶颈）。</li>\n<li><strong>客户/服务器方式</strong>：DNS 客户机发查询报文，域名服务器回响应报文。</li>\n<li><strong>应用层协议</strong>：<span style=\"color:#dc2626\"><strong>通常基于 UDP，熟知端口 53</strong></span>——一问一答、开销小速度快。</li>\n</ul>\n<img data-img-id=\"fig-p88-04\" class=\"ds-note-img\" alt=\"图：DNS基本特点——集中式vs分布式对比、查询响应报文交互\">\n<p><span style=\"color:#7c3aed\">小结（总结图三大分支）：何为域名（层次化名字）、DNS 作用（域名到 IP 的转换）、基本特点（应用层 / UDP 53 / C/S / 分布式）。</span></p>\n<img data-img-id=\"fig-p88-05\" class=\"ds-note-img\" alt=\"图：DNS概述知识点总结思维导图\">",
+      "images": [
+        {
+          "imgId": "fig-p88-01",
+          "file": "images/ch06/fig-p88-01.jpg"
+        },
+        {
+          "imgId": "fig-p88-02",
+          "file": "images/ch06/fig-p88-02.jpg"
+        },
+        {
+          "imgId": "fig-p88-03",
+          "file": "images/ch06/fig-p88-03.jpg"
+        },
+        {
+          "imgId": "fig-p88-04",
+          "file": "images/ch06/fig-p88-04.jpg"
+        },
+        {
+          "imgId": "fig-p88-05",
+          "file": "images/ch06/fig-p88-05.jpg"
+        }
+      ]
     },
     {
-      "tree": ["第6章 应用层", "6.3 FTP", "控制连接、数据连接与主动/被动模式"],
-      "noteHtml": "<p><span style=\"font-size:20px;color:#7c3aed\"><strong>文件传输协议 FTP（王道 6.3）</strong></span></p><p>FTP 是因特网上使用最广泛的文件传送协议，提供<strong>交互式访问</strong>，允许客户指明文件类型与格式（ASCII 文本模式或二进制图像模式），并允许对文件设置存取权限。FTP 基于 <strong>TCP</strong> 提供<strong>可靠</strong>传输。</p><p><strong>一、两条并行连接</strong>（408 核心考点）</p><ul><li><span style=\"color:#dc2626\"><strong>控制连接：服务器熟知端口 21，传送客户命令与服务器的应答</strong></span>。由<strong>客户主动发起</strong>，在整个会话期间<strong>一直保持打开</strong>。</li><li><span style=\"color:#dc2626\"><strong>数据连接：服务器熟知端口 20，传送实际的文件与目录列表</strong></span>。<mark><strong>每传输一个文件就建立一次数据连接，用完即关闭</strong></mark>（并非全程保持）。</li></ul><p><span style=\"color:#dc2626\"><strong>控制信息是"带外"（out-of-band）传送的：控制信息走 21 端口、文件数据走 20 端口，两条连接分开</strong></span>——2017 年 408 真题原考点。</p><p><strong>二、主动模式 PORT 与被动模式 PASV</strong>（红色易错）</p><ul><li><strong>主动模式（PORT）</strong>：客户通过控制连接告诉服务器"我在 X 端口等你"，<span style=\"color:#dc2626\"><strong>服务器主动从端口 20 发起 TCP 连接去连客户</strong></span>。<strong>易错点：所谓"主动"，主语是服务器，不是客户！</strong></li><li><strong>被动模式（PASV）</strong>：服务器打开一个新的临时端口并告知客户，<strong>由客户主动发起数据连接</strong>去连它，多用于客户处于 NAT/防火墙之后的场景。</li></ul><p><span style=\"color:#7c3aed\">统一记忆：控制连接永远由客户发起（客户去连服务器的 21 端口）；数据连接谁主动看模式——PORT 模式服务器主动（源端口 20），PASV 模式客户主动。</span></p><p><strong>三、匿名 FTP</strong>：使用用户名 anonymous 即可访问服务器上的公开资源，无需专门注册账号，是 FTP 常见的使用方式。</p><img data-img-id=\"ch06-fig-03\" class=\"ds-note-img\" alt=\"图：FTP 控制连接与数据连接\"><p><span style=\"color:#7c3aed\"><strong>【例题 6.3】</strong></span>判断下列说法的正误：① FTP 的控制连接与数据连接都由客户发起。② FTP 主动模式下，服务器从端口 20 主动连接客户。③ 控制连接在整个会话期间保持打开，数据连接每传一个文件建立一次。</p><p><span style=\"color:#dc2626\"><strong>答案：①错误（主动模式下数据连接由服务器发起）；②正确；③正确。必背三连：21 控制、20 数据、控制信息带外传送。</strong></span></p>",
-      "images": [ { "imgId": "ch06-fig-03", "file": "images/ch06/ch06-fig-03.jpg" } ]
+      "tree": [
+        "第6章 应用层",
+        "6.2 域名系统DNS",
+        "6.2_2 DNS层次域名空间"
+      ],
+      "noteHtml": "<p><span style=\"font-size:20px;color:#7c3aed\"><strong>P89 6.2_2 DNS层次域名空间（王道 6.2）</strong></span></p>\n<p>DNS 用<strong>层次树状结构</strong>给主机命名。本节：域名书写规则、层次结构与分级管理、顶级域名分类。</p>\n<img data-img-id=\"fig-p89-01\" class=\"ds-note-img\" alt=\"图：本节内容——DNS层次域名空间开篇\">\n<p><strong>一、域名书写规则</strong>：域名由标号序列组成、以点分隔，如 www.cskaoyan.com、mail.pku.edu.cn（每一小段是一个标号）。</p>\n<ul>\n<li><span style=\"color:#dc2626\"><strong>级别低的标号在左、级别高的在右</strong></span>：最左是最低级（主机名），最右是顶级域名。</li>\n<li>标号由<strong>英文字母、数字、连字符</strong>组成，不区分大小写。</li>\n<li><span style=\"color:#dc2626\"><strong>每个标号不超过 63 个字符，完整域名不超过 255 个字符</strong></span>（数字考点）。</li>\n</ul>\n<img data-img-id=\"fig-p89-02\" class=\"ds-note-img\" alt=\"图：域名书写规则——标号划分示例与63/255字符限制\">\n<p><strong>二、层次结构与分级管理</strong>：域名空间是一棵树：根（.）→ 顶级域名 → 二级 → 三级 → 四级……<strong>域名</strong>是树中某台主机的名字，<strong>域</strong>是域名空间中的一棵子树（一个分区）。管理上<strong>分级授权</strong>：ICANN 统一管理、逐级下放——ICANN 授权 CNNIC 管 .cn，CNNIC 再授权 CERNET 管 .edu.cn。</p>\n<img data-img-id=\"fig-p89-03\" class=\"ds-note-img\" alt=\"图：域名层次结构树——根/顶级/二级/三级/四级与ICANN分级授权\">\n<p><strong>三、顶级域名（TLD）三大类</strong>：</p>\n<ul>\n<li><strong>国家顶级域名 ccTLD</strong>：.cn（中国）、.us（美国）、.jp（日本）。</li>\n<li><strong>通用顶级域名 gTLD</strong>：.com（公司）、.net（网络服务）、.org（组织）、.edu（教育）、.gov（政府）。</li>\n<li><strong>基础结构域名 arpa</strong>：用于<strong>反向解析</strong>（IP 反查域名），又称反向域名。</li>\n</ul>\n<img data-img-id=\"fig-p89-04\" class=\"ds-note-img\" alt=\"图：顶级域名三类——ccTLD/gTLD/arpa反向解析\">\n<p><span style=\"color:#7c3aed\">速测：www.cskaoyan.com 中 com 是顶级域名、cskaoyan 是二级、www 是三级。读域名口诀“右高左低”。</span></p>\n<img data-img-id=\"fig-p89-05\" class=\"ds-note-img\" alt=\"图：DNS层次域名空间知识总结思维导图\">",
+      "images": [
+        {
+          "imgId": "fig-p89-01",
+          "file": "images/ch06/fig-p89-01.jpg"
+        },
+        {
+          "imgId": "fig-p89-02",
+          "file": "images/ch06/fig-p89-02.jpg"
+        },
+        {
+          "imgId": "fig-p89-03",
+          "file": "images/ch06/fig-p89-03.jpg"
+        },
+        {
+          "imgId": "fig-p89-04",
+          "file": "images/ch06/fig-p89-04.jpg"
+        },
+        {
+          "imgId": "fig-p89-05",
+          "file": "images/ch06/fig-p89-05.jpg"
+        }
+      ]
     },
     {
-      "tree": ["第6章 应用层", "6.4 电子邮件", "系统组成、SMTP/POP3/IMAP 与 MIME"],
-      "noteHtml": "<p><span style=\"font-size:20px;color:#7c3aed\"><strong>电子邮件（王道 6.4）</strong></span></p><p><strong>一、电子邮件系统的组成</strong>（三大组件）</p><ul><li><strong>用户代理 UA</strong>：用户与邮件系统的接口，如 Outlook、Foxmail、手机邮件 App，负责撰写、读取、发送邮件。</li><li><strong>邮件服务器</strong>：24 小时在线的核心设备，功能是<strong>发送和接收邮件</strong>，并向发信人报告邮件传送情况；内部设有发送队列与用户邮箱。</li><li><strong>邮件发送/读取协议</strong>：发送用 SMTP，读取用 POP3 或 IMAP。</li></ul><p><strong>二、邮件地址格式</strong></p><p>格式为 <strong>收件人邮箱名@邮箱所在主机的域名</strong>，如 wangdao@163.com，其中 @ 读作"at"，整个地址在全网范围内唯一。</p><p><strong>三、发送与读取全流程</strong>（推-拉结合，408 高频）</p><p>发件人 UA --<strong>SMTP 推</strong>--> 发方邮件服务器 --<strong>SMTP 推</strong>--> 收方邮件服务器 --<strong>POP3/IMAP 拉</strong>--> 收件人 UA。</p><ul><li><span style=\"color:#dc2626\"><strong>SMTP 是"推"协议：发送方向都是把邮件推给下一跳（端口 25，基于 TCP）</strong></span>。</li><li><span style=\"color:#dc2626\"><strong>POP3/IMAP 是"拉"协议：收件人主动从服务器拉取邮件（POP3 端口 110，IMAP 端口 143）</strong></span>。</li></ul><p><strong>四、POP3 与 IMAP 的区别</strong></p><ul><li><strong>POP3</strong>：简单，工作在"下载并删除"（默认）或"下载并保留"两种模式；邮件取回本地后服务器端不再维护状态，<strong>不方便多设备同步</strong>。</li><li><strong>IMAP</strong>：邮件<strong>保留在服务器端</strong>，用户可直接在服务器上操纵邮箱（建文件夹、按条件搜索、先看邮件首部再决定是否下载正文），<mark><strong>多设备查看状态一致</strong></mark>，但协议更复杂。</li></ul><p><strong>五、SMTP 的局限与 MIME</strong></p><p>SMTP 只能传送 <strong>7 位 ASCII 码</strong>的邮件（不能直接传中文、图片、音视频等非 ASCII 内容）。<mark><strong>MIME 并不取代 SMTP，而是对其扩展：定义了邮件格式与编码规则（如 Base64），把非 ASCII 数据先编码成 7 位 ASCII，再交给 SMTP 传输</strong></mark>，因此<span style=\"color:#dc2626\"><strong>MIME 对现有邮件系统完全透明</strong></span>。</p><p><span style=\"color:#7c3aed\">另注：网页版邮箱（浏览器打开 163/QQ 邮箱）走的是 HTTP/HTTPS，与本节的 SMTP/POP3/IMAP 是并存的两种使用方式。</span></p><img data-img-id=\"ch06-fig-04\" class=\"ds-note-img\" alt=\"图：电子邮件系统组成与收发流程\"><p><span style=\"color:#7c3aed\"><strong>【例题 6.4】</strong></span>用户 A 通过 UA 向用户 B 发送邮件：① A 的 UA 把邮件交给 A 的邮件服务器使用什么协议？② 两台邮件服务器之间使用什么协议？③ B 用 UA 从 B 的邮件服务器读取邮件使用什么协议？</p><p><span style=\"color:#dc2626\"><strong>答案：①SMTP；②SMTP；③POP3 或 IMAP。口诀：发送一路推（SMTP），最后一步拉（POP3/IMAP）。</strong></span></p>",
-      "images": [ { "imgId": "ch06-fig-04", "file": "images/ch06/ch06-fig-04.jpg" } ]
+      "tree": [
+        "第6章 应用层",
+        "6.2 域名系统DNS",
+        "6.2_3 DNS 域名服务器、域名解析过程"
+      ],
+      "noteHtml": "<p><span style=\"font-size:20px;color:#7c3aed\"><strong>P90 6.2_3 DNS 域名服务器、域名解析过程（王道 6.2）</strong></span></p>\n<p>本节两大块：四类域名服务器 ＋ 域名解析过程（递归/迭代查询），408 选择与计算高频区。</p>\n<img data-img-id=\"fig-p90-01\" class=\"ds-note-img\" alt=\"图：本节大纲——域名服务器分类与域名解析过程\">\n<p><strong>一、为什么分布式？</strong>“简单粗鲁”的设想：全世界设一台超级域名服务器存所有映射。<span style=\"color:#dc2626\"><strong>缺点：单点故障（一崩全网瘫）、性能瓶颈（海量查询集中打向一台）、时延大</strong></span>——故 DNS 采用分布式层次化部署（根服务器数量有限）。</p>\n<img data-img-id=\"fig-p90-02\" class=\"ds-note-img\" alt=\"图：集中式DNS方案及其缺点\">\n<p><strong>二、四类域名服务器</strong>：</p>\n<ul>\n<li><strong>根域名服务器</strong>：最高层，<strong>知道所有顶级域名服务器的地址</strong>，通常只答“下一步去问谁”。</li>\n<li><strong>顶级域名服务器</strong>：管理本 TLD（.com、.cn 等）下的二级域名，返回权限服务器地址。</li>\n<li><strong>权限域名服务器</strong>：负责一个区的映射，给出<strong>最终答案</strong>（域名 → IP）。</li>\n<li><strong>本地域名服务器</strong>：<span style=\"color:#dc2626\"><strong>主机的 DNS 请求最先发给它</strong></span>（联网时经 DHCP 获知其地址），是代理查询入口；严格说它不属于 DNS 层次结构。</li>\n</ul>\n<img data-img-id=\"fig-p90-03\" class=\"ds-note-img\" alt=\"图：四类域名服务器总览——根/顶级/权限/本地的层次职责\">\n<img data-img-id=\"fig-p90-04\" class=\"ds-note-img\" alt=\"图：本地域名服务器详解——请求先发本地、DHCP获知地址\">\n<p><strong>三、解析流程与两种查询</strong>：查询链路——主机 → 本地 → 根 → 顶级 → 权限。</p>\n<ul>\n<li><span style=\"color:#dc2626\"><strong>递归查询：“你帮我查到底”</strong></span>——被问者代问下一级，答案原路返回；<strong>主机 → 本地</strong>采用。</li>\n<li><span style=\"color:#dc2626\"><strong>迭代查询：“我不知道，去问 XX”</strong></span>——被问者只返回下一级地址，查询者自己接着问；<strong>本地 → 根/顶级/权限</strong>通常采用。</li>\n</ul>\n<p><mark><strong>通常组合：主机到本地递归、本地向上迭代；高速缓存命中可大幅减少查询次数与时延。</strong></mark></p>\n<img data-img-id=\"fig-p90-05\" class=\"ds-note-img\" alt=\"图：域名解析流程——主机→本地→根→顶级→权限查询链路\">\n<img data-img-id=\"fig-p90-06\" class=\"ds-note-img\" alt=\"图：递归查询与迭代查询对比\">\n<p><span style=\"color:#7c3aed\"><strong>【例题·真题思路 2010-40】</strong></span>本地域名服务器无缓存，主机请求某 URL：本地向上<strong>迭代</strong>时，本地最少要向根、顶级、权限各发 1 个查询报文，共 <strong>3 个</strong>；全<strong>递归</strong>时本地只向根发 <strong>1 个</strong>，其余逐级代问。主机自己始终只发 1 个报文（问本地）。</p>\n<img data-img-id=\"fig-p90-07\" class=\"ds-note-img\" alt=\"图：真题2010-40——迭代/递归查询次数分析\">\n<p><span style=\"color:#7c3aed\"><strong>【例题·真题改编 2016-40】</strong></span>客户端发出 DNS 请求后，<strong>最先</strong>发出的查询报文最少几个？抓“最先”“最少”：客户端只与本地域名服务器打交道，<span style=\"color:#dc2626\"><strong>最少只发 1 个（发给本地域名服务器）</strong></span>，后续迭代/递归是服务器们的事。</p>\n<img data-img-id=\"fig-p90-08\" class=\"ds-note-img\" alt=\"图：真题2016-40改编——最少先发出的DNS查询报文数\">\n<p><span style=\"color:#7c3aed\"><strong>【例题·解析时延计算：递归 vs 迭代】</strong></span>主机 H 与本地域名服务器 L 间 RTT 为 10 ms；L 与根、顶级、权限间 RTT 为 50、30、20 ms；全递归时根—顶级、顶级—权限间 RTT 为 40、25 ms。均无缓存，每次交互计 1 个 RTT，求 H 拿到解析结果的时间。</p>\n$$T_{\\text{迭代}}=\\text{RTT}_{\\text{H-L}}+\\text{RTT}_{\\text{L-根}}+\\text{RTT}_{\\text{L-顶级}}+\\text{RTT}_{\\text{L-权限}}=10+50+30+20=120\\ \\text{ms}$$\n$$T_{\\text{全递归}}=\\text{RTT}_{\\text{H-L}}+\\text{RTT}_{\\text{L-根}}+\\text{RTT}_{\\text{根-顶级}}+\\text{RTT}_{\\text{顶级-权限}}=10+50+40+25=125\\ \\text{ms}$$\n<p><span style=\"color:#dc2626\"><strong>答案：迭代 120 ms、全递归 125 ms。迭代是本地逐级“直问”（走本地与各级的链路），全递归是相邻级“代问”（走相邻级间的链路）——链路组合不同，总时延不同。</strong></span></p>",
+      "images": [
+        {
+          "imgId": "fig-p90-01",
+          "file": "images/ch06/fig-p90-01.jpg"
+        },
+        {
+          "imgId": "fig-p90-02",
+          "file": "images/ch06/fig-p90-02.jpg"
+        },
+        {
+          "imgId": "fig-p90-03",
+          "file": "images/ch06/fig-p90-03.jpg"
+        },
+        {
+          "imgId": "fig-p90-04",
+          "file": "images/ch06/fig-p90-04.jpg"
+        },
+        {
+          "imgId": "fig-p90-05",
+          "file": "images/ch06/fig-p90-05.jpg"
+        },
+        {
+          "imgId": "fig-p90-06",
+          "file": "images/ch06/fig-p90-06.jpg"
+        },
+        {
+          "imgId": "fig-p90-07",
+          "file": "images/ch06/fig-p90-07.jpg"
+        },
+        {
+          "imgId": "fig-p90-08",
+          "file": "images/ch06/fig-p90-08.jpg"
+        }
+      ]
     },
     {
-      "tree": ["第6章 应用层", "6.5 WWW 与 HTTP", "WWW、URL、HTTP 报文格式、方法与状态码"],
-      "noteHtml": "<p><span style=\"font-size:20px;color:#7c3aed\"><strong>WWW 与 HTTP（王道 6.5）</strong></span></p><p><strong>一、WWW（万维网）与三大支柱</strong></p><p>WWW 是一个分布式的<strong>超媒体</strong>系统，以<strong>客户/服务器</strong>方式工作：浏览器是客户程序，万维网文档所驻留的主机运行服务器程序。三大支柱：<strong>HTML</strong>（超文本标记语言，编写页面）、<strong>URL</strong>（统一资源定位符，标识资源）、<strong>HTTP</strong>（超文本传送协议，传输页面）。</p><p><strong>二、URL 的构成</strong></p><p><mark><strong>URL 的一般形式：协议://主机:端口/路径</strong></mark>，如 http://www.abc.edu.cn:80/cs/index.htm。协议常用 http/https；主机可写域名或 IP 地址；http 默认端口 80、https 默认端口 443，使用默认端口时可省略。</p><p><strong>三、HTTP 的特点</strong>（红色必考）</p><ul><li>基于 <strong>TCP</strong>（提供可靠传输），默认端口 <strong>80</strong>（HTTPS 为 443）。</li><li><span style=\"color:#dc2626\"><strong>无状态协议：服务器不记忆访问过的客户</strong></span>——两次访问同一页面互不相干；这简化了服务器设计，但需要 <strong>Cookie</strong> 技术来弥补（见下篇）。</li><li>HTTP 是<strong>面向事务</strong>的应用层协议，报文为 ASCII 文本，<strong>明文传输</strong>（HTTPS 才加密）。</li></ul><p><strong>四、HTTP 报文格式</strong></p><ul><li><strong>请求报文</strong>：请求行（方法 + URL + 版本，如 GET /index.htm HTTP/1.1）→ 首部行 → 空行 → 实体主体（GET 请求通常为空）。</li><li><strong>响应报文</strong>：状态行（版本 + 状态码 + 短语，如 HTTP/1.1 200 OK）→ 首部行 → 空行 → 实体主体（返回的文档数据）。</li></ul><img data-img-id=\"ch06-fig-05\" class=\"ds-note-img\" alt=\"图：HTTP 请求报文与响应报文格式、Cookie 机制\"><p><strong>五、GET 与 POST 对比</strong>（红色常考）</p><ul><li><strong>语义</strong>：GET 请求读取 URL 标识的资源（获取数据）；POST 向服务器<strong>提交数据</strong>并由服务器处理（如表单提交、登录、发帖）。</li><li><span style=\"color:#dc2626\"><strong>参数位置：GET 的参数附在 URL 中（可见、长度受限、可收藏可缓存）；POST 的参数放在实体主体中</strong></span>。</li><li>GET 是幂等的、可缓存；POST 一般会改变服务器状态、不缓存。</li></ul><p><strong>六、常见状态码</strong>（红色必背）</p><ul><li><strong>1xx</strong>：信息提示；<strong>2xx</strong> 成功——<span style=\"color:#dc2626\"><strong>200 OK：请求成功，响应中含所请求的资源</strong></span>。</li><li><strong>3xx</strong> 重定向——<span style=\"color:#dc2626\"><strong>301 永久重定向、302 临时重定向</strong></span>：资源已"搬家"，响应中给出新的 URL。</li><li><strong>4xx</strong> 客户端错误——<span style=\"color:#dc2626\"><strong>404 Not Found：服务器找不到所请求的资源</strong></span>。</li><li><strong>5xx</strong> 服务器错误——<span style=\"color:#dc2626\"><strong>500：服务器内部错误</strong></span>。</li></ul><p><span style=\"color:#7c3aed\">助记：2 成功、3 搬家（重定向）、4 你的错（客户端）、5 我的错（服务器）。</span></p>",
-      "images": [ { "imgId": "ch06-fig-05", "file": "images/ch06/ch06-fig-05.jpg" } ]
+      "tree": [
+        "第6章 应用层",
+        "6.3 文件传输协议FTP",
+        "6.3 FTP 文件传输协议"
+      ],
+      "noteHtml": "<p><span style=\"font-size:20px;color:#7c3aed\"><strong>P91 6.3 FTP 文件传输协议（王道 6.3）</strong></span></p>\n<p><strong>一、FTP 的功能</strong>：文件传输协议（RFC 959），<strong>基于 TCP</strong> 的可靠传输，支持上传/下载双向传送；核心价值是<strong>屏蔽操作系统细节、实现异构计算机间互传文件</strong>（如 Windows 与 Linux 互传）。</p>\n<img data-img-id=\"fig-p91-01\" class=\"ds-note-img\" alt=\"图：FTP功能——基于TCP的上传下载与异构互传\">\n<p><strong>二、工作原理：两条并行的 TCP 连接</strong>（核心考点）：</p>\n<ul>\n<li><span style=\"color:#dc2626\"><strong>控制连接——服务器熟知端口 21</strong></span>：传送命令与应答（USER/PASS 登录、LIST 列目录、RETR 取文件），由客户发起，<strong>整个会话期间一直保持打开</strong>。</li>\n<li><span style=\"color:#dc2626\"><strong>数据连接——服务器熟知端口 20</strong></span>：传送文件数据与目录列表，<mark><strong>按需建立、传完即关</strong></mark>，不贯穿会话。</li>\n<li>进程分工：客户端主进程＋从属控制进程；服务器端控制进程＋数据传送进程。</li>\n</ul>\n<p>控制信息与文件数据分两条连接走，称为<strong>带外传送</strong>。</p>\n<img data-img-id=\"fig-p91-02\" class=\"ds-note-img\" alt=\"图：FTP工作原理——21控制连接/20数据连接与命令序列\">\n<p><strong>三、数据连接两种模式</strong>：</p>\n<ul>\n<li><strong>主动模式 PORT</strong>：客户端用 PORT 命令上报自己的 IP 与端口，<span style=\"color:#dc2626\"><strong>服务器从 20 端口主动发起 TCP 连接去连客户端</strong></span>——“主动”的主语是服务器，易错！</li>\n<li><strong>被动模式 PASV</strong>：客户端发 PASV，服务器返回一个新端口，<strong>由客户端主动发起数据连接</strong>，适合客户端在 NAT/防火墙之后。</li>\n</ul>\n<img data-img-id=\"fig-p91-03\" class=\"ds-note-img\" alt=\"图：主动模式PORT与被动模式PASV对比\">\n<p>主动模式示例：①建控制连接并登录（USER/PASS）→ ②PORT 命令报端口 → ③服务器从 20 端口发起数据连接 → ④RETR 等命令驱动传输 → ⑤传完关闭数据连接。</p>\n<img data-img-id=\"fig-p91-04\" class=\"ds-note-img\" alt=\"图：主动模式数据传输示例——步骤①~⑧与TCP连接建立\">\n<p><strong>四、登出</strong>：客户端发 <strong>QUIT</strong>，服务器回 <strong>221</strong>，控制连接与（若仍在的）数据连接随即关闭。</p>\n<img data-img-id=\"fig-p91-05\" class=\"ds-note-img\" alt=\"图：FTP登出——QUIT命令与221应答、连接关闭\">\n<p><span style=\"color:#7c3aed\">生命周期总览：控制连接“长寿”（贯穿会话），数据连接“短命”（随文件生灭）；端口口诀“21 控、20 数”。</span></p>\n<img data-img-id=\"fig-p91-06\" class=\"ds-note-img\" alt=\"图：FTP架构总览——两条TCP连接的生命周期\">\n<p><span style=\"color:#7c3aed\"><strong>【例题·判断三连】</strong></span>①FTP 每传一个文件都要新建一次数据连接；②主动模式下数据连接由服务器发起；③控制连接在整个会话期间保持打开。<span style=\"color:#dc2626\"><strong>答案：①②③均正确。必背三连：21 控制、20 数据、控制信息带外传送。</strong></span></p>\n<img data-img-id=\"fig-p91-07\" class=\"ds-note-img\" alt=\"图：FTP考点总结思维导图\">",
+      "images": [
+        {
+          "imgId": "fig-p91-01",
+          "file": "images/ch06/fig-p91-01.jpg"
+        },
+        {
+          "imgId": "fig-p91-02",
+          "file": "images/ch06/fig-p91-02.jpg"
+        },
+        {
+          "imgId": "fig-p91-03",
+          "file": "images/ch06/fig-p91-03.jpg"
+        },
+        {
+          "imgId": "fig-p91-04",
+          "file": "images/ch06/fig-p91-04.jpg"
+        },
+        {
+          "imgId": "fig-p91-05",
+          "file": "images/ch06/fig-p91-05.jpg"
+        },
+        {
+          "imgId": "fig-p91-06",
+          "file": "images/ch06/fig-p91-06.jpg"
+        },
+        {
+          "imgId": "fig-p91-07",
+          "file": "images/ch06/fig-p91-07.jpg"
+        }
+      ]
     },
     {
-      "tree": ["第6章 应用层", "6.5 WWW 与 HTTP", "Cookie 与 Session、HTTP 版本、HTTPS 与综合大题"],
-      "noteHtml": "<p><span style=\"font-size:20px;color:#7c3aed\"><strong>HTTP 进阶与综合（王道 6.5）</strong></span></p><p><strong>一、Cookie 与 Session——弥补无状态</strong></p><ul><li><strong>Cookie</strong>：服务器在响应中用 Set-Cookie 首部给用户发一个唯一标识，浏览器把它保存在客户端；<mark><strong>此后对该服务器的每次请求都携带 Cookie 首部回传，服务器据此识别用户、跟踪状态（如购物车、免登录）</strong></mark>。</li><li><strong>Session</strong>：状态信息保存在<strong>服务器端</strong>，客户端只持有一个会话标识（通常也借助 Cookie 传递）。</li><li><span style=\"color:#dc2626\"><strong>核心区别：Cookie 数据存客户端，Session 数据存服务器端</strong></span>。</li></ul><p><strong>二、HTTP/1.0 与 HTTP/1.1</strong></p><ul><li><strong>HTTP/1.0：非持久连接</strong>——每请求一个文档就要新建一次 TCP 连接（每个对象耗时约 2 个 RTT：握手 1 RTT + 请求响应 1 RTT），用完立即释放，连接开销大。</li><li><span style=\"color:#dc2626\"><strong>HTTP/1.1：默认使用持久连接</strong></span>——TCP 连接建立后可连续传送同一服务器上的多个对象；进一步还可采用<strong>流水线方式</strong>（不必等前一个响应回来就连续发出多个请求）。</li></ul><p><strong>三、HTTPS 简述</strong></p><p>HTTPS = <strong>HTTP + SSL/TLS</strong>（在应用层与传输层之间增加安全套接字层），默认端口 <strong>443</strong>，提供<strong>加密、完整性校验和服务器身份认证</strong>（基于数字证书），解决 HTTP 明文传输不安全的问题。</p><p><span style=\"color:#7c3aed\"><strong>【例题 6.5】经典大题</strong></span>在浏览器地址栏输入 http://www.abc.com/index.htm 并回车，简述从回车到页面完整显示所经历的全部过程（要求覆盖五层体系结构）。</p><ul><li>① <strong>应用层-DNS</strong>：浏览器先查本机缓存与 hosts 文件，未命中则向本地域名服务器递归查询；本地服务器经根 → 顶级 → 权限服务器迭代查询（或命中高速缓存），获得 www.abc.com 的 IP 地址。</li><li>② <strong>传输层-TCP</strong>：浏览器与服务器 80 端口完成<strong>三次握手</strong>（SYN → SYN+ACK → ACK）建立 TCP 连接。</li><li>③ <strong>网络层</strong>：HTTP 报文装入 IP 分组；源主机与沿途路由器依据<strong>路由表</strong>选路转发；并用 <strong>ARP</strong> 协议解析下一跳（或默认网关）的 MAC 地址。</li><li>④ <strong>数据链路层与物理层</strong>：IP 分组封装成<strong>帧</strong>交给网卡，变成<strong>比特流</strong>经物理介质逐段传输，途中交换机/路由器逐层解封、转发。</li><li>⑤ <strong>应用层-HTTP</strong>：连接建立后浏览器发送 GET /index.htm 请求报文；服务器返回 200 OK 响应报文，实体主体中携带 HTML 文档。</li><li>⑥ <strong>渲染与后续请求</strong>：浏览器解析 HTML，遇到图片、CSS、JS 等对象再逐一（可并行）发起 HTTP 请求获取；全部对象到齐后渲染引擎绘制并显示页面。</li><li>⑦ <strong>连接释放</strong>：非持久连接下每个对象用完即通过<strong>四次挥手</strong>释放 TCP 连接；持久连接则保持复用。</li></ul><p><span style=\"color:#dc2626\"><strong>答案要点：DNS 解析 → TCP 三次握手 → ARP/IP 路由 → 封装成帧、比特流传输 → HTTP 请求/响应 → 解析渲染 → 四次挥手。本题串起全部五层，是 408 综合题模板，务必按层作答、逻辑闭环。</strong></span></p>",
-      "images": []
+      "tree": [
+        "第6章 应用层",
+        "6.4 电子邮件",
+        "6.4 电子邮件"
+      ],
+      "noteHtml": "<p><span style=\"font-size:20px;color:#7c3aed\"><strong>P92 6.4 电子邮件（王道 6.4）</strong></span></p>\n<p>两大板块：<strong>系统组成与收发协议</strong>（SMTP 发、POP3/IMAP 收）＋<strong>邮件格式与 MIME</strong>。</p>\n<img data-img-id=\"fig-p92-01\" class=\"ds-note-img\" alt=\"图：电子邮件考点总览——系统组成与邮件格式两大板块\">\n<p><strong>一、系统组成与收发链路</strong>：发件人 → <strong>用户代理 UA</strong>（Outlook、Foxmail、QQ邮箱等）→ 发送方邮件服务器 --SMTP 推--→ 接收方邮件服务器 --POP3/IMAP 拉--→ 收件人的 UA。邮件服务器全天候在线，负责收发邮件并报告传送状态。</p>\n<img data-img-id=\"fig-p92-02\" class=\"ds-note-img\" alt=\"图：电子邮件系统组成链路——UA/邮件服务器与各环节协议\">\n<p><strong>二、邮件格式</strong> = <strong>信封</strong>（发件人/收件人地址）＋<strong>内容</strong>；内容又分<strong>首部</strong>（From/To/Subject 等字段）与<strong>主体</strong>（正文），与写邮件界面各输入框一一对应。</p>\n<img data-img-id=\"fig-p92-03\" class=\"ds-note-img\" alt=\"图：邮件格式——信封与首部/主体的对应关系\">\n<p><strong>三、SMTP（发送协议，TCP 25 端口）三阶段</strong>：连接建立（服务器回 <strong>220</strong>，客户端发 HELO）→ 邮件传送（MAIL FROM / RCPT TO / DATA，正文以单独一行的点结束）→ 连接释放（QUIT / <strong>221</strong>）。</p>\n<img data-img-id=\"fig-p92-04\" class=\"ds-note-img\" alt=\"图：SMTP通信过程三阶段命令与应答码时序\">\n<p><strong>四、MIME</strong>：SMTP 只能传 <strong>7 位 ASCII 码</strong>，中文、图片、音视频传不了。<mark><strong>MIME 不取代 SMTP，而是增加对邮件主体格式的定义，把非 ASCII 数据编码成 ASCII 后再交 SMTP 传输，对现有邮件系统透明。</strong></mark></p>\n<img data-img-id=\"fig-p92-05\" class=\"ds-note-img\" alt=\"图：MIME概述——7位ASCII局限与转换框架\">\n<p>看真实报文：MIME 首部字段（MIME-Version、Content-Type 等）嵌在邮件首部；多部分报文用 <strong>boundary 分隔符</strong>划分 multipart/mixed 各段（正文、附件）。</p>\n<img data-img-id=\"fig-p92-06\" class=\"ds-note-img\" alt=\"图：MIME邮件报文实例——邮件头字段红圈分析\">\n<img data-img-id=\"fig-p92-07\" class=\"ds-note-img\" alt=\"图：MIME多部分报文——boundary与multipart/mixed、base64标注\">\n<p><strong>内容传送编码两种</strong>：<strong>quoted-printable</strong>（少量非 ASCII 字符，编码后大体可读）与 <strong>base64</strong>（任意数据，每 6 bit 映射一个字符，约膨胀三分之一）。</p>\n<img data-img-id=\"fig-p92-08\" class=\"ds-note-img\" alt=\"图：quoted-printable与base64两种内容传送编码对比\">\n<p><strong>五、POP3（读取协议，TCP 110 端口）</strong>：USER/PASS 认证 → LIST 列邮件 → RETR 取回 →（可选）DELE 删除；“下载并保留/下载并删除”两种模式，<strong>取回本地可离线阅读</strong>。<strong>IMAP</strong>：邮件留在服务器端，可直接建文件夹、搜索、先看首部再下载，<span style=\"color:#dc2626\"><strong>多设备状态一致</strong></span>。</p>\n<img data-img-id=\"fig-p92-09\" class=\"ds-note-img\" alt=\"图：POP3命令序列与下载保留模式、IMAP区别\">\n<p>全链路对比：发送侧 SMTP <strong>推</strong>（25）、接收侧 POP3 <strong>拉</strong>（110）——推拉结合。</p>\n<img data-img-id=\"fig-p92-10\" class=\"ds-note-img\" alt=\"图：SMTP与POP3全链路时序对比\">\n<p>多用户场景：每个用户用自己的 UA 与邮件服务器交互收发。</p>\n<img data-img-id=\"fig-p92-11\" class=\"ds-note-img\" alt=\"图：多用户通过邮件服务器收发邮件拓扑\">\n<p><span style=\"color:#7c3aed\"><strong>【例题·三连问】</strong></span>①UA 交邮件给发送方邮件服务器用什么协议？②两台邮件服务器之间呢？③收件人 UA 读取邮件呢？<span style=\"color:#dc2626\"><strong>答案：①SMTP；②SMTP；③POP3 或 IMAP。口诀“发送一路推、最后一步拉”。</strong></span></p>\n<img data-img-id=\"fig-p92-12\" class=\"ds-note-img\" alt=\"图：电子邮件知识体系总结脑图\">\n<p><span style=\"color:#7c3aed\">随堂补充：ASCII 共 128 个字符（7 bit）；Base64 把 3 字节（24 bit）切成 4 个 6 bit 组再映射字符，故约膨胀 33%。</span></p>\n<img data-img-id=\"fig-p92-13\" class=\"ds-note-img\" alt=\"图：ASCII表与Base64编码补充说明\">",
+      "images": [
+        {
+          "imgId": "fig-p92-01",
+          "file": "images/ch06/fig-p92-01.jpg"
+        },
+        {
+          "imgId": "fig-p92-02",
+          "file": "images/ch06/fig-p92-02.jpg"
+        },
+        {
+          "imgId": "fig-p92-03",
+          "file": "images/ch06/fig-p92-03.jpg"
+        },
+        {
+          "imgId": "fig-p92-04",
+          "file": "images/ch06/fig-p92-04.jpg"
+        },
+        {
+          "imgId": "fig-p92-05",
+          "file": "images/ch06/fig-p92-05.jpg"
+        },
+        {
+          "imgId": "fig-p92-06",
+          "file": "images/ch06/fig-p92-06.jpg"
+        },
+        {
+          "imgId": "fig-p92-07",
+          "file": "images/ch06/fig-p92-07.jpg"
+        },
+        {
+          "imgId": "fig-p92-08",
+          "file": "images/ch06/fig-p92-08.jpg"
+        },
+        {
+          "imgId": "fig-p92-09",
+          "file": "images/ch06/fig-p92-09.jpg"
+        },
+        {
+          "imgId": "fig-p92-10",
+          "file": "images/ch06/fig-p92-10.jpg"
+        },
+        {
+          "imgId": "fig-p92-11",
+          "file": "images/ch06/fig-p92-11.jpg"
+        },
+        {
+          "imgId": "fig-p92-12",
+          "file": "images/ch06/fig-p92-12.jpg"
+        },
+        {
+          "imgId": "fig-p92-13",
+          "file": "images/ch06/fig-p92-13.jpg"
+        }
+      ]
+    },
+    {
+      "tree": [
+        "第6章 应用层",
+        "6.5 万维网与HTTP",
+        "6.5.1 万维网WWW"
+      ],
+      "noteHtml": "<p><span style=\"font-size:20px;color:#7c3aed\"><strong>P93 6.5.1 万维网WWW（王道 6.5）</strong></span></p>\n<p>应用层收官：万维网 WWW 与 HTTP。本章进度 DNS → FTP → 电子邮件 → WWW。</p>\n<img data-img-id=\"fig-p93-01\" class=\"ds-note-img\" alt=\"图：6.5节开篇——本节讲万维网与HTTP\">\n<p><strong>一、浏览器与 URL 引入</strong>：浏览器是万维网的客户程序；网上每个资源用 <strong>URL（统一资源定位符）</strong>标识。先认识浏览器界面的各组成部分。</p>\n<img data-img-id=\"fig-p93-02\" class=\"ds-note-img\" alt=\"图：浏览器组成与URL引入——以www.cskaoyan.com为例\">\n<p>实机演示：地址栏输入 URL 即可访问对应资源（KFC 官网示例）。</p>\n<img data-img-id=\"fig-p93-03\" class=\"ds-note-img\" alt=\"图：KFC官网浏览器演示——地址栏URL高亮\">\n<p><strong>二、什么是万维网</strong>：<mark><strong>万维网 WWW 是一个大规模的、联机式的信息储藏场所，是分布式的超媒体系统</strong></mark>，以浏览器/服务器方式（B/S，本质仍是 C/S）工作。</p>\n<img data-img-id=\"fig-p93-04\" class=\"ds-note-img\" alt=\"图：万维网定义与浏览器-服务器架构\">\n<p><strong>三、URL 格式</strong>：拆解 http://www.cskaoyan.com:80/index.html——协议 http、主机域名、端口 80（默认可省略）、路径 /index.html。一般形式：&lt;协议&gt;://&lt;主机&gt;:&lt;端口&gt;/&lt;路径&gt;。</p>\n<img data-img-id=\"fig-p93-05\" class=\"ds-note-img\" alt=\"图：URL格式逐段拆解与一般形式\">\n<p>对照实例：地址栏真实 URL 与课件一般格式逐段对应（协议/域名/路径）。</p>\n<img data-img-id=\"fig-p93-06\" class=\"ds-note-img\" alt=\"图：KFC官网URL与课件格式逐段对照\">\n<p><strong>四、超链接</strong>：指向其他 Web 资源的链接（HTML 中用标记描述），点击后浏览器向资源所在服务器发起请求。</p>\n<img data-img-id=\"fig-p93-07\" class=\"ds-note-img\" alt=\"图：超链接定义与HTML示例\">\n<p><strong>五、万维网三要素</strong>：<strong>URL（定位）、HTTP（传输）、HTML（展示）</strong>——“URL 找资源、HTTP 传资源、HTML 显资源”。</p>\n<img data-img-id=\"fig-p93-08\" class=\"ds-note-img\" alt=\"图：万维网三要素URL/HTTP/HTML关系图\">\n<p><strong>六、访问网页的完整流程</strong>：浏览器与 Web 服务器经 TCP（默认 80 端口）交互 HTTP 请求与响应。</p>\n<img data-img-id=\"fig-p93-09\" class=\"ds-note-img\" alt=\"图：浏览器-Web服务器交互拓扑\">\n<p>关键前置：先经 <strong>DNS 解析</strong>得到服务器 IP，<strong>再</strong>建立 TCP 连接——“先解析、后连接”。</p>\n<img data-img-id=\"fig-p93-10\" class=\"ds-note-img\" alt=\"图：DNS解析参与——先解析后连接\">\n<p><span style=\"color:#dc2626\"><strong>五步流程必背：①DNS 解析 → ②建立 TCP 连接 → ③发送 HTTP 请求 → ④接收 HTTP 响应 → ⑤浏览器渲染页面。</strong></span></p>\n<img data-img-id=\"fig-p93-11\" class=\"ds-note-img\" alt=\"图：完整网页访问五步流程总图\">\n<p><strong>七、HTTP</strong>：超文本传输协议，传输超文本文档，<strong>基于 TCP、默认端口 80</strong>。</p>\n<img data-img-id=\"fig-p93-12\" class=\"ds-note-img\" alt=\"图：HTTP引入——定义与URL知识关联\">\n<p>定义细化：<strong>面向事务</strong>（一次请求-响应作为一个事务）、<strong>无状态</strong>（服务器不记忆客户）。</p>\n<img data-img-id=\"fig-p93-13\" class=\"ds-note-img\" alt=\"图：HTTP概念——面向事务、无记忆\">\n<p>HTTP 特点四连：<strong>基于 TCP 80 端口、面向事务、无状态、无连接</strong>（交换 HTTP 报文前不需先建立连接，连接管理交给 TCP）。</p>\n<img data-img-id=\"fig-p93-14\" class=\"ds-note-img\" alt=\"图：HTTP特点列表——TCP80/事务/无状态/无连接\">\n<p><strong>八、HTML</strong>：超文本标记语言，用标记描述页面结构与超链接，浏览器解析后渲染；“超文本”即包含指向其他文档之链接的文本。完整板书见下两帧。</p>\n<img data-img-id=\"fig-p93-15\" class=\"ds-note-img\" alt=\"图：HTML超文本讲解板书（上）\">\n<img data-img-id=\"fig-p93-16\" class=\"ds-note-img\" alt=\"图：HTML超文本讲解板书（下）\">\n<p><span style=\"color:#7c3aed\">总结：WWW 以 URL/HTTP/HTML 三件套支撑起“输入网址 → 看到网页”，HTTP 报文细节下节展开。</span></p>\n<img data-img-id=\"fig-p93-17\" class=\"ds-note-img\" alt=\"图：万维网WWW知识总结思维导图\">",
+      "images": [
+        {
+          "imgId": "fig-p93-01",
+          "file": "images/ch06/fig-p93-01.jpg"
+        },
+        {
+          "imgId": "fig-p93-02",
+          "file": "images/ch06/fig-p93-02.jpg"
+        },
+        {
+          "imgId": "fig-p93-03",
+          "file": "images/ch06/fig-p93-03.jpg"
+        },
+        {
+          "imgId": "fig-p93-04",
+          "file": "images/ch06/fig-p93-04.jpg"
+        },
+        {
+          "imgId": "fig-p93-05",
+          "file": "images/ch06/fig-p93-05.jpg"
+        },
+        {
+          "imgId": "fig-p93-06",
+          "file": "images/ch06/fig-p93-06.jpg"
+        },
+        {
+          "imgId": "fig-p93-07",
+          "file": "images/ch06/fig-p93-07.jpg"
+        },
+        {
+          "imgId": "fig-p93-08",
+          "file": "images/ch06/fig-p93-08.jpg"
+        },
+        {
+          "imgId": "fig-p93-09",
+          "file": "images/ch06/fig-p93-09.jpg"
+        },
+        {
+          "imgId": "fig-p93-10",
+          "file": "images/ch06/fig-p93-10.jpg"
+        },
+        {
+          "imgId": "fig-p93-11",
+          "file": "images/ch06/fig-p93-11.jpg"
+        },
+        {
+          "imgId": "fig-p93-12",
+          "file": "images/ch06/fig-p93-12.jpg"
+        },
+        {
+          "imgId": "fig-p93-13",
+          "file": "images/ch06/fig-p93-13.jpg"
+        },
+        {
+          "imgId": "fig-p93-14",
+          "file": "images/ch06/fig-p93-14.jpg"
+        },
+        {
+          "imgId": "fig-p93-15",
+          "file": "images/ch06/fig-p93-15.jpg"
+        },
+        {
+          "imgId": "fig-p93-16",
+          "file": "images/ch06/fig-p93-16.jpg"
+        },
+        {
+          "imgId": "fig-p93-17",
+          "file": "images/ch06/fig-p93-17.jpg"
+        }
+      ]
+    },
+    {
+      "tree": [
+        "第6章 应用层",
+        "6.5 万维网与HTTP",
+        "6.5.2 超文本传输协议HTTP"
+      ],
+      "noteHtml": "<p><span style=\"font-size:20px;color:#7c3aed\"><strong>P94 6.5.2 超文本传输协议HTTP（王道 6.5）</strong></span></p>\n<p>HTTP 知识框架：工作流程、报文结构、请求方法、Cookie。</p>\n<img data-img-id=\"fig-p94-01\" class=\"ds-note-img\" alt=\"图：HTTP知识框架导图\">\n<p><strong>一、工作流程</strong>：输入 URL → DNS 解析得 IP → 与服务器 80 端口建立 TCP 连接 → 交互 HTTP 请求/响应 → 断开连接。</p>\n<img data-img-id=\"fig-p94-02\" class=\"ds-note-img\" alt=\"图：HTTP工作流程架构图\">\n<p><span style=\"color:#7c3aed\"><strong>【例题·经典大题】</strong></span>浏览器地址栏输入 http://www.abc.com/index.htm 并回车，简述到页面完整显示的全过程（按五层体系结构串联）。</p>\n<ul>\n<li>① 应用层-DNS：本机缓存未命中 → 问本地域名服务器（主机到本地递归），本地经根 → 顶级 → 权限迭代查得 www.abc.com 的 IP。</li>\n<li>② 传输层-TCP：与服务器 80 端口完成三次握手建立连接。</li>\n<li>③ 网络层：HTTP 报文装入 IP 分组，路由器按路由表选路转发；ARP 解析下一跳（网关）MAC 地址。</li>\n<li>④ 数据链路层/物理层：分组封装成帧、变为比特流经介质传输，途中交换机/路由器逐层解封转发。</li>\n<li>⑤ 应用层-HTTP 与渲染：发 GET /index.htm 请求；服务器回 200 OK，实体主体携带 HTML；浏览器解析后再取图片/CSS/JS 等对象，到齐后渲染显示；最后四次挥手释放连接（非持久连接）。</li>\n</ul>\n<p><span style=\"color:#dc2626\"><strong>答案要点：DNS 解析 → 三次握手 → ARP/IP 选路 → 封装成帧与比特流传输 → HTTP 请求/响应 → 解析渲染 → 四次挥手。五层闭环、按层作答。</strong></span></p>\n<p><strong>二、报文框架</strong>：HTTP 报文是 ASCII 文本，各部分以 <strong>CRLF</strong>（回车换行）分隔；首部与实体主体之间用<strong>空行</strong>隔开。</p>\n<img data-img-id=\"fig-p94-03\" class=\"ds-note-img\" alt=\"图：HTTP报文框架板书——CRLF与请求/响应报文整体框架\">\n<p><strong>三、请求报文</strong>三部分：<strong>请求行</strong>（方法 ＋ URL ＋ 版本，如 GET /index.html HTTP/1.1）、<strong>首部行</strong>（“字段名:值”一行一个）、<strong>实体主体</strong>（GET 一般为空）。</p>\n<img data-img-id=\"fig-p94-04\" class=\"ds-note-img\" alt=\"图：HTTP请求报文结构——请求行/首部行/实体主体\">\n<p><strong>四、八种请求方法</strong>（表 6.1）：<strong>GET</strong> 读取资源、<strong>HEAD</strong> 只取响应首部、<strong>POST</strong> 提交数据、<strong>PUT</strong> 上传替换、<strong>DELETE</strong> 删除资源、CONNECT 代理隧道、OPTIONS 询问支持的方法、TRACE 回环跟踪。<span style=\"color:#dc2626\"><strong>重点：GET 与 POST。</strong></span></p>\n<img data-img-id=\"fig-p94-05\" class=\"ds-note-img\" alt=\"图：表6.1 HTTP八种请求方法\">\n<p><strong>GET 与 POST 对比</strong>：<span style=\"color:#dc2626\"><strong>GET 无实体主体、参数附在 URL 中；POST 带实体主体</strong></span>（表单、图片上传的数据放主体里）。</p>\n<img data-img-id=\"fig-p94-06\" class=\"ds-note-img\" alt=\"图：GET与POST报文对比\">\n<p>实体主体规则：GET 无主体、POST 有主体——上传图片等场景必须用 POST。</p>\n<img data-img-id=\"fig-p94-07\" class=\"ds-note-img\" alt=\"图：实体主体讲解——GET无主体、POST有主体\">\n<p>404 实验：访问不存在的 URL，返回 <strong>404 Not Found</strong>。</p>\n<img data-img-id=\"fig-p94-08\" class=\"ds-note-img\" alt=\"图：404 NotFound实验演示\">\n<p><strong>五、响应报文</strong>三部分：<strong>状态行</strong>（版本 ＋ 状态码 ＋ 短语，如 HTTP/1.1 200 OK）＋ 首部行 ＋ 实体主体。状态码五类：1xx 信息、<strong>2xx 成功（200 OK）</strong>、<strong>3xx 重定向（301 永久 / 302 临时）</strong>、<strong>4xx 客户端错误（404）</strong>、5xx 服务器错误（500）。</p>\n<img data-img-id=\"fig-p94-09\" class=\"ds-note-img\" alt=\"图：HTTP响应报文结构——状态行/首部行/实体主体\">\n<p>404 页面首部分析：Host、Connection 等字段逐行解读，连接管理与 Cookie 关联。</p>\n<img data-img-id=\"fig-p94-10\" class=\"ds-note-img\" alt=\"图：404演示首部行逐字段红圈分析\">\n<p>请求/响应报文对比：请求行对应状态行，首部行与实体主体结构对称。</p>\n<img data-img-id=\"fig-p94-11\" class=\"ds-note-img\" alt=\"图：HTTP请求/响应报文完整对比\">\n<p><strong>六、Cookie 弥补无状态</strong>：首次访问无 Cookie → 服务器响应首部 <strong>Set-Cookie</strong> 发放唯一标识 → 浏览器存储 → 之后每次请求自动携带 <strong>Cookie</strong> 首部，服务器据此识别用户（登录态、购物车）。</p>\n<img data-img-id=\"fig-p94-12\" class=\"ds-note-img\" alt=\"图：Cookie工作原理流程——Set-Cookie发放与回传\">\n<p><span style=\"color:#7c3aed\"><strong>【例题·真题思路 2014】</strong></span>服务器通过响应报文哪个字段给用户发放 Cookie？浏览器之后访问该网站时 Cookie 放在哪？<span style=\"color:#dc2626\"><strong>答案：响应首部 Set-Cookie 字段发放；之后每次请求在请求首部 Cookie 字段中带回，服务器据此识别同一用户。</strong></span></p>\n<img data-img-id=\"fig-p94-13\" class=\"ds-note-img\" alt=\"图：2014真题——响应报文与Cookie/set-Cookie字段解析\">\n<p>GET 方法板书：GET ＝ 获取指定资源，参数写在 URL 中。</p>\n<img data-img-id=\"fig-p94-14\" class=\"ds-note-img\" alt=\"图：GET方法板书——获取指定资源\">\n<p>完整报文示例：含 Host、Connection: keep-alive（持久连接）与 Cookie 首部的请求报文。</p>\n<img data-img-id=\"fig-p94-15\" class=\"ds-note-img\" alt=\"图：含Cookie与keep-alive首部的完整报文板书\">\n<p>请求方法速记：GET 获取指定资源；其余按“只看头 HEAD、交数据 POST、传文件 PUT、删资源 DELETE”记。</p>\n<img data-img-id=\"fig-p94-16\" class=\"ds-note-img\" alt=\"图：HTTP请求方法知识点总结导图\">\n<p>首部字段与 GET/POST 区别汇总板书。</p>\n<img data-img-id=\"fig-p94-17\" class=\"ds-note-img\" alt=\"图：HTTP首部字段详解与GET/POST区别板书\">\n<p><span style=\"color:#7c3aed\">全课总结：工作流程 → 报文三段式 → 方法（GET vs POST）→ 状态码 → Cookie。至此第 6 章应用层完结，DNS、FTP、电子邮件、WWW/HTTP 四大应用一网打尽。</span></p>\n<img data-img-id=\"fig-p94-18\" class=\"ds-note-img\" alt=\"图：本课知识点总结导图（彩色复习版）\">",
+      "images": [
+        {
+          "imgId": "fig-p94-01",
+          "file": "images/ch06/fig-p94-01.jpg"
+        },
+        {
+          "imgId": "fig-p94-02",
+          "file": "images/ch06/fig-p94-02.jpg"
+        },
+        {
+          "imgId": "fig-p94-03",
+          "file": "images/ch06/fig-p94-03.jpg"
+        },
+        {
+          "imgId": "fig-p94-04",
+          "file": "images/ch06/fig-p94-04.jpg"
+        },
+        {
+          "imgId": "fig-p94-05",
+          "file": "images/ch06/fig-p94-05.jpg"
+        },
+        {
+          "imgId": "fig-p94-06",
+          "file": "images/ch06/fig-p94-06.jpg"
+        },
+        {
+          "imgId": "fig-p94-07",
+          "file": "images/ch06/fig-p94-07.jpg"
+        },
+        {
+          "imgId": "fig-p94-08",
+          "file": "images/ch06/fig-p94-08.jpg"
+        },
+        {
+          "imgId": "fig-p94-09",
+          "file": "images/ch06/fig-p94-09.jpg"
+        },
+        {
+          "imgId": "fig-p94-10",
+          "file": "images/ch06/fig-p94-10.jpg"
+        },
+        {
+          "imgId": "fig-p94-11",
+          "file": "images/ch06/fig-p94-11.jpg"
+        },
+        {
+          "imgId": "fig-p94-12",
+          "file": "images/ch06/fig-p94-12.jpg"
+        },
+        {
+          "imgId": "fig-p94-13",
+          "file": "images/ch06/fig-p94-13.jpg"
+        },
+        {
+          "imgId": "fig-p94-14",
+          "file": "images/ch06/fig-p94-14.jpg"
+        },
+        {
+          "imgId": "fig-p94-15",
+          "file": "images/ch06/fig-p94-15.jpg"
+        },
+        {
+          "imgId": "fig-p94-16",
+          "file": "images/ch06/fig-p94-16.jpg"
+        },
+        {
+          "imgId": "fig-p94-17",
+          "file": "images/ch06/fig-p94-17.jpg"
+        },
+        {
+          "imgId": "fig-p94-18",
+          "file": "images/ch06/fig-p94-18.jpg"
+        }
+      ]
     }
   ]
 }

@@ -1,0 +1,69 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="430" viewBox="0 0 960 430" font-family="'Microsoft YaHei', 'PingFang SC', sans-serif">
+  <defs>
+    <marker id="ar205" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#0f766e"/>
+    </marker>
+  </defs>
+  <text x="480" y="34" text-anchor="middle" font-size="20" font-weight="bold" fill="#0f766e">四种基本调制（带通调制）方式</text>
+
+  <text x="152" y="72" text-anchor="middle" font-size="15" font-weight="bold" fill="#0f766e">ASK 幅移键控</text>
+  <text x="76" y="100" text-anchor="middle" font-size="14" fill="#1f2328">1</text>
+  <text x="127" y="100" text-anchor="middle" font-size="14" fill="#1f2328">1</text>
+  <text x="178" y="100" text-anchor="middle" font-size="14" fill="#1f2328">0</text>
+  <text x="229" y="100" text-anchor="middle" font-size="14" fill="#1f2328">1</text>
+  <line x1="101" y1="112" x2="101" y2="232" stroke="#cbd5e1" stroke-width="1" stroke-dasharray="4 4"/>
+  <line x1="152" y1="112" x2="152" y2="232" stroke="#cbd5e1" stroke-width="1" stroke-dasharray="4 4"/>
+  <line x1="203" y1="112" x2="203" y2="232" stroke="#cbd5e1" stroke-width="1" stroke-dasharray="4 4"/>
+  <path d="M 50 175 q 6.4 -45 12.75 0 t 12.75 0 t 12.75 0 t 12.75 0" fill="none" stroke="#0f766e" stroke-width="2"/>
+  <line x1="101" y1="175" x2="152" y2="175" stroke="#0f766e" stroke-width="2"/>
+  <path d="M 152 175 q 6.4 -45 12.75 0 t 12.75 0 t 12.75 0 t 12.75 0" fill="none" stroke="#0f766e" stroke-width="2"/>
+  <line x1="203" y1="175" x2="254" y2="175" stroke="#0f766e" stroke-width="2"/>
+  <text x="152" y="262" text-anchor="middle" font-size="13" fill="#64748b">有载波 = 1，无载波 = 0</text>
+  <text x="152" y="282" text-anchor="middle" font-size="13" fill="#64748b">受噪声影响大，性能差</text>
+
+  <text x="377" y="72" text-anchor="middle" font-size="15" font-weight="bold" fill="#0f766e">FSK 频移键控</text>
+  <text x="301" y="100" text-anchor="middle" font-size="14" fill="#1f2328">1</text>
+  <text x="352" y="100" text-anchor="middle" font-size="14" fill="#1f2328">0</text>
+  <text x="403" y="100" text-anchor="middle" font-size="14" fill="#1f2328">1</text>
+  <text x="454" y="100" text-anchor="middle" font-size="14" fill="#1f2328">0</text>
+  <line x1="326" y1="112" x2="326" y2="232" stroke="#cbd5e1" stroke-width="1" stroke-dasharray="4 4"/>
+  <line x1="377" y1="112" x2="377" y2="232" stroke="#cbd5e1" stroke-width="1" stroke-dasharray="4 4"/>
+  <line x1="428" y1="112" x2="428" y2="232" stroke="#cbd5e1" stroke-width="1" stroke-dasharray="4 4"/>
+  <path d="M 275 175 q 3.2 -40 6.4 0 t 6.4 0 t 6.4 0 t 6.4 0 t 6.4 0 t 6.4 0 t 6.4 0 t 6.4 0" fill="none" stroke="#0f766e" stroke-width="2"/>
+  <path d="M 326 175 q 6.4 -40 12.75 0 t 12.75 0" fill="none" stroke="#0f766e" stroke-width="2"/>
+  <path d="M 377 175 q 3.2 -40 6.4 0 t 6.4 0 t 6.4 0 t 6.4 0 t 6.4 0 t 6.4 0 t 6.4 0 t 6.4 0" fill="none" stroke="#0f766e" stroke-width="2"/>
+  <path d="M 428 175 q 6.4 -40 12.75 0 t 12.75 0" fill="none" stroke="#0f766e" stroke-width="2"/>
+  <text x="377" y="262" text-anchor="middle" font-size="13" fill="#64748b">频率密 = 1，频率疏 = 0</text>
+  <text x="377" y="282" text-anchor="middle" font-size="13" fill="#64748b">实现简单，占用较宽频带</text>
+
+  <text x="602" y="72" text-anchor="middle" font-size="15" font-weight="bold" fill="#0f766e">PSK 相移键控</text>
+  <text x="526" y="100" text-anchor="middle" font-size="14" fill="#1f2328">1</text>
+  <text x="577" y="100" text-anchor="middle" font-size="14" fill="#1f2328">0</text>
+  <text x="628" y="100" text-anchor="middle" font-size="14" fill="#1f2328">1</text>
+  <text x="679" y="100" text-anchor="middle" font-size="14" fill="#1f2328">1</text>
+  <path d="M 500 175 q 6.4 -45 12.75 0 t 12.75 0 t 12.75 0 t 12.75 0" fill="none" stroke="#0f766e" stroke-width="2"/>
+  <path d="M 551 175 q 6.4 45 12.75 0 t 12.75 0 t 12.75 0 t 12.75 0" fill="none" stroke="#0f766e" stroke-width="2"/>
+  <path d="M 602 175 q 6.4 -45 12.75 0 t 12.75 0 t 12.75 0 t 12.75 0" fill="none" stroke="#0f766e" stroke-width="2"/>
+  <path d="M 653 175 q 6.4 -45 12.75 0 t 12.75 0 t 12.75 0 t 12.75 0" fill="none" stroke="#0f766e" stroke-width="2"/>
+  <line x1="551" y1="112" x2="551" y2="232" stroke="#dc2626" stroke-width="1.5" stroke-dasharray="4 4"/>
+  <line x1="602" y1="112" x2="602" y2="232" stroke="#dc2626" stroke-width="1.5" stroke-dasharray="4 4"/>
+  <text x="576" y="118" text-anchor="middle" font-size="13" font-weight="bold" fill="#dc2626">相位突变 180°</text>
+  <text x="602" y="262" text-anchor="middle" font-size="13" fill="#64748b">0 相 = 0，π 相 = 1</text>
+  <text x="602" y="282" text-anchor="middle" font-size="13" fill="#64748b">抗噪声性能较好</text>
+
+  <text x="827" y="72" text-anchor="middle" font-size="15" font-weight="bold" fill="#0f766e">QAM 正交幅相调制</text>
+  <line x1="747" y1="175" x2="907" y2="175" stroke="#64748b" stroke-width="1.5" marker-end="url(#ar205)"/>
+  <line x1="827" y1="250" x2="827" y2="100" stroke="#64748b" stroke-width="1.5" marker-end="url(#ar205)"/>
+  <text x="914" y="180" font-size="13" fill="#64748b">I</text>
+  <text x="834" y="102" font-size="13" fill="#64748b">Q</text>
+  <circle cx="764" cy="112" r="3.5" fill="#7c3aed"/><circle cx="806" cy="112" r="3.5" fill="#7c3aed"/><circle cx="848" cy="112" r="3.5" fill="#7c3aed"/><circle cx="890" cy="112" r="3.5" fill="#7c3aed"/>
+  <circle cx="764" cy="154" r="3.5" fill="#7c3aed"/><circle cx="806" cy="154" r="3.5" fill="#7c3aed"/><circle cx="848" cy="154" r="3.5" fill="#7c3aed"/><circle cx="890" cy="154" r="3.5" fill="#7c3aed"/>
+  <circle cx="764" cy="196" r="3.5" fill="#7c3aed"/><circle cx="806" cy="196" r="3.5" fill="#7c3aed"/><circle cx="848" cy="196" r="3.5" fill="#7c3aed"/><circle cx="890" cy="196" r="3.5" fill="#7c3aed"/>
+  <circle cx="764" cy="238" r="3.5" fill="#7c3aed"/><circle cx="806" cy="238" r="3.5" fill="#7c3aed"/><circle cx="848" cy="238" r="3.5" fill="#7c3aed"/><circle cx="890" cy="238" r="3.5" fill="#7c3aed"/>
+  <text x="827" y="268" text-anchor="middle" font-size="13" fill="#64748b">16-QAM 星座图（4×4）</text>
+  <text x="827" y="288" text-anchor="middle" font-size="13" fill="#7c3aed">幅相结合：每码元 4 bit</text>
+
+  <rect x="40" y="320" width="880" height="86" rx="8" fill="#f8fafc" stroke="#0f766e" stroke-width="2"/>
+  <text x="480" y="350" text-anchor="middle" font-size="15" fill="#1f2328">基本调制 ASK / FSK / PSK：一个码元只有 2 种状态，只能表示 1 bit（0 或 1）</text>
+  <text x="480" y="384" text-anchor="middle" font-size="15" fill="#7c3aed">QAM = ASK 与 PSK 相结合：一个码元多状态 → 相同码元速率下信息传输速率更高（常考）</text>
+</svg>

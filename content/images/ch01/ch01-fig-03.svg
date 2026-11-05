@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="470" viewBox="0 0 960 470" font-family="'Microsoft YaHei', 'PingFang SC', sans-serif">
+  <defs>
+    <marker id="ar103" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#0f766e"/>
+    </marker>
+  </defs>
+  <text x="480" y="34" text-anchor="middle" font-size="20" font-weight="bold" fill="#0f766e">时延的四个组成分量</text>
+
+  <rect x="40" y="84" width="310" height="50" rx="8" fill="#ffffff" stroke="#0f766e" stroke-width="2"/>
+  <text x="195" y="106" text-anchor="middle" font-size="15"><tspan fill="#dc2626" font-weight="bold">发送时延</tspan><tspan fill="#1f2328"> = 分组长度 / 发送速率</tspan></text>
+  <text x="195" y="126" text-anchor="middle" font-size="13" fill="#64748b">发生在网卡（发送器）：分组逐比特推入信道</text>
+  <line x1="212" y1="136" x2="224" y2="188" stroke="#0f766e" stroke-width="2" marker-end="url(#ar103)"/>
+
+  <rect x="610" y="84" width="310" height="50" rx="8" fill="#ffffff" stroke="#0f766e" stroke-width="2"/>
+  <text x="765" y="106" text-anchor="middle" font-size="15"><tspan fill="#dc2626" font-weight="bold">传播时延</tspan><tspan fill="#1f2328"> = 信道长度 / 传播速率</tspan></text>
+  <text x="765" y="126" text-anchor="middle" font-size="13" fill="#64748b">发生在链路上：比特随电磁波在信道中传播</text>
+  <line x1="700" y1="136" x2="662" y2="204" stroke="#0f766e" stroke-width="2" marker-end="url(#ar103)"/>
+
+  <rect x="60" y="180" width="150" height="64" rx="8" fill="#f8fafc" stroke="#0f766e" stroke-width="2"/>
+  <text x="135" y="208" text-anchor="middle" font-size="16" font-weight="bold" fill="#1f2328">源主机</text>
+  <text x="135" y="230" text-anchor="middle" font-size="13" fill="#64748b">发送分组</text>
+  <rect x="216" y="196" width="30" height="34" rx="4" fill="#ffffff" stroke="#0f766e" stroke-width="2"/>
+  <text x="231" y="217" text-anchor="middle" font-size="12" fill="#1f2328">网卡</text>
+  <line x1="248" y1="212" x2="396" y2="212" stroke="#0f766e" stroke-width="2"/>
+  <text x="322" y="170" text-anchor="middle" font-size="13" fill="#64748b">链路 1</text>
+
+  <rect x="400" y="150" width="180" height="140" rx="8" fill="#f8fafc" stroke="#0f766e" stroke-width="2"/>
+  <text x="490" y="176" text-anchor="middle" font-size="16" font-weight="bold" fill="#1f2328">路由器</text>
+  <rect x="418" y="190" width="22" height="18" fill="#ffffff" stroke="#0f766e" stroke-width="1.5"/>
+  <rect x="444" y="190" width="22" height="18" fill="#ffffff" stroke="#0f766e" stroke-width="1.5"/>
+  <rect x="470" y="190" width="22" height="18" fill="#ffffff" stroke="#0f766e" stroke-width="1.5"/>
+  <text x="457" y="234" text-anchor="middle" font-size="12" fill="#64748b">输入队列</text>
+  <line x1="498" y1="199" x2="518" y2="199" stroke="#0f766e" stroke-width="2" marker-end="url(#ar103)"/>
+  <text x="508" y="190" text-anchor="middle" font-size="12" fill="#64748b">交换</text>
+  <rect x="524" y="190" width="22" height="18" fill="#ffffff" stroke="#0f766e" stroke-width="1.5"/>
+  <rect x="550" y="190" width="22" height="18" fill="#ffffff" stroke="#0f766e" stroke-width="1.5"/>
+  <text x="560" y="234" text-anchor="middle" font-size="12" fill="#64748b">输出队列</text>
+  <text x="490" y="268" text-anchor="middle" font-size="13" fill="#7c3aed">处理 + 排队</text>
+
+  <line x1="584" y1="212" x2="766" y2="212" stroke="#0f766e" stroke-width="2"/>
+  <text x="675" y="170" text-anchor="middle" font-size="13" fill="#64748b">链路 2</text>
+  <rect x="770" y="180" width="150" height="64" rx="8" fill="#f8fafc" stroke="#0f766e" stroke-width="2"/>
+  <text x="845" y="208" text-anchor="middle" font-size="16" font-weight="bold" fill="#1f2328">目的主机</text>
+  <text x="845" y="230" text-anchor="middle" font-size="13" fill="#64748b">接收分组</text>
+
+  <rect x="60" y="318" width="230" height="56" rx="8" fill="#ffffff" stroke="#0f766e" stroke-width="2"/>
+  <text x="175" y="340" text-anchor="middle" font-size="15" font-weight="bold" fill="#dc2626">处理时延</text>
+  <text x="175" y="362" text-anchor="middle" font-size="13" fill="#64748b">校验首部、查表、选路（路由器内）</text>
+  <line x1="290" y1="330" x2="428" y2="294" stroke="#0f766e" stroke-width="2" marker-end="url(#ar103)"/>
+
+  <rect x="670" y="318" width="230" height="56" rx="8" fill="#ffffff" stroke="#0f766e" stroke-width="2"/>
+  <text x="785" y="340" text-anchor="middle" font-size="15" font-weight="bold" fill="#dc2626">排队时延</text>
+  <text x="785" y="362" text-anchor="middle" font-size="13" fill="#64748b">在输入/输出队列中等待（路由器内）</text>
+  <line x1="668" y1="330" x2="534" y2="294" stroke="#0f766e" stroke-width="2" marker-end="url(#ar103)"/>
+
+  <rect x="160" y="398" width="640" height="40" rx="8" fill="#f8fafc" stroke="#0f766e" stroke-width="2"/>
+  <text x="480" y="424" text-anchor="middle" font-size="16" font-weight="bold" fill="#7c3aed">总时延 = 发送时延 + 传播时延 + 处理时延 + 排队时延</text>
+  <text x="480" y="460" text-anchor="middle" font-size="14" fill="#dc2626">易错：提高带宽（发送速率）减小的是发送时延，不是传播时延！</text>
+</svg>

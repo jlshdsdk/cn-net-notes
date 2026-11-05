@@ -14,25 +14,50 @@ import { readFileSync, writeFileSync, existsSync } from 'node:fs';
 import { resolve, dirname, basename } from 'node:path';
 import { randomUUID } from 'node:crypto';
 
+/** 图片文件定位：images/xx 前缀优先找 content 下，找不到找外置关键帧目录（ds 站同款模式：图不入库） */
+const IMG_ROOT = resolve('..', '_assets', 'cn_keyframes_final');
+function findImage(baseDir, file) {
+  const inContent = resolve(baseDir, file);
+  if (existsSync(inContent)) return inContent;
+  if (file.startsWith('images/')) {
+    const ext = resolve(IMG_ROOT, file.slice('images/'.length));
+    if (existsSync(ext)) return ext;
+  }
+  return null;
+}
+
 const SUPABASE_URL = 'https://qvemohfojzawpnleyjsb.supabase.co';
 const ANON_KEY = 'sb_publishable_VFalDAdNoIgd19oxlZ8wlw_AM-rv7Uq'; // 公开 publishable key（与 ds 站共用项目）
 
-const credPath = process.argv[2];
+const credPath = process.argv[2]; // 有会话文件（../_assets/cn_session.json）时此参数可为 "-" 占位
 const cmd = process.argv[3];
 const rest = process.argv.slice(4);
-if (!credPath || !cmd) {
-  console.error('用法: node scripts/seed.mjs <cred.json> inspect|apply [...]\napply 追加 --force 可覆盖已存在内容');
+if (!cmd) {
+  console.error('用法: node scripts/seed.mjs [-|cred.json] inspect|apply content/chNN.json [--force]\n认证优先读 ../_assets/cn_session.json（已登录会话），否则用 cred.json 邮箱密码');
   process.exit(2);
 }
 const force = rest.includes('--force');
 const positional = rest.filter(a => a !== '--force');
-const cred = JSON.parse(readFileSync(credPath, 'utf8'));
 
 const sb = createClient(SUPABASE_URL, ANON_KEY, { auth: { persistSession: false } });
-const { data: sess, error: loginErr } = await sb.auth.signInWithPassword({
-  email: cred.email, password: cred.password,
-});
-if (loginErr) { console.error('登录失败: ' + loginErr.message); process.exit(1); }
+
+// 认证：优先用主人已登录会话（仓库外 _assets/cn_session.json 的 refresh_token，setSession 自动续期），
+// 没有会话文件再回退 cred.json 邮箱密码。cn_session.json 格式 {"email":"...","refresh_token":"..."}
+const SESSION_PATH = resolve('..', '_assets', 'cn_session.json');
+let sess, loginErr2 = null;
+if (existsSync(SESSION_PATH)) {
+  const saved = JSON.parse(readFileSync(SESSION_PATH, 'utf8'));
+  const { data, error } = await sb.auth.setSession({ refresh_token: saved.refresh_token });
+  if (error || !data.session) { console.error('会话恢复失败: ' + (error?.message ?? '无会话')); process.exit(1); }
+  sess = data.session;
+  console.log(`已用保存的会话登录 ${saved.email ?? sess.user.email}`);
+} else {
+  if (!credPath) { console.error('缺少凭据：请提供 _assets/cn_session.json 或 cred.json'); process.exit(2); }
+  const cred = JSON.parse(readFileSync(credPath, 'utf8'));
+  const { data, error } = await sb.auth.signInWithPassword({ email: cred.email, password: cred.password });
+  if (error) { console.error('登录失败: ' + error.message); process.exit(1); }
+  sess = data.session;
+}
 const uid = sess.user.id;
 console.log(`已登录 user_id=${uid}`);
 
@@ -138,7 +163,7 @@ if (cmd === 'apply') {
         }
       }
       for (const im of imgList) {
-        if (!im.file || !existsSync(resolve(baseDir, im.file))) {
+        if (!im.file || !findImage(baseDir, im.file)) {
           console.error(`「${label}」图片文件不存在: ${im.file}`);
           process.exit(1);
         }
@@ -152,7 +177,8 @@ if (cmd === 'apply') {
       // 截图上传（只在写笔记时进行，幂等 upsert）
       if (needNote && imgList.length) {
         for (const im of imgList) {
-          const buf = readFileSync(resolve(baseDir, im.file));
+          const real = findImage(baseDir, im.file);
+          const buf = readFileSync(real);
           const ext = basename(im.file).toLowerCase();
           const contentType = ext.endsWith('.png') ? 'image/png' : ext.endsWith('.svg') ? 'image/svg+xml' : 'image/jpeg';
           const { error: se } = await sb.storage.from('cn-images')
