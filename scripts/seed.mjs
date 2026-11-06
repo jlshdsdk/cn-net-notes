@@ -39,27 +39,46 @@ if (!cmd) {
 const force = rest.includes('--force');
 const positional = rest.filter(a => a !== '--force');
 
-const sb = createClient(SUPABASE_URL, ANON_KEY, { auth: { persistSession: false } });
-
-// 认证：优先用主人已登录会话（仓库外 _assets/cn_session.json 的 refresh_token，setSession 自动续期），
-// 没有会话文件再回退 cred.json 邮箱密码。cn_session.json 格式 {"email":"...","refresh_token":"..."}
+// 认证优先级：①短期 access_token（_assets/cn_access.json，从登录页面收割，1小时有效无轮换竞态）
+// ②refresh_token 会话（_assets/cn_session.json）③cred.json 邮箱密码
+const ACCESS_PATH = resolve('..', '_assets', 'cn_access.json');
 const SESSION_PATH = resolve('..', '_assets', 'cn_session.json');
-let sess, loginErr2 = null;
-if (existsSync(SESSION_PATH)) {
-  const saved = JSON.parse(readFileSync(SESSION_PATH, 'utf8'));
-  const { data, error } = await sb.auth.setSession({ refresh_token: saved.refresh_token });
-  if (error || !data.session) { console.error('会话恢复失败: ' + (error?.message ?? '无会话')); process.exit(1); }
-  sess = data.session;
-  console.log(`已用保存的会话登录 ${saved.email ?? sess.user.email}`);
-} else {
-  if (!credPath) { console.error('缺少凭据：请提供 _assets/cn_session.json 或 cred.json'); process.exit(2); }
-  const cred = JSON.parse(readFileSync(credPath, 'utf8'));
-  const { data, error } = await sb.auth.signInWithPassword({ email: cred.email, password: cred.password });
-  if (error) { console.error('登录失败: ' + error.message); process.exit(1); }
-  sess = data.session;
+let uid, authHeaders = {};
+
+function jwtSub(token) {
+  try { return JSON.parse(Buffer.from(token.split('.')[1], 'base64')).sub; } catch { return undefined; }
 }
-const uid = sess.user.id;
-console.log(`已登录 user_id=${uid}`);
+
+let sb;
+if (existsSync(ACCESS_PATH)) {
+  const a = JSON.parse(readFileSync(ACCESS_PATH, 'utf8'));
+  if (a.expires_at && a.expires_at * 1000 < Date.now() + 60000) {
+    console.error('access_token 已过期，请从登录页面重新收割（_assets/cn_access.json）');
+    process.exit(1);
+  }
+  uid = a.uid ?? jwtSub(a.access_token);
+  authHeaders = { Authorization: `Bearer ${a.access_token}` };
+  sb = createClient(SUPABASE_URL, ANON_KEY, {
+    auth: { persistSession: false },
+    global: { headers: authHeaders },
+  });
+  console.log(`已用 access_token 认证 uid=${uid}（${a.email ?? ''}，过期 ${new Date((a.expires_at ?? 0) * 1000).toLocaleTimeString()}）`);
+} else {
+  sb = createClient(SUPABASE_URL, ANON_KEY, { auth: { persistSession: false } });
+  if (existsSync(SESSION_PATH)) {
+    const saved = JSON.parse(readFileSync(SESSION_PATH, 'utf8'));
+    const { data, error } = await sb.auth.setSession({ refresh_token: saved.refresh_token });
+    if (error || !data.session) { console.error('会话恢复失败: ' + (error?.message ?? '无会话')); process.exit(1); }
+    uid = data.session.user.id;
+    console.log(`已用保存的会话登录 ${saved.email ?? data.session.user.email}`);
+  } else {
+    if (!credPath) { console.error('缺少凭据：请提供 _assets/cn_access.json / cn_session.json 或 cred.json'); process.exit(2); }
+    const cred = JSON.parse(readFileSync(credPath, 'utf8'));
+    const { data, error } = await sb.auth.signInWithPassword({ email: cred.email, password: cred.password });
+    if (error) { console.error('登录失败: ' + error.message); process.exit(1); }
+    uid = data.session.user.id;
+  }
+}
 
 const { data: nodes, error: e1 } = await sb.from('cn_nodes').select('*').eq('user_id', uid);
 if (e1) { console.error('读 cn_nodes 失败: ' + e1.message + '（是否已执行 supabase_setup_cn.sql？）'); process.exit(1); }

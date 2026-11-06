@@ -20,14 +20,13 @@
 8. **ch06 关键帧完成**：76张逐页截图 `_assets/cn_keyframes_final/ch06/fig-pNN-MM.jpg` + `manifest_frag_ch06.json`（含每页desc）
 9. **内容规范定稿**：content/README.md = 一P一笔记(94篇) + 每P全部PPT截图 + 老师字幕叙事主线（三源合一）
 
-## ⏸ 熄灯时在跑的（断电即停；明天先盘点再补派）
+## 📅 2026-11-06 晨·进度快照
 
-- **已到货**：ch01 关键帧 ✅（105张，manifest_frag_ch01.json）；ch06 关键帧 ✅（76张）；**ch06 内容 ✅**（8篇/76图全嵌/7例题/check_content PASS——但按旧"仅截图"标准写的，**明天须补字幕对齐修订**，读 _assets/cn_subs/p87-94.json 重织叙述）
-- 关键帧子代理在跑 ×4：ch02(P13-18)、ch03(P19-44)、ch04(P45-73)、ch05(P74-86)
-  - 产出位置：`_assets/cn_keyframes_final/chNN/fig-pNN-MM.jpg` + `manifest_frag_chNN.json`
-  - 中间产物：`_assets/cn_video/`（已下载视频，可复用）、`_assets/cn_keyframes_full/chNN/pNN/`（抽帧）、ch01 的经验：BBDown 逐P调用（范围参数会失效）、独立work-dir防并行锁冲突
-  - **明天先查哪些章已有 manifest_frag_chNN.json**：有的章直接进内容写作；没有的重派关键帧代理（提示词要点：bl skill、25s等间隔抽帧、dHash聚簇取簇尾、analyze_image 视觉审筛、每张新PPT一图）
-- **明天内容代理提示词（三源合一）**：pagelist.json + manifest_frag_chNN.json + cn_subs/pNN.json（无字幕P46/50/52/91按PPT+教材并篇末注明）；ch01/ch06 已可直接开写（ch01 新写、ch06 修订）
+- **内容定稿 ✅**：ch01（12篇/105图/5例题）、ch02（6篇/66图/10真题例题）、ch06（8篇/76图/字幕对齐修订版）——均 check_content PASS
+- **在跑**：ch03 内容代理（26篇三源合一）；ch04 截图补缺（23P）；ch05 截图（13P）
+- **待接棒**：ch04/ch05 截图到货 → 各派内容代理（三源合一，参照 ch02 的提示词模板）
+- **内容代理经验（红队审查要用）**：manifest desc 有少量误标（年份/内容），代理已逐张视觉核实纠正——红队必须抽查"截图实际内容 vs 笔记上下文位置"
+- ch02 代理踩坑记录：模板字符串会吃 LaTeX 反斜杠（\times 变 TAB），已用 String.raw 修复；后续代理若遇公式异常先查这个
 
 ## 📋 明天开工清单（顺序执行）
 

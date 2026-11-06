@@ -1,40 +1,545 @@
 {
-  "chapter": "第1章 计算机网络体系结构",
-  "docs": [
+ "chapter": "第1章 计算机网络体系结构",
+ "docs": [
+  {
+   "tree": [
+    "第1章 计算机网络体系结构",
+    "1.0 课程导学",
+    "1.0_开篇_欢迎来到计算机网络的世界"
+   ],
+   "noteHtml": "<p><span style=\"font-size:20px;color:#7c3aed\"><strong>P1 1.0_开篇_欢迎来到计算机网络的世界（王道 1.0）</strong></span></p>\n<img data-img-id=\"fig-p01-01\" class=\"ds-note-img\" alt=\"图：课程开篇欢迎页——Hi~大家好，我是王道咸鱼\">\n<p>主讲人咸鱼老师自我介绍：本科北京理工大学、研究生北京大学；做过两年半游戏公司服务器开发，考研以专业课143分上岸；2018年起先后主讲王道操作系统、数据结构与计算机组成原理，今年首次主讲计算机网络。老师说自己最爱的运动是冲浪，但<span style=\"color:#7c3aed\">\"不是夏威夷和万宁去不起，而是网络冲浪更有性价比\"</span>——网络干饭、网游、网课、聊天，生活早已离不开网络。</p>\n<img data-img-id=\"fig-p01-02\" class=\"ds-note-img\" alt=\"图：主讲人咸鱼老师自我介绍与课程经历\">\n<p>微信、淘宝等每个App都依赖网络，自动驾驶、AI大模型训练同样离不开网络——计算机网络是信息化世界的重要基建，也是考研408最后一门学科。<mark><strong>这门课要探讨的就是：数据如何通过网络，正确、可靠地从A点传送到B点</strong></mark>。</p>\n<img data-img-id=\"fig-p01-03\" class=\"ds-note-img\" alt=\"图：《计算机网络》学什么——App都依赖网络的红底结论框\">\n<p>老师抛出两个\"为什么\"：舍友发的消息为什么不会错发到老师手机上？为什么不会被其他App错误接收？学完这门课就能找到答案。先认识第一张拓扑概念图：发送端计算机→计算机网络（云）→接收端计算机。</p>\n<img data-img-id=\"fig-p01-04\" class=\"ds-note-img\" alt=\"图：计算机网络初步示意图——发送端→网络云→接收端\">",
+   "images": [
     {
-      "tree": ["第1章 计算机网络体系结构", "1.1 概念、组成与功能", "计算机网络的概念、功能与组成"],
-      "noteHtml": "<p><span style=\"font-size:20px;color:#7c3aed\"><strong>计算机网络的概念、功能与组成（王道 1.1）</strong></span></p><p><strong>一、计算机网络的概念</strong></p><p><mark><strong>计算机网络：一个将分散的、具有独立功能的计算机系统，通过通信设备与线路连接起来，由功能完善的软件实现资源共享和信息传递的系统。</strong></mark>也可以说计算机网络是<strong>互连的、自治的</strong>计算机系统的集合：互连指通过通信链路互联互通，自治指各计算机之间没有主从关系。</p><p><strong>二、计算机网络的组成</strong></p><ul><li><strong>硬件</strong>：主机（端系统）、通信链路（双绞线、光纤等）、交换与互连设备（路由器、交换机等）、通信处理机（网卡）等。</li><li><strong>软件</strong>：各种实现资源共享的软件、方便用户使用的工具软件（如网络操作系统、邮件收发程序、FTP 程序等）。</li><li><strong>协议</strong>：网络的核心，规定传输数据时所遵循的规范。</li></ul><p><span style=\"color:#dc2626\"><strong>易错点：计算机网络由硬件、软件、协议三部分组成，选择题把协议漏掉是常见干扰项！</strong></span></p><p><strong>三、计算机网络的功能</strong></p><ul><li><strong>数据通信</strong>：实现联网计算机之间各种信息的传输，是计算机网络<strong>最基本、最重要</strong>的功能。</li><li><strong>资源共享</strong>：共享硬件、软件和数据，是计算机网络的主要目的。</li><li><strong>分布式处理</strong>：一个任务被划分成多部分，分散到网络中不同的计算机上并行处理。</li><li><strong>负载均衡、提高可靠性</strong>：多台计算机互为替代，某台故障时任务可转移。</li></ul><p><span style=\"color:#dc2626\"><strong>必考点：问计算机网络最基本的功能，答案固定是数据通信。</strong></span></p><p><strong>四、从工作方式看：边缘部分＋核心部分</strong></p><ul><li><strong>边缘部分</strong>：由所有连接在互联网上的<strong>主机（端系统）</strong>组成，由用户直接使用，用来进行通信和资源共享。边缘部分主机间的通信方式有两类：<strong>客户/服务器（C/S）方式</strong>——客户是服务请求方，服务器是服务提供方；<strong>对等方式（P2P）</strong>——不区分服务请求方与提供方，每台主机既是客户又同时是服务器。</li><li><strong>核心部分</strong>：由<strong>大量网络和连接这些网络的路由器</strong>组成，为边缘部分提供<strong>连通性和交换</strong>服务，其中起特殊作用的是<strong>路由器（实现分组交换）</strong>。</li></ul><img data-img-id=\"ch01-fig-01\" class=\"ds-note-img\" alt=\"图：互联网的边缘部分与核心部分\"><p><strong>五、从功能组成看：资源子网＋通信子网</strong></p><ul><li><strong>资源子网</strong>：实现资源共享功能的设备及其软件的集合（主机、终端及各类软件资源）。</li><li><strong>通信子网</strong>：由各种传输介质、通信设备和相应的网络协议组成，实现数据的传输与转发。</li></ul><p><span style=\"color:#7c3aed\">助记：资源子网管共享，通信子网管传信；记不住时就想互联网边缘的主机是用户资源，核心的路由器链路负责搬数据。</span></p>",
-      "images": [ { "imgId": "ch01-fig-01", "file": "images/ch01/ch01-fig-01.jpg" } ]
+     "imgId": "fig-p01-01",
+     "file": "images/ch01/fig-p01-01.jpg"
     },
     {
-      "tree": ["第1章 计算机网络体系结构", "1.2 计算机网络的分类", "分类标准与电路交换、报文交换、分组交换"],
-      "noteHtml": "<p><span style=\"font-size:20px;color:#7c3aed\"><strong>计算机网络的分类与三种交换方式（王道 1.2）</strong></span></p><p><strong>一、四种分类标准</strong></p><ul><li><strong>按分布范围</strong>：<strong>广域网 WAN</strong>（任务是长距离运送数据，作用范围几十到几千公里，是互联网的核心部分，使用<strong>交换技术</strong>）；<strong>城域网 MAN</strong>（作用范围约是一个城市，约 $5\\sim50\\ \\text{km}$）；<strong>局域网 LAN</strong>（一个实验室、一栋楼、一个校园等较小范围，传统上使用<strong>广播技术</strong>）；<strong>个人区域网 PAN</strong>（个人电子设备互连，范围约 10m，常用无线）。</li><li><strong>按使用者</strong>：<strong>公用网</strong>（电信公司出资建造、向公众提供服务）与<strong>专用网</strong>（某部门单位自建自用，如军队、铁路、电力网）。</li><li><strong>按交换技术</strong>：电路交换网络、报文交换网络、分组交换网络（见下文）。</li><li><strong>按传输技术</strong>：<strong>广播式网络</strong>（所有结点共享公共信道，一台发送全网可收）；<strong>点对点网络</strong>（每条链路只连接一对结点，无直连的结点间依靠中间结点<strong>存储转发</strong>；广域网基本采用点对点技术，<strong>分组存储转发与路由选择</strong>是其核心）。</li></ul><p><span style=\"color:#dc2626\"><strong>易错点：广域网用交换（存储转发）技术、传统局域网用广播技术；无线上网≠无线网络，分类别混。</strong></span></p><p><strong>二、电路交换（Circuit Switching）</strong></p><p>数据传输前，两结点间必须先建立一条<strong>专用的物理通路</strong>（独占），然后通信，结束后释放连接，必经三个阶段：<strong>建立连接 → 通信 → 释放连接</strong>，典型代表是传统电话网。</p><ul><li>优点：①通信时独占资源、<strong>无冲突</strong>；②数据按序到达、<strong>实时性强</strong>（连接建立后即发即传）；③既定通路，交换设备开销小。</li><li>缺点：①<strong>建立连接时间长</strong>；②线路<strong>独占导致信道利用率低</strong>；③无存储转发能力、<strong>无差错控制</strong>；④灵活性差。适合<strong>实时性要求高、数据量大的连续传送</strong>（如语音、视频）。</li></ul><p><strong>三、报文交换（Message Switching）</strong></p><p>把要发送的整块数据加上目的地址、源地址等控制信息，作为<strong>一个完整的报文</strong>，采用<strong>存储转发</strong>方式整份地逐结点传送，传输前<strong>无需建立连接</strong>。</p><ul><li>优点：①无需建立连接；②线路不独占、可复用，利用率高；③有存储转发能力，可进行差错控制，也可把报文发给多个目的地。</li><li>缺点：①报文大小无上限，缓存与转发时延长，<strong>时延较大</strong>；②要求结点有<strong>较大的缓存空间</strong>；③出错时整个报文重传。</li></ul><p><strong>四、分组交换（Packet Switching，包交换）</strong></p><p>把报文划分成<strong>较短的、固定长度的数据段</strong>，每个数据段前加上含有<strong>地址等控制信息的首部</strong>，构成<strong>分组（包）</strong>，以分组为单位进行<strong>存储转发</strong>。它是计算机网络中使用最广泛的交换方式。</p><ul><li>优点：<mark><strong>①加速传输：分组小，可采用流水线方式，后一个分组的转发与前一个分组的传输并行进行；②分组定长，简化了存储管理（缓冲区大小固定）；③分组小，出错概率低、重传开销小，更可靠。</strong></mark></li><li>缺点：①仍存在存储转发时延；②每个分组都要携带首部，有一定<strong>额外开销</strong>；③采用数据报方式时分组可能<strong>失序、丢失、重复</strong>，需重排重装。</li></ul><img data-img-id=\"ch01-fig-02\" class=\"ds-note-img\" alt=\"图：电路交换、报文交换与分组交换对比\"><p><span style=\"color:#dc2626\"><strong>必考对比：电路交换＝先建独占通路，实时有序但利用率低、无差错控制；报文交换与分组交换都是存储转发、无需预约线路；分组交换胜在分组小——流水线加速、缓存压力小、重传开销小。</strong></span></p><p>分组交换按通信前是否建立逻辑连接，又分为<strong>数据报</strong>与<strong>虚电路</strong>两种服务方式，后续章节（数据链路层与网络层）详细展开，本章记住以上结论即可。</p><p><span style=\"color:#7c3aed\"><strong>【例题 1.1】</strong></span>主机甲经过一个中间结点（存储转发方式，忽略传播时延、处理时延和排队时延）向主机乙发送 $10^{6}\\ \\text{bit}$ 的数据，两段链路的发送速率均为 $100\\ \\text{Mb/s}$。①若采用报文交换（数据作为一整个报文一次发完），总时延为多少？②若采用分组交换，把数据均分成 10 个分组（忽略首部开销），总时延又为多少？</p>$$\\text{①报文交换：每段链路的发送时延} = \\frac{10^{6}\\ \\text{bit}}{100\\times10^{6}\\ \\text{bit/s}} = 10\\ \\text{ms},\\quad D_{\\text{报文}} = 2\\times10\\ \\text{ms} = 20\\ \\text{ms}$$ $$\\text{②分组交换：每个分组}10^{5}\\ \\text{bit}，\\text{单个分组发送时延}=\\frac{10^{5}}{10^{8}}=1\\ \\text{ms}$$ $$D_{\\text{分组}} = \\underbrace{10\\times1\\ \\text{ms}}_{\\text{甲把10个分组全部发出}} + \\underbrace{1\\ \\text{ms}}_{\\text{最后一个分组再经中间结点转发一次}} = 11\\ \\text{ms}$$<p><span style=\"color:#dc2626\"><strong>答案：报文交换总时延 20ms，分组交换总时延 11ms。分组交换更快——这正是“流水线式存储转发”的加速效果：甲还在发送后续分组时，中间结点已在转发先到的分组。</strong></span></p>",
-      "images": [ { "imgId": "ch01-fig-02", "file": "images/ch01/ch01-fig-02.jpg" } ]
+     "imgId": "fig-p01-02",
+     "file": "images/ch01/fig-p01-02.jpg"
     },
     {
-      "tree": ["第1章 计算机网络体系结构", "1.3 性能指标", "性能指标：速率、带宽与吞吐量"],
-      "noteHtml": "<p><span style=\"font-size:20px;color:#7c3aed\"><strong>性能指标（一）：速率、带宽与吞吐量（王道 1.3）</strong></span></p><p>计算机网络的常用性能指标有 7 个：<strong>速率、带宽、吞吐量、时延、时延带宽积、往返时延 RTT、利用率</strong>。本节先攻克前三个，时延家族见后两节，它们是 408 计算题的核心出没地。</p><p><strong>一、速率（数据率 / 比特率）</strong></p><p>速率指网络单位时间内传输的数据量，即连接在计算机网络上的主机在数字信道上传送数据的速率，也称数据率或比特率，单位是 <strong>bit/s（b/s、bps）</strong>。换算关系：</p>$$1\\ \\text{kb/s} = 10^{3}\\ \\text{bit/s},\\quad 1\\ \\text{Mb/s} = 10^{6}\\ \\text{bit/s},\\quad 1\\ \\text{Gb/s} = 10^{9}\\ \\text{bit/s},\\quad 1\\ \\text{Tb/s} = 10^{12}\\ \\text{bit/s}$$<p><span style=\"color:#dc2626\"><strong>必考点：通信领域速率进率是 10 进制，而存储领域容量进率是 2 进制（$1\\ \\text{KB}=2^{10}\\ \\text{B}$，$1\\ \\text{MB}=2^{20}\\ \\text{B}$）。“文件大小用 2 进制、链路速率用 10 进制”，计算题最爱在这里挖坑。</strong></span></p><p><strong>二、带宽（Bandwidth）</strong></p><ul><li>在<strong>模拟信号系统</strong>中：信号所包含的各种不同频率成分所占据的<strong>频率范围</strong>，即频带宽度，单位 Hz。</li><li>在<strong>计算机网络</strong>中：表示通信线路传送数据的能力，即单位时间内从网络中一点到另一点所能通过的<strong>最高数据率</strong>，单位 b/s。本课程默认采用第二种含义。</li></ul><p>带宽越宽，链路每秒能“注入”的比特越多，最高数据率也就越高。</p><p><strong>三、吞吐量（Throughput）</strong></p><p>吞吐量是单位时间内通过某个网络（信道、接口）的<strong>实际</strong>数据量。它受网络带宽或额定速率的限制，<mark><strong>吞吐量的绝对上限值就是带宽（理论上限）</strong></mark>，实际值往往更低。带宽是“能力上限”，吞吐量是“实际成绩”。</p><p><strong>四、换算实战（易错示范）</strong></p><p>在 $1\\ \\text{Mb/s}$ 的链路上发送一个 $1\\ \\text{MB}$ 的文件（忽略首部开销与传播时延），理论上最快需要：</p>$$t = \\frac{1\\ \\text{MB}}{1\\ \\text{Mb/s}} = \\frac{2^{20}\\times8\\ \\text{bit}}{10^{6}\\ \\text{bit/s}} = \\frac{8388608}{10^{6}}\\ \\text{s} \\approx 8.39\\ \\text{s}$$<p><span style=\"color:#dc2626\"><strong>易错：把 1MB 当作 $10^{6}$ 字节算出 8s 是典型错误！必须先把字节换成 $2^{20}$ 字节再乘 8 变成比特。</strong></span></p><p><span style=\"color:#7c3aed\">口诀：速率带宽看“十进制”，文件磁盘看“二进制”；比特小 b、字节大 B，相差 8 倍。</span></p>",
-      "images": []
+     "imgId": "fig-p01-03",
+     "file": "images/ch01/fig-p01-03.jpg"
     },
     {
-      "tree": ["第1章 计算机网络体系结构", "1.3 性能指标", "性能指标：时延的四个分量与计算"],
-      "noteHtml": "<p><span style=\"font-size:20px;color:#7c3aed\"><strong>性能指标（二）：时延的四个分量与计算（王道 1.3）</strong></span></p><p><mark><strong>时延：数据（一个报文或分组）从网络（或链路）的一端传送到另一端所需要的总时间，等于发送时延＋传播时延＋处理时延＋排队时延。</strong></mark></p><img data-img-id=\"ch01-fig-03\" class=\"ds-note-img\" alt=\"图：时延四个分量的构成\"><p><strong>一、发送时延（传输时延）</strong></p><p>结点把分组的所有比特推向链路（从发送第一个比特开始到最后一个比特发送完毕）所需的时间，发生在<strong>机器内部的发送器（网络适配器/网卡）</strong>中：</p>$$\\text{发送时延} = \\frac{\\text{分组长度（数据长度）}}{\\text{发送速率（即链路带宽）}}$$<p><strong>二、传播时延</strong></p><p>一个比特从链路一端传播到另一端所需的时间，发生在<strong>机器外部的传输信道（介质）</strong>上，只与距离和介质有关：</p>$$\\text{传播时延} = \\frac{\\text{信道长度}}{\\text{电磁波在信道上的传播速率}}$$<p>电磁波传播速率典型值：自由空间 $3\\times10^{8}\\ \\text{m/s}$，铜线约 $2.3\\times10^{8}\\ \\text{m/s}$，光纤约 $2.0\\times10^{8}\\ \\text{m/s}$（约为真空中光速的 2/3，计算题常用 $2\\times10^{8}\\ \\text{m/s}$）。</p><p><strong>三、处理时延</strong></p><p>交换结点（路由器）为存储转发而进行的处理所花的时间：检查分组首部、差错校验、查找转发表并选择出口等。</p><p><strong>四、排队时延</strong></p><p>分组进入路由器后，要在<strong>输入队列和输出队列</strong>中排队等待处理与转发的时间，取决于网络当时的<strong>通信量（拥堵程度）</strong>，是四个分量中最不确定的一个。</p><p><span style=\"color:#dc2626\"><strong>必考辨析：发送时延发生在机器内部，大小由分组长度与发送速率决定；传播时延发生在链路上，大小由距离与介质决定——二者相互独立、互不影响！题目不特别说明时，通常忽略处理时延和排队时延。</strong></span></p><p><strong>五、“高速链路”的经典误区</strong></p><p><mark><strong>提高链路带宽（发送速率），只能减小发送时延，不能减小传播时延</strong></mark>，因为电磁波在介质中的传播速率只由介质本身决定。换上 100Gb/s 的“高速链路”，1 比特跑完 1000km 所花时间一点没变。另外，电磁波在铜线中的传播速率其实比在光纤中还略快，“光纤网络快”快在其可用带宽（发送速率）高，而非传播得更快。</p><p><span style=\"color:#7c3aed\"><strong>【例题 1.2】</strong></span>主机 A 通过一条长 $1200\\ \\text{km}$ 的链路向主机 B 发送一个 $1500\\ \\text{B}$ 的分组，发送速率为 $100\\ \\text{Mb/s}$，信号在链路上的传播速率为 $2\\times10^{8}\\ \\text{m/s}$。忽略处理时延和排队时延，求该分组从 A 开始发送到 B 接收完毕的总时延。</p>$$\\text{发送时延} = \\frac{1500\\times8\\ \\text{bit}}{100\\times10^{6}\\ \\text{bit/s}} = \\frac{1.2\\times10^{4}}{10^{8}}\\ \\text{s} = 1.2\\times10^{-4}\\ \\text{s} = 0.12\\ \\text{ms}$$ $$\\text{传播时延} = \\frac{1200\\times10^{3}\\ \\text{m}}{2\\times10^{8}\\ \\text{m/s}} = 6\\times10^{-3}\\ \\text{s} = 6\\ \\text{ms}$$ $$\\text{总时延} = 0.12\\ \\text{ms} + 6\\ \\text{ms} = 6.12\\ \\text{ms}$$<p><span style=\"color:#dc2626\"><strong>答案：发送时延 0.12ms，传播时延 6ms，总时延 6.12ms。注意先“字节×8 化比特”，再除以 $10^{8}$ bit/s 的发送速率。</strong></span></p>",
-      "images": [ { "imgId": "ch01-fig-03", "file": "images/ch01/ch01-fig-03.jpg" } ]
-    },
-    {
-      "tree": ["第1章 计算机网络体系结构", "1.3 性能指标", "性能指标：时延带宽积、往返时延与利用率"],
-      "noteHtml": "<p><span style=\"font-size:20px;color:#7c3aed\"><strong>性能指标（三）：时延带宽积、往返时延 RTT 与利用率（王道 1.3）</strong></span></p><p><strong>一、时延带宽积</strong></p><p><mark><strong>时延带宽积 = 传播时延 × 带宽</strong></mark>，单位是 bit。展开写就是：</p>$$\\text{时延带宽积} = \\text{传播时延}\\times\\text{带宽} = \\frac{\\text{信道长度}}{\\text{传播速率}}\\times\\text{发送速率}$$<p>物理意义：把链路想象成一根空心管道，从发送端发出的<strong>第一个比特</strong>刚到达接收端时，发送端一共发出了多少比特。它表示<strong>此时整个链路上正在传播（占有链路）的比特数</strong>，因此又称为<strong>“以比特为单位的链路长度”</strong>，即链路的“容积”。发送的比特数若超过该容积，链路装不下也发不满？不——它衡量的是“第一比特到达前管道里能同时容纳的比特量”。</p><p><span style=\"color:#dc2626\"><strong>必考：题目给传播时延和带宽，第一步就乘起来；“第一个比特到达时发送方共发出的比特数”就是时延带宽积，两个问法同一个数。</strong></span></p><p><span style=\"color:#7c3aed\"><strong>【例题 1.3】</strong></span>某链路的传播时延为 $20\\ \\text{ms}$，带宽为 $100\\ \\text{Mb/s}$。①求该链路的时延带宽积；②当发送端发出的第一个比特刚好到达接收端时，发送端总共已发出了多少比特？</p>$$\\text{时延带宽积} = 20\\times10^{-3}\\ \\text{s}\\times100\\times10^{6}\\ \\text{bit/s} = 2\\times10^{6}\\ \\text{bit} = 250000\\ \\text{B}$$<p><span style=\"color:#dc2626\"><strong>答案：①时延带宽积为 $2\\times10^{6}$ bit；②发送端已发出 $2\\times10^{6}$ bit（合 250000 B）。两问数值相同，正是时延带宽积的物理含义。</strong></span></p><p><strong>二、往返时延 RTT（Round-Trip Time）</strong></p><p><strong>从发送方发送数据开始，到发送方收到来自接收方的确认为止，总共经历的时间。</strong>它一般包含：数据与确认<strong>往返的传播时延（单程传播时延的 2 倍）</strong>、接收方的处理时间、以及<strong>确认分组的发送时延</strong>等；确认分组很短时，其发送时延常被忽略。在一般的简化计算中，$\\text{RTT}\\approx2\\times\\text{传播时延}$。</p><p><span style=\"color:#dc2626\"><strong>易错：RTT 不包含发送方发送数据所占用的“发送开始之前”的时间（计时从开始发送那一刻起算），但确认分组的发送时延若不可忽略则要计入；做题时看清题目对 RTT 成分的约定。</strong></span></p><p><strong>三、利用率</strong></p><ul><li><strong>信道利用率</strong>：某信道有百分之几的时间被利用（有数据通过），即“有数据通过的时间÷总的观察时间”。</li><li><strong>网络利用率</strong>：全网络的信道利用率的加权平均值。</li></ul><p><span style=\"color:#dc2626\"><strong>必考点：利用率并非越高越好！根据排队论，信道利用率越大，产生的时延也越大。设 $D_0$ 为网络空闲时的时延，$D$ 为当前时延，$U$ 为利用率，则</strong></span></p>$$D = \\frac{D_0}{1-U}$$<p>当 $U\\to1$ 时 $D\\to\\infty$，因此较大的主干网运营商通常把信道平均利用率控制得较低（教材举例：不超过 50%），超过就要扩容增大带宽。</p><p><span style=\"color:#7c3aed\">收束记忆：发送时延看“长宽”（分组长度/发送速率）、传播时延看“路”（信道长度/传播速率）、时延带宽积是“管道容积”、RTT 是“一来一回”、利用率太满反而堵。</span></p>",
-      "images": []
-    },
-    {
-      "tree": ["第1章 计算机网络体系结构", "1.4 分层结构与参考模型", "分层思想、协议/接口/服务与 OSI 七层模型"],
-      "noteHtml": "<p><span style=\"font-size:20px;color:#7c3aed\"><strong>分层思想、协议/接口/服务与 OSI 七层模型（王道 1.4）</strong></span></p><p><strong>一、为什么要分层</strong></p><p>计算机网络是个十分复杂的系统，分层可将其分解为若干较小的局部问题。分层的好处：①各层之间<strong>相互独立</strong>，每层实现一种相对独立的功能，层间通过接口交互，上层不必知道下层如何实现；②<strong>灵活性好</strong>，某层发生变化（只要接口关系不变）则不影响其他层；③结构上可分割开，各层都可采用最合适的技术实现；④易于实现和维护；⑤能促进<strong>标准化</strong>工作。</p><p><strong>二、五个核心概念（高频辨析）</strong></p><ul><li><strong>实体</strong>：任何可发送或接收信息的硬件或软件进程；<strong>对等实体</strong>：位于不同机器上、同一层次上的实体。</li><li><strong>协议</strong>：控制两个（或多个）<strong>对等实体</strong>进行通信的规则的集合，是<strong>水平方向</strong>的。<mark><strong>协议三要素：语法（数据与控制信息的结构或格式）、语义（需要发出何种控制信息、完成何种动作、做出何种应答）、同步/时序（事件实现顺序的详细说明）。</strong></mark></li><li><strong>接口（服务访问点 SAP）</strong>：同一结点内<strong>相邻两层实体</strong>交换信息的逻辑接口。</li><li><strong>服务</strong>：下层为紧邻的上层提供的功能调用，是<strong>垂直方向</strong>的；上层只能看见下层提供的服务，看不见下层协议的具体实现（下层协议对上层透明）。</li></ul><p><span style=\"color:#dc2626\"><strong>必考：“协议是水平的、服务是垂直的”；协议管对等实体、接口管相邻两层、服务是下层给上层——三者对象常被互换设错。</strong></span></p><p>上层调用下层服务要通过<strong>服务原语</strong>（请求、指示、响应、证实）完成；按通信前是否建立连接，服务又分为<strong>面向连接服务</strong>（建立连接→传输→释放，如 TCP）与<strong>无连接服务</strong>（直接发送，如 IP、UDP）。</p><p><strong>三、OSI 参考模型（ISO 提出，法定国际标准，共 7 层）</strong></p><img data-img-id=\"ch01-fig-04\" class=\"ds-note-img\" alt=\"图：OSI 七层、TCP/IP 四层与五层体系结构对照\"><ul><li><strong>物理层（传输单位：比特 bit）</strong>：在物理媒体上<strong>透明地传输比特流</strong>；定义数据终端设备与通信线路接口的四大特性：<strong>机械特性、电气特性、功能特性、规程特性</strong>。</li><li><strong>数据链路层（传输单位：帧 frame）</strong>：把网络层交下来的 IP 数据报组装成帧，在<strong>相邻结点间的链路</strong>上传送；主要功能：<strong>封装成帧、差错控制、流量控制</strong>（链路层管“相邻结点”）。</li><li><strong>网络层（传输单位：分组/包 packet）</strong>：把分组从<strong>源主机传送到目的主机</strong>，为分组交换网上的不同主机提供通信服务；关键功能：<strong>路由选择、流量控制、拥塞控制、差错控制、网际互连</strong>。</li><li><strong>传输层（传输单位：报文段/TPDU）</strong>：为两台主机中<strong>进程之间</strong>的通信提供通用的数据传输服务，是<strong>第一个端到端</strong>的层次；功能：<strong>复用与分用</strong>，以及端到端的差错控制、流量控制；可提供可靠（面向连接）或不可靠（无连接）传输。</li><li><strong>会话层</strong>：负责建立、管理、终止进程之间的<strong>会话</strong>，关键词是<strong>同步（SYN）</strong>：在数据流中插入检查点，通信失败可从检查点继续（断点续传思想）。</li><li><strong>表示层</strong>：处理两个通信系统中信息<strong>表示方式</strong>不同的问题：<strong>数据格式转换、加密与解密、压缩与恢复</strong>。</li><li><strong>应用层</strong>：为<strong>用户的应用进程</strong>提供服务，是用户与网络的界面；典型协议 HTTP、DNS、SMTP、FTP 等。</li></ul><p><span style=\"color:#dc2626\"><strong>必考点：物理层“透明传输比特流”；数据链路层管相邻结点、传输层管端到端；会话层认准“同步检查点”、表示层认准“格式转换+加密+压缩”。各层功能归属是选择题常客。</strong></span></p><p><span style=\"color:#7c3aed\">自下而上速记：物理传比特、链路装成帧、网络管路由、传输到进程、会话设检查点、表示做翻译、应用对用户。</span></p>",
-      "images": [ { "imgId": "ch01-fig-04", "file": "images/ch01/ch01-fig-04.jpg" } ]
-    },
-    {
-      "tree": ["第1章 计算机网络体系结构", "1.4 分层结构与参考模型", "TCP/IP 四层、五层教学模型与数据封装过程"],
-      "noteHtml": "<p><span style=\"font-size:20px;color:#7c3aed\"><strong>TCP/IP 四层模型、五层教学模型与数据的封装过程（王道 1.4）</strong></span></p><p><strong>一、TCP/IP 参考模型（事实上的国际标准，共 4 层）</strong></p><ul><li><strong>应用层</strong>：为用户提供应用服务，协议众多：HTTP、FTP、SMTP、DNS、Telnet 等。</li><li><strong>传输层（运输层）</strong>：为应用进程提供端到端通信：<strong>TCP——面向连接、可靠传输；UDP——无连接、不可靠传输</strong>。</li><li><strong>网际层（网络层）</strong>：核心协议是 <strong>IP</strong>，负责将分组发往任何网络并为其选择合适的路由；特点是<strong>无连接、不可靠、尽最大努力交付（best-effort）</strong>。相关协议还有 ICMP、IGMP、ARP、RARP、OSPF 等。</li><li><strong>网络接口层</strong>：对应 OSI 的物理层与数据链路层，本身没有规定具体内容。</li></ul><img data-img-id=\"ch01-fig-04\" class=\"ds-note-img\" alt=\"图：OSI 七层、TCP/IP 四层与五层体系结构对照\"><p><span style=\"color:#dc2626\"><strong>必考对比（一字之差）：OSI 模型中网络层提供无连接与面向连接两种服务、传输层仅提供面向连接的服务；TCP/IP 模型中网际层仅提供无连接服务、传输层却提供无连接（UDP）与面向连接（TCP）两种服务。两处“仅”字落点不同，选择题高频设错！</strong></span></p><p><strong>二、五层教学模型（综合 OSI 与 TCP/IP，408 复习主线）</strong></p><p><mark><strong>自上而下：应用层（报文）→ 运输层（报文段/用户数据报）→ 网络层（IP 数据报/分组）→ 数据链路层（帧）→ 物理层（比特）。</strong></mark></p><p>各层典型的协议与设备（后续章节逐一展开）：</p><ul><li>应用层协议：HTTP、FTP、SMTP、DNS；传输层协议：TCP、UDP；网络层协议：IP、ICMP、IGMP、ARP、RARP、OSPF；数据链路层协议：PPP、HDLC 等；物理层无严格意义上的协议（常称规程，如 RS-232）。</li></ul><p><strong>三、数据的封装与解封装过程</strong></p><p>发送方数据<strong>自上而下</strong>逐层加控制信息：应用层产生的<strong>报文</strong>交给运输层，加上 TCP/UDP 首部构成<strong>报文段</strong>；交给网络层，加上 IP 首部构成<strong>IP 数据报（分组）</strong>；交给数据链路层，加上帧首部和帧尾部构成<strong>帧</strong>；最后物理层把帧转成比特流，以电信号/光信号发送到介质上。接收方则<strong>自下而上</strong>逐层剥去首部（解封装）再上交给高层。</p><img data-img-id=\"ch01-fig-05\" class=\"ds-note-img\" alt=\"图：数据在各层的封装（流动）过程\"><p><span style=\"color:#dc2626\"><strong>易错点：①封装时只有数据链路层既加首部又加尾部；②对等层之间是“逻辑上直接用协议对话”，实际数据流动始终逐层向下→介质→逐层向上；③源、目的两端主机的传输层是端到端的，而沿途的路由器只参与下三层（物理、链路、网络）的处理。</strong></span></p><p><span style=\"color:#7c3aed\"><strong>【例题 1.4】</strong></span>在 OSI 参考模型中，自下而上第一个提供端到端服务的层次是（　　）。A．网络层　　B．传输层　　C．会话层　　D．应用层</p><p>解析：网络层及以下各层工作在“结点到结点”的逐跳（hop by hop）转发层面，途经的每个路由器都要参与处理；而传输层只运行在两端主机上，为两台主机上的<strong>进程之间</strong>提供通信服务，数据不再经过中间路由器的该层，因此它是第一个端到端的层次。会话层、应用层虽也只存在于端系统，但都位于传输层之上，不是“第一个”。</p><p><span style=\"color:#dc2626\"><strong>答案：选 B，传输层。</strong></span></p>",
-      "images": [ { "imgId": "ch01-fig-04", "file": "images/ch01/ch01-fig-04.jpg" }, { "imgId": "ch01-fig-05", "file": "images/ch01/ch01-fig-05.jpg" } ]
+     "imgId": "fig-p01-04",
+     "file": "images/ch01/fig-p01-04.jpg"
     }
-  ]
+   ]
+  },
+  {
+   "tree": [
+    "第1章 计算机网络体系结构",
+    "1.1 概念、组成、分类与性能",
+    "1.1_1 计算机网络的概念"
+   ],
+   "noteHtml": "<p><span style=\"font-size:20px;color:#7c3aed\"><strong>P2 1.1_1 计算机网络的概念（王道 1.1）</strong></span></p>\n<p>第一章建立整门课的知识框架，考试主要考选择题和简单计算题；很多概念会在后续章节深化，第一遍学得模糊很正常。</p>\n<img data-img-id=\"fig-p02-01\" class=\"ds-note-img\" alt=\"图：本课导读——计算机网络概念章节的知识分支总览\">\n<p><strong>什么是计算机网络</strong>：<mark><strong>计算机网络是一个将众多分散的、自治的计算机系统，通过通信设备和线路连接起来，由功能完善的软件实现资源共享和信息传递的系统</strong></mark>。\"自治\"指各计算机相互独立，一台故障不影响其余运行。手机、智能手表、电视、笔记本（WiFi）、台式机（网线）、5G手机（基站）都是计算机系统，家用路由器、5G基站都属于通信设备。</p>\n<img data-img-id=\"fig-p02-02\" class=\"ds-note-img\" alt=\"图：计算机网络的定义与设备互联图示\">\n<p><span style=\"color:#dc2626\"><strong>考点：计算机网络、互连网、互联网的区别</strong></span>：计算机网络＝若干节点＋连接节点的链路；互连网（internet，小写i，通用名词）＝用路由器把多个计算机网络互相连接成的更大网络；互联网（Internet，大写I，专有名词）＝ISP（互联网服务提供商：电信、移动、联通）构建的覆盖全球的网络。</p>\n<img data-img-id=\"fig-p02-03\" class=\"ds-note-img\" alt=\"图：计算机网络、互连网（internet）与互联网（Internet）对比\">\n<p><strong>最简单的计算机网络</strong>：两台电脑一根网线直连就能联机打游戏——两个节点、一条链路。多台电脑可用集线器或交换机组网：集线器不能避免数据冲突、效率低已淘汰；交换机无数据冲突，是组内部网络的主流设备。</p>\n<img data-img-id=\"fig-p02-04\" class=\"ds-note-img\" alt=\"图：两台电脑直连与交换机连接多台电脑\">\n<p><strong>互连网</strong>：路由器把多个计算机网络互连成更大规模的网络，还可级联路由器继续扩大；银行总行数据中心与各分行的内网就是典型互连网。<span style=\"color:#7c3aed\">老师提醒：家用路由器＝\"交换机＋路由器\"的结合——交换机构建家庭内网，路由器把内网连到外部网络</span>；电视投屏要求手机电视连\"同一个网络\"，即连同一台交换机。</p>\n<img data-img-id=\"fig-p02-05\" class=\"ds-note-img\" alt=\"图：多个网络通过路由器互连形成互连网\">\n<img data-img-id=\"fig-p02-06\" class=\"ds-note-img\" alt=\"图：家庭网络示例——路由器连接手机、电脑等设备\">\n<p><strong>互联网</strong>：全世界ISP把大量网络互连成覆盖全球的互联网，交网费即可接入。老师用秦始皇\"书同文\"作比：<span style=\"color:#7c3aed\">\"统一了通信协议，咸阳的人和邯郸的人才能用统一的文字相互通信\"</span>——互联网上必须用TCP/IP协议族通信，自建的互连网内部可自选协议。</p>\n<img data-img-id=\"fig-p02-07\" class=\"ds-note-img\" alt=\"图：运营商网络——大量设备接入云网络\">\n<img data-img-id=\"fig-p02-08\" class=\"ds-note-img\" alt=\"图：互联网Internet的ISP环绕结构（全球覆盖）\">\n<p>小结：计算机网络（节点＋链路）→路由器互连成互连网 internet（任意协议）→ISP互连成互联网 Internet（必须TCP/IP协议族）。</p>\n<img data-img-id=\"fig-p02-09\" class=\"ds-note-img\" alt=\"图：知识回顾——计算机网络概念思维导图\">",
+   "images": [
+    {
+     "imgId": "fig-p02-01",
+     "file": "images/ch01/fig-p02-01.jpg"
+    },
+    {
+     "imgId": "fig-p02-02",
+     "file": "images/ch01/fig-p02-02.jpg"
+    },
+    {
+     "imgId": "fig-p02-03",
+     "file": "images/ch01/fig-p02-03.jpg"
+    },
+    {
+     "imgId": "fig-p02-04",
+     "file": "images/ch01/fig-p02-04.jpg"
+    },
+    {
+     "imgId": "fig-p02-05",
+     "file": "images/ch01/fig-p02-05.jpg"
+    },
+    {
+     "imgId": "fig-p02-06",
+     "file": "images/ch01/fig-p02-06.jpg"
+    },
+    {
+     "imgId": "fig-p02-07",
+     "file": "images/ch01/fig-p02-07.jpg"
+    },
+    {
+     "imgId": "fig-p02-08",
+     "file": "images/ch01/fig-p02-08.jpg"
+    },
+    {
+     "imgId": "fig-p02-09",
+     "file": "images/ch01/fig-p02-09.jpg"
+    }
+   ]
+  },
+  {
+   "tree": [
+    "第1章 计算机网络体系结构",
+    "1.1 概念、组成、分类与性能",
+    "1.1_2 计算机网络的组成和功能"
+   ],
+   "noteHtml": "<p><span style=\"font-size:20px;color:#7c3aed\"><strong>P3 1.1_2 计算机网络的组成和功能（王道 1.1）</strong></span></p>\n<p>从三个视角看计算机网络的组成，功能做简单了解即可。</p>\n<img data-img-id=\"fig-p03-01\" class=\"ds-note-img\" alt=\"图：计算机网络的组成——主机、交换机、路由器拓扑与硬件、软件、协议标注\">\n<p><strong>①组成部分：硬件＋软件＋协议</strong>。硬件包括主机（又称端系统：电脑、手机、电视、服务器、摄像头）、通信设备（路由器等）与通信链路；软件含网络软件与设备固件；协议是通信规则，由软硬件共同实现。以网卡（网络适配器）为例：芯片负责收发数据，出厂时ROM里写入固件（特殊的软件），软硬件结合实现TCP/IP等协议——Windows\"更改适配器设置\"可查看网卡型号与支持的协议。</p>\n<img data-img-id=\"fig-p03-02\" class=\"ds-note-img\" alt=\"图：网络适配器（网卡）实物与系统适配器设置界面\">\n<img data-img-id=\"fig-p03-03\" class=\"ds-note-img\" alt=\"图：从组成部分看：硬件、软件、协议三层思维导图\">\n<p><strong>②工作方式：边缘部分＋核心部分</strong>。边缘部分由主机及其软件组成，直接为用户服务；核心部分由路由器与网络组成，为边缘部分提供连通性和交换服务——交换服务指网络核心为数据包动态选择合适的传送路径，本质是对网络资源的动态配置，核心设备是路由器。</p>\n<img data-img-id=\"fig-p03-04\" class=\"ds-note-img\" alt=\"图：从工作方式看：边缘部分与核心部分\">\n<p><strong>③逻辑功能：通信子网＋资源子网</strong>。通信子网负责计算机间信息传输：所有通信设备与通信介质，以及主机内实现底层通信的硬件软件都算；资源子网由联网主机（除去底层通信部分）组成，向用户提供硬件、软件、数据资源共享。</p>\n<img data-img-id=\"fig-p03-05\" class=\"ds-note-img\" alt=\"图：从功能性角度看：通信子网与资源子网\">\n<img data-img-id=\"fig-p03-06\" class=\"ds-note-img\" alt=\"图：知识回顾——计算机网络组成的三种视角总结\">\n<p><strong>计算机网络的功能</strong>：</p>\n<p>①<mark><strong>数据通信——最基本、最重要的功能</strong></mark>，不支持数据通信，其余功能都无从谈起；</p>\n<img data-img-id=\"fig-p03-07\" class=\"ds-note-img\" alt=\"图：功能一：数据通信\">\n<p>②资源共享：硬件（智能音箱的语音交给云端强算力服务器处理）、软件（应用商店）、数据（拍视频分享）；</p>\n<img data-img-id=\"fig-p03-08\" class=\"ds-note-img\" alt=\"图：功能二：资源共享——硬件、软件、数据共享\">\n<p>③分布式处理：把大任务拆成子任务分派给多台计算机（矩阵乘法按行拆分、MapReduce）；</p>\n<img data-img-id=\"fig-p03-09\" class=\"ds-note-img\" alt=\"图：功能三：分布式处理——任务拆分与汇总\">\n<p>④提高可靠性：计算机互为替代机，如网盘文件多台服务器互为备份；</p>\n<img data-img-id=\"fig-p03-10\" class=\"ds-note-img\" alt=\"图：功能四：提高可靠性——两台主机互为备份\">\n<p>⑤负载均衡：多台计算机分担繁重任务，如游戏\"匹配服务器＋空闲对战服务器\"分工。</p>\n<img data-img-id=\"fig-p03-11\" class=\"ds-note-img\" alt=\"图：功能五：负载均衡——任务分发到多台主机\">\n<img data-img-id=\"fig-p03-12\" class=\"ds-note-img\" alt=\"图：计算机网络五大功能完整思维导图\">",
+   "images": [
+    {
+     "imgId": "fig-p03-01",
+     "file": "images/ch01/fig-p03-01.jpg"
+    },
+    {
+     "imgId": "fig-p03-02",
+     "file": "images/ch01/fig-p03-02.jpg"
+    },
+    {
+     "imgId": "fig-p03-03",
+     "file": "images/ch01/fig-p03-03.jpg"
+    },
+    {
+     "imgId": "fig-p03-04",
+     "file": "images/ch01/fig-p03-04.jpg"
+    },
+    {
+     "imgId": "fig-p03-05",
+     "file": "images/ch01/fig-p03-05.jpg"
+    },
+    {
+     "imgId": "fig-p03-06",
+     "file": "images/ch01/fig-p03-06.jpg"
+    },
+    {
+     "imgId": "fig-p03-07",
+     "file": "images/ch01/fig-p03-07.jpg"
+    },
+    {
+     "imgId": "fig-p03-08",
+     "file": "images/ch01/fig-p03-08.jpg"
+    },
+    {
+     "imgId": "fig-p03-09",
+     "file": "images/ch01/fig-p03-09.jpg"
+    },
+    {
+     "imgId": "fig-p03-10",
+     "file": "images/ch01/fig-p03-10.jpg"
+    },
+    {
+     "imgId": "fig-p03-11",
+     "file": "images/ch01/fig-p03-11.jpg"
+    },
+    {
+     "imgId": "fig-p03-12",
+     "file": "images/ch01/fig-p03-12.jpg"
+    }
+   ]
+  },
+  {
+   "tree": [
+    "第1章 计算机网络体系结构",
+    "1.1 概念、组成、分类与性能",
+    "1.1_3_1 电路交换、报文交换、分组交换"
+   ],
+   "noteHtml": "<p><span style=\"font-size:20px;color:#7c3aed\"><strong>P4 1.1_3_1 电路交换、报文交换、分组交换（王道 1.1）</strong></span></p>\n<p>数据交换有历史作业可抄：电报网络用报文交换、电话网络用电路交换；现代计算机网络诞生于60年代，前身是阿帕网ARPANET。</p>\n<img data-img-id=\"fig-p04-01\" class=\"ds-note-img\" alt=\"图：知识背景——技术分类板书\">\n<img data-img-id=\"fig-p04-02\" class=\"ds-note-img\" alt=\"图：为什么要数据交换——三种交换技术总纲\">\n<p><strong>电路交换</strong>：早期电话交换机靠人工插线，后实现自动化。三步：<strong>建立连接</strong>（请求逐跳推进、交换机建线路、被叫应答沿电路返回）→<strong>通信</strong>（双方<span style=\"color:#dc2626\"><strong>独占</strong></span>通信资源直到结束——长途更贵正是因为占线路多，别人再打入只听到\"正在通话中\"）→<strong>释放连接</strong>。</p>\n<img data-img-id=\"fig-p04-03\" class=\"ds-note-img\" alt=\"图：早期电话交换机与人工接线\">\n<img data-img-id=\"fig-p04-04\" class=\"ds-note-img\" alt=\"图：电路交换工作原理——电话网络与专用线路\">\n<p>适合计算机网络吗？数据传输是<span style=\"color:#dc2626\"><strong>突发式的：高频次、少量</strong></span>（打字很久、发送一瞬间），建连/释放开销不划算；独占线路利用率极低；中间节点无差错控制；故障只能重新建连。适合低频次、大数据量的稳定传输（优点：专线直达、实时性高）。</p>\n<img data-img-id=\"fig-p04-05\" class=\"ds-note-img\" alt=\"图：假设计算机网络使用电路交换\">\n<img data-img-id=\"fig-p04-06\" class=\"ds-note-img\" alt=\"图：电路交换的优点与缺点总结\">\n<p><strong>报文交换</strong>：报文＝控制信息（从哪发、发给谁）＋用户数据。中间节点<mark><strong>存储转发</strong></mark>：先存下整个报文，再分析控制信息、查转发表选路转发。优点：无需建连、动态选路、线路可共享（利用率高）、能做差错控制。缺点：报文不定长难管理；大报文缓存开销大、时延高、易出错，重传代价大。</p>\n<img data-img-id=\"fig-p04-07\" class=\"ds-note-img\" alt=\"图：报文交换原理——存储转发与选路\">\n<img data-img-id=\"fig-p04-08\" class=\"ds-note-img\" alt=\"图：报文交换的优点与缺点\">\n<p><strong>分组交换</strong>：长报文切成<strong>定长</strong>数据块，各加<strong>首部</strong>（源地址、目的地址、分组号）构成分组（packet）。各分组独立选路——上面拥塞就走下面；接收方可能失序收到（如2、0、1），按分组号重排、去首部、合并还原。优点：继承报文交换全部优点，且定长易管理、存储转发开销小、重传代价低。缺点：每分组带首部，控制信息占比增大；有存储转发时延；可能失序丢失需重组。</p>\n<img data-img-id=\"fig-p04-09\" class=\"ds-note-img\" alt=\"图：分组交换：报文拆分成组\">\n<img data-img-id=\"fig-p04-10\" class=\"ds-note-img\" alt=\"图：各分组独立选路\">\n<img data-img-id=\"fig-p04-11\" class=\"ds-note-img\" alt=\"图：分组交换路径汇总标注\">\n<img data-img-id=\"fig-p04-12\" class=\"ds-note-img\" alt=\"图：分组交换的优缺点总结\">\n<p><span style=\"color:#7c3aed\">补充（虚电路）：分组交换＋\"先建连\"思想——先建虚拟电路，分组按序同路传输，链路仍可共享。</span><mark><strong>现代计算机网络最终采用分组交换技术。</strong></mark></p>",
+   "images": [
+    {
+     "imgId": "fig-p04-01",
+     "file": "images/ch01/fig-p04-01.jpg"
+    },
+    {
+     "imgId": "fig-p04-02",
+     "file": "images/ch01/fig-p04-02.jpg"
+    },
+    {
+     "imgId": "fig-p04-03",
+     "file": "images/ch01/fig-p04-03.jpg"
+    },
+    {
+     "imgId": "fig-p04-04",
+     "file": "images/ch01/fig-p04-04.jpg"
+    },
+    {
+     "imgId": "fig-p04-05",
+     "file": "images/ch01/fig-p04-05.jpg"
+    },
+    {
+     "imgId": "fig-p04-06",
+     "file": "images/ch01/fig-p04-06.jpg"
+    },
+    {
+     "imgId": "fig-p04-07",
+     "file": "images/ch01/fig-p04-07.jpg"
+    },
+    {
+     "imgId": "fig-p04-08",
+     "file": "images/ch01/fig-p04-08.jpg"
+    },
+    {
+     "imgId": "fig-p04-09",
+     "file": "images/ch01/fig-p04-09.jpg"
+    },
+    {
+     "imgId": "fig-p04-10",
+     "file": "images/ch01/fig-p04-10.jpg"
+    },
+    {
+     "imgId": "fig-p04-11",
+     "file": "images/ch01/fig-p04-11.jpg"
+    },
+    {
+     "imgId": "fig-p04-12",
+     "file": "images/ch01/fig-p04-12.jpg"
+    }
+   ]
+  },
+  {
+   "tree": [
+    "第1章 计算机网络体系结构",
+    "1.1 概念、组成、分类与性能",
+    "1.1_3_2 三种交换方式的性能分析"
+   ],
+   "noteHtml": "<p><span style=\"font-size:20px;color:#7c3aed\"><strong>P5 1.1_3_2 三种交换方式的性能分析（王道 1.1）</strong></span></p>\n<p>用横轴为节点（A、B、C、D四根竖线）、纵轴为时间的时序图分析性能，背景小格1格＝1ms。<span style=\"color:#dc2626\"><strong>这种图是解真题的重要工具，必须会读</strong></span>。统一假设：报文4KB、速率0.5KB/ms（发出整个报文需8ms）、每跳传播时延1ms，A经中间节点B、C向D传送。</p>\n<p><strong>电路交换</strong>：先建立连接（请求逐跳传播、交换机内部建线路、目的端处理后应答沿电路返回），数据沿专用物理线路<strong>直送</strong>（中间节点不做存储转发），发完再逐跳释放连接。数据传送阶段＝A发送8ms＋三跳传播3ms＝11ms（建立、释放还有额外开销）。</p>\n<img data-img-id=\"fig-p05-01\" class=\"ds-note-img\" alt=\"图：电路交换性能分析时序图与手写计算\">\n<img data-img-id=\"fig-p05-02\" class=\"ds-note-img\" alt=\"图：电路交换的建立/释放与线路占用示意\">\n<p><strong>报文交换</strong>：无需建连；中间节点必须<span style=\"color:#dc2626\"><strong>接收完整个报文</strong></span>才能解析转发：B花8ms收完（末比特再传播1ms）、2ms存储转发处理后才发向C，C同理——这就是存储转发的代价。</p>\n<img data-img-id=\"fig-p05-03\" class=\"ds-note-img\" alt=\"图：报文交换性能分析——整报文存储转发时序\">\n<p><strong>分组交换</strong>：报文拆成4个1KB分组，每组发送只需2ms、分组存储转发处理0.5ms；A发完一组隔0.5ms即可发下一组，各节点流水线式并行收发，最后一组到达D即完成。</p>\n<img data-img-id=\"fig-p05-04\" class=\"ds-note-img\" alt=\"图：分组交换性能分析——分组流水线传输时序\">\n<p><span style=\"color:#7c3aed\">【例题】三种交换方式性能对比计算</span>：条件同上（报文4KB、速率0.5KB/ms、每跳传播1ms），报文存储转发时延2ms；分组交换拆4个1KB分组、分组存储转发0.5ms。求从A开始发送到D接收完毕的时间（电路交换不计建连/释放）。</p>\n<p>$$\\text{电路交换：}t=\\dfrac{4\\text{KB}}{0.5\\text{KB/ms}}+3\\times1=8+3=11\\text{ms}$$</p>\n<p>$$\\text{报文交换：}t=(8+1)+2+(8+1)+2+(8+1)=31\\text{ms}$$</p>\n<p>$$\\text{分组交换：}t_{\\text{首组到D}}=2+1+0.5+2+1+0.5+2+1=10\\text{ms}$$</p>\n<p>$$\\text{后续每组晚}\\;2.5\\text{ms}\\text{到达：}t=10+2.5\\times3=17.5\\text{ms}$$</p>\n<p><span style=\"color:#dc2626\"><strong>答案：电路交换11ms＜分组交换17.5ms＜报文交换31ms。</strong></span><span style=\"color:#7c3aed\">（课件汇总图手写为11/29/17.5ms，29ms是老师数小格的口径；按逐段累加严格值为31ms，考试请用逐段累加法。）</span></p>\n<img data-img-id=\"fig-p05-05\" class=\"ds-note-img\" alt=\"图：三种交换方式并排对比与手写汇总\">\n<img data-img-id=\"fig-p05-06\" class=\"ds-note-img\" alt=\"图：三种交换方式对比表\">\n<p><mark><strong>结论：电路交换（不计建连）用时最少、报文交换最多、分组交换居中；电路交换无存储转发时延，报文越大存储转发代价越高。</strong></mark></p>",
+   "images": [
+    {
+     "imgId": "fig-p05-01",
+     "file": "images/ch01/fig-p05-01.jpg"
+    },
+    {
+     "imgId": "fig-p05-02",
+     "file": "images/ch01/fig-p05-02.jpg"
+    },
+    {
+     "imgId": "fig-p05-03",
+     "file": "images/ch01/fig-p05-03.jpg"
+    },
+    {
+     "imgId": "fig-p05-04",
+     "file": "images/ch01/fig-p05-04.jpg"
+    },
+    {
+     "imgId": "fig-p05-05",
+     "file": "images/ch01/fig-p05-05.jpg"
+    },
+    {
+     "imgId": "fig-p05-06",
+     "file": "images/ch01/fig-p05-06.jpg"
+    }
+   ]
+  },
+  {
+   "tree": [
+    "第1章 计算机网络体系结构",
+    "1.1 概念、组成、分类与性能",
+    "1.1_4 计算机网络的分类"
+   ],
+   "noteHtml": "<p><span style=\"font-size:20px;color:#7c3aed\"><strong>P6 1.1_4 计算机网络的分类（王道 1.1）</strong></span></p>\n<p>按<strong>分布范围</strong>：<span style=\"color:#dc2626\"><strong>广域网WAN</strong></span>（跨省跨国，几十~几千公里）、城域网MAN（一个或几个城市）、<span style=\"color:#dc2626\"><strong>局域网LAN</strong></span>（几十米~几千米：校园网、企业内网、家庭网）、个域网PAN（蓝牙、ZigBee连接的个人区域网，即WPAN）。<span style=\"color:#7c3aed\">老师口诀：WAN、MAN、LAN、PAN连读——\"完美pain\"。</span></p>\n<img data-img-id=\"fig-p06-01\" class=\"ds-note-img\" alt=\"图：分类知识总览思维导图\">\n<img data-img-id=\"fig-p06-02\" class=\"ds-note-img\" alt=\"图：WAN与LAN覆盖范围对比\">\n<img data-img-id=\"fig-p06-03\" class=\"ds-note-img\" alt=\"图：个域网PAN示例——蓝牙与智能网关\">\n<img data-img-id=\"fig-p06-04\" class=\"ds-note-img\" alt=\"图：按分布范围分类：WAN、MAN、LAN、PAN对比\">\n<p><mark><strong>如今的局域网（乃至城域网）几乎都用以太网技术实现，\"以太网\"几乎成了局域网的代名词</strong></mark>，\"交换机\"全称即以太网交换机；广域网距离远、技术与局域网有别（路由器WAN口连运营商、LAN口接家里设备）。</p>\n<p>按<strong>传输技术</strong>：<strong>广播式网络</strong>（共享信道，发给所有节点、按目的地址决定收下或丢弃——像群聊艾特；WiFi即广播式）与<strong>点对点网络</strong>（精准送达对端，配合存储转发）。</p>\n<img data-img-id=\"fig-p06-05\" class=\"ds-note-img\" alt=\"图：传输技术：广播式与点对点\">\n<p>按<strong>拓扑结构</strong>：<strong>总线型</strong>（广播传输，有<span style=\"color:#dc2626\"><strong>总线征用/冲突</strong></span>问题；集线器网络物理星型、逻辑总线型）；<strong>星型</strong>（中央设备按目的地址点对点转发；交换机网络物理逻辑皆星型）；<strong>环形</strong>（令牌环网：唯一令牌\"击鼓传花\"轮流发送）；<strong>网状</strong>（广域网常见，灵活可靠但控制复杂、成本高）。前三种常见于局域网。</p>\n<img data-img-id=\"fig-p06-06\" class=\"ds-note-img\" alt=\"图：拓扑分类一：总线型与星型\">\n<img data-img-id=\"fig-p06-07\" class=\"ds-note-img\" alt=\"图：拓扑分类二：环形与网状\">\n<p>按<strong>使用者</strong>：公用网（向公众开放）与专用网（政府/军队/银行内网）。<span style=\"color:#7c3aed\">老师原话：\"公用网就是给钱你就能上，专用网是给钱也不行。\"</span>按传输介质分有线/无线。</p>\n<img data-img-id=\"fig-p06-08\" class=\"ds-note-img\" alt=\"图：按使用者分类：公用网与专用网\">\n<img data-img-id=\"fig-p06-09\" class=\"ds-note-img\" alt=\"图：知识回顾——分类思维导图\">\n<img data-img-id=\"fig-p06-10\" class=\"ds-note-img\" alt=\"图：拓扑分类总结：总线、星型、网状三图并列\">\n<p><span style=\"color:#7c3aed\">小故事：80年代令牌环网（IBM）因解决总线征用而流行；90年代以太网交换机彻底解决征用；2000年后令牌环网退出舞台。</span></p>\n<img data-img-id=\"fig-p06-11\" class=\"ds-note-img\" alt=\"图：计算机网络发展史时间线\">",
+   "images": [
+    {
+     "imgId": "fig-p06-01",
+     "file": "images/ch01/fig-p06-01.jpg"
+    },
+    {
+     "imgId": "fig-p06-02",
+     "file": "images/ch01/fig-p06-02.jpg"
+    },
+    {
+     "imgId": "fig-p06-03",
+     "file": "images/ch01/fig-p06-03.jpg"
+    },
+    {
+     "imgId": "fig-p06-04",
+     "file": "images/ch01/fig-p06-04.jpg"
+    },
+    {
+     "imgId": "fig-p06-05",
+     "file": "images/ch01/fig-p06-05.jpg"
+    },
+    {
+     "imgId": "fig-p06-06",
+     "file": "images/ch01/fig-p06-06.jpg"
+    },
+    {
+     "imgId": "fig-p06-07",
+     "file": "images/ch01/fig-p06-07.jpg"
+    },
+    {
+     "imgId": "fig-p06-08",
+     "file": "images/ch01/fig-p06-08.jpg"
+    },
+    {
+     "imgId": "fig-p06-09",
+     "file": "images/ch01/fig-p06-09.jpg"
+    },
+    {
+     "imgId": "fig-p06-10",
+     "file": "images/ch01/fig-p06-10.jpg"
+    },
+    {
+     "imgId": "fig-p06-11",
+     "file": "images/ch01/fig-p06-11.jpg"
+    }
+   ]
+  },
+  {
+   "tree": [
+    "第1章 计算机网络体系结构",
+    "1.1 概念、组成、分类与性能",
+    "1.1_5_1 计算机网络的性能指标(上)"
+   ],
+   "noteHtml": "<p><span style=\"font-size:20px;color:#7c3aed\"><strong>P7 1.1_5_1 计算机网络的性能指标(上)（王道 1.1）</strong></span></p>\n<p>考研掌握7个性能指标：速率、带宽、吞吐量、时延、时延带宽积、RTT、信道利用率，本节先学前三个。</p>\n<img data-img-id=\"fig-p07-01\" class=\"ds-note-img\" alt=\"图：性能指标知识框架\">\n<p><strong>指标1 速率</strong>：节点在信道上传输数据的速率，又称数据率、比特率，真题常称\"数据传输速率\"。</p>\n<img data-img-id=\"fig-p07-02\" class=\"ds-note-img\" alt=\"图：速率：任务管理器实时速率\">\n<p><span style=\"color:#dc2626\"><strong>易错：大B与小b</strong></span>——大B是字节Byte、小b是比特bit，<strong>1B＝8b</strong>，$1.8\\text{MB/s}=1.8\\times10^6\\times8$ bit/s；K、M、G、T依次×10³。<span style=\"color:#dc2626\"><strong>计网前缀按10³、计组/OS按2¹⁰换算——先统一单位</strong></span>。</p>\n<img data-img-id=\"fig-p07-03\" class=\"ds-note-img\" alt=\"图：单位换算：K→M→G→T每级×10³\">\n<p><span style=\"color:#7c3aed\">【例题】速率与带宽</span>：链路带宽100Mb/s，A网卡1Gb/s，B网卡10Mb/s，求A向B发送的最高理论速率。</p>\n<p>$$v_{\\max}=\\min(100,\\;1000,\\;10)=10\\text{Mb/s}$$</p>\n<p><span style=\"color:#dc2626\"><strong>答案：10Mb/s（选B）。</strong></span>B的网卡是瓶颈，发太快只会丢数据。</p>\n<img data-img-id=\"fig-p07-04\" class=\"ds-note-img\" alt=\"图：例题：速率带宽瓶颈\">\n<p>学以致用：千兆宽带＝1000Mb/s。<mark><strong>实际最高速率由带宽和节点性能共同限制</strong></mark>——五类线仅100Mb/s、六类线1000Mb/s，百兆WAN口老路由器拖慢千兆宽带。</p>\n<img data-img-id=\"fig-p07-05\" class=\"ds-note-img\" alt=\"图：千兆带宽、光猫与路由器\">\n<img data-img-id=\"fig-p07-06\" class=\"ds-note-img\" alt=\"图：五类、六类、八类网线\">\n<p><strong>指标2 带宽</strong>：信道能传送的<strong>最高数据率</strong>。另一含义（通信领域）：允许通过的信号频带范围（Hz）——如人眼只见400~750THz的可见光；光纤带宽远大于电话线。两者本质都反映信道传输能力。</p>\n<img data-img-id=\"fig-p07-07\" class=\"ds-note-img\" alt=\"图：带宽的两种含义\">\n<p><strong>指标3 吞吐量</strong>：单位时间通过某网络/信道/接口的<strong>实际</strong>数据量——如网线收发两向相加95.1MB/s。</p>\n<img data-img-id=\"fig-p07-08\" class=\"ds-note-img\" alt=\"图：吞吐量：实际数据量\">\n<img data-img-id=\"fig-p07-09\" class=\"ds-note-img\" alt=\"图：性能指标总结导图\">\n<p><span style=\"color:#7c3aed\">【例题】发送时延与传播时延计算</span>：分组1000B，发送速率100Mb/s，链路长1000km，电波传播速率$2\\times10^8$ m/s，求两个时延。</p>\n<p>$$t_{\\text{发送}}=\\dfrac{1000\\times8\\text{bit}}{100\\times10^6\\text{bit/s}}=0.08\\text{ms}$$</p>\n<p>$$t_{\\text{传播}}=\\dfrac{10^6\\text{m}}{2\\times10^8\\text{m/s}}=5\\text{ms}$$</p>\n<p><span style=\"color:#dc2626\"><strong>答案：发送时延0.08ms，传播时延5ms。</strong></span></p>",
+   "images": [
+    {
+     "imgId": "fig-p07-01",
+     "file": "images/ch01/fig-p07-01.jpg"
+    },
+    {
+     "imgId": "fig-p07-02",
+     "file": "images/ch01/fig-p07-02.jpg"
+    },
+    {
+     "imgId": "fig-p07-03",
+     "file": "images/ch01/fig-p07-03.jpg"
+    },
+    {
+     "imgId": "fig-p07-04",
+     "file": "images/ch01/fig-p07-04.jpg"
+    },
+    {
+     "imgId": "fig-p07-05",
+     "file": "images/ch01/fig-p07-05.jpg"
+    },
+    {
+     "imgId": "fig-p07-06",
+     "file": "images/ch01/fig-p07-06.jpg"
+    },
+    {
+     "imgId": "fig-p07-07",
+     "file": "images/ch01/fig-p07-07.jpg"
+    },
+    {
+     "imgId": "fig-p07-08",
+     "file": "images/ch01/fig-p07-08.jpg"
+    },
+    {
+     "imgId": "fig-p07-09",
+     "file": "images/ch01/fig-p07-09.jpg"
+    }
+   ]
+  },
+  {
+   "tree": [
+    "第1章 计算机网络体系结构",
+    "1.1 概念、组成、分类与性能",
+    "1.1_5_2 计算机网络的性能指标(下)"
+   ],
+   "noteHtml": "<p><span style=\"font-size:20px;color:#7c3aed\"><strong>P8 1.1_5_2 计算机网络的性能指标(下)（王道 1.1）</strong></span></p>\n<p><strong>指标4 时延</strong>：数据从网络A点到B点所需的时间。<mark><strong>总时延＝发送时延＋传播时延＋处理时延＋排队时延</strong></mark>。<strong>发送时延</strong>（又称传输时延）＝数据长度÷发送速率；<strong>传播时延</strong>＝信道长度÷传播速率。<span style=\"color:#dc2626\"><strong>\"传输时延\"≠\"传播时延\"！处理、排队时延题目不说明则默认忽略。</strong></span><span style=\"color:#7c3aed\">老师比喻：收费站放行100辆车＝发送时延，上了高速开车＝传播时延。每过一条信道，产生一次发送时延＋一次传播时延。</span></p>\n<img data-img-id=\"fig-p08-01\" class=\"ds-note-img\" alt=\"图：时延例题板书：总时延=发送+传播\">\n<p><span style=\"color:#7c3aed\">【例题】总时延计算</span>：H1经路由器向H2发1000B分组，两段发送速率100Mb/s、80Mb/s，传播时延0.01ms、0.05ms，忽略处理排队时延。</p>\n<p>$$t_{\\text{发}1}=\\dfrac{1000\\times8}{100\\times10^6}=0.08\\text{ms}\\qquad t_{\\text{发}2}=\\dfrac{1000\\times8}{80\\times10^6}=0.1\\text{ms}$$</p>\n<p>$$t_{\\text{总}}=0.08+0.01+0.1+0.05=0.24\\text{ms}$$</p>\n<p><span style=\"color:#dc2626\"><strong>答案：0.24ms；</strong></span>若加处理＋排队0.04ms则0.28ms。</p>\n<img data-img-id=\"fig-p08-02\" class=\"ds-note-img\" alt=\"图：例题解答：两段链路时间轴\">\n<p><strong>指标5 时延带宽积</strong>＝传播时延×带宽，单位比特。<mark><strong>把链路想成水管：带宽是横截面、传播时延是管长——时延带宽积＝已发出而尚未到达的最大比特数</strong></mark>。</p>\n<img data-img-id=\"fig-p08-03\" class=\"ds-note-img\" alt=\"图：时延带宽积管道模型\">\n<p><span style=\"color:#7c3aed\">【例题】2023年408第33题</span>：两段链路带宽均100Mb/s、时延带宽积均1000bit；H1向H2发送1MB文件（M＝10⁶）、分组长1000B，忽略处理排队，求从开始发送到全部被接收的最短时间。</p>\n<p>$$\\text{分组数}=\\dfrac{10^6}{10^3}=1000\\qquad t_{\\text{发送}}=\\dfrac{1000\\times8}{100\\times10^6}=0.08\\text{ms}$$</p>\n<p>$$t_{\\text{传播}}=\\dfrac{1000}{100\\times10^6}=0.01\\text{ms}\\qquad t=0.01+0.08+0.01+0.08\\times1000=80.10\\text{ms}$$</p>\n<p><span style=\"color:#dc2626\"><strong>答案：80.10ms（选D）。</strong></span>给时延带宽积就是让你反求传播时延。</p>\n<img data-img-id=\"fig-p08-04\" class=\"ds-note-img\" alt=\"图：例题：2023年408真题\">\n<img data-img-id=\"fig-p08-05\" class=\"ds-note-img\" alt=\"图：真题时间轴图解\">\n<p><strong>指标6 往返时延RTT</strong>：从发送方<strong>发送完数据</strong>到收到确认为止＝数据传播＋对方处理＋确认发送＋确认传播时延。<span style=\"color:#dc2626\"><strong>不含数据本身的发送时延（谢希仁教材口径）</strong></span>。游戏的\"延迟\"即手机与服务器的RTT。</p>\n<img data-img-id=\"fig-p08-06\" class=\"ds-note-img\" alt=\"图：RTT：发送完数据到收到确认\">\n<p><strong>指标7 信道利用率</strong>＝有数据通过的时间÷总时间。<span style=\"color:#7c3aed\">老师例子：蓝牙连接1分钟、以80Mb/s传20张10MB照片：</span>有数据通过$\\dfrac{20\\times10\\times8}{80}=20$秒，<span style=\"color:#dc2626\"><strong>利用率20/60≈33.3%</strong></span>——太低浪费带宽，太高易引发拥塞。</p>\n<img data-img-id=\"fig-p08-07\" class=\"ds-note-img\" alt=\"图：信道利用率演算\">\n<img data-img-id=\"fig-p08-08\" class=\"ds-note-img\" alt=\"图：小结：七个性能指标导图\">",
+   "images": [
+    {
+     "imgId": "fig-p08-01",
+     "file": "images/ch01/fig-p08-01.jpg"
+    },
+    {
+     "imgId": "fig-p08-02",
+     "file": "images/ch01/fig-p08-02.jpg"
+    },
+    {
+     "imgId": "fig-p08-03",
+     "file": "images/ch01/fig-p08-03.jpg"
+    },
+    {
+     "imgId": "fig-p08-04",
+     "file": "images/ch01/fig-p08-04.jpg"
+    },
+    {
+     "imgId": "fig-p08-05",
+     "file": "images/ch01/fig-p08-05.jpg"
+    },
+    {
+     "imgId": "fig-p08-06",
+     "file": "images/ch01/fig-p08-06.jpg"
+    },
+    {
+     "imgId": "fig-p08-07",
+     "file": "images/ch01/fig-p08-07.jpg"
+    },
+    {
+     "imgId": "fig-p08-08",
+     "file": "images/ch01/fig-p08-08.jpg"
+    }
+   ]
+  },
+  {
+   "tree": [
+    "第1章 计算机网络体系结构",
+    "1.2 分层结构",
+    "1.2.1 计算机网络分层结构（上）"
+   ],
+   "noteHtml": "<p><span style=\"font-size:20px;color:#7c3aed\"><strong>P9 1.2.1 计算机网络分层结构（上）（王道 1.2）</strong></span></p>\n<p><strong>分层设计的思想（快递网络类比）</strong>：快递网络有终点站和中转站，功能庞杂——打包、取派件、冷链存储、包裹路由（多条转运路径选一条）、运输。现实方案是分层：<strong>顾客</strong>打包、<strong>快递员</strong>取派件、<strong>仓储部门</strong>冷链与路由、<strong>运输部门</strong>运输——把庞大复杂的问题拆成若干小的局部问题；终点站实现全部四层，中转站只需最低两层。寄件时逐层\"请求下一层服务\"，到站后逐层向上交付。</p>\n<img data-img-id=\"fig-p09-01\" class=\"ds-note-img\" alt=\"图：知识地图——分层结构总览\">\n<img data-img-id=\"fig-p09-02\" class=\"ds-note-img\" alt=\"图：分层的设计思路——快递网络类比\">\n<p>计算机网络同样复杂：差错控制、流量控制、分段与重装、复用分用、连接的建立与释放……因此把功能安排到合适的层次，划分为<strong>物理层、数据链路层、网络层、传输层、应用层</strong>：<span style=\"color:#dc2626\"><strong>主机实现第1~5层全部功能，路由器只需第1~3层</strong></span>，物理传输媒体可视作第0层；发送方逐层向下处理，接收方逐层向上逆处理。</p>\n<img data-img-id=\"fig-p09-03\" class=\"ds-note-img\" alt=\"图：快递网络功能与计算机网络功能的对应\">\n<img data-img-id=\"fig-p09-04\" class=\"ds-note-img\" alt=\"图：计算机网络的分层结构要点\">\n<p>分层不唯一：快递网络可在顾客与快递员之间加一层\"快递驿站\"变五层，网络也可四层或七层。要求只有一条——<strong>功能安排必须合理</strong>；同一功能也允许在多层重复实现。</p>\n<img data-img-id=\"fig-p09-05\" class=\"ds-note-img\" alt=\"图：快递网络的四层体系结构（可扩展）\">\n<p><strong>网络体系结构</strong>：计算机网络的<strong>各层及其协议的集合</strong>——每层支持若干协议、每个协议实现若干功能，本质是对网络各部分<span style=\"color:#dc2626\"><strong>所应完成功能的精确定义</strong></span>；只定义\"分几层、每层干什么、用什么协议\"，不涉及实现（交给软硬件厂家），是抽象的概念。</p>\n<img data-img-id=\"fig-p09-06\" class=\"ds-note-img\" alt=\"图：网络体系结构的概念——精确定义、不涉及实现\">\n<p><strong>三种常见体系结构</strong>：<strong>OSI参考模型</strong>（七层，ISO提出，\"法律上的标准\"）；<strong>TCP/IP模型</strong>（四层，由ARPANET发展而来，统治互联网，\"事实上的标准\"）；<strong>五层原理体系结构</strong>（综合两者优点，教学与考研大纲按五层展开）。</p>\n<img data-img-id=\"fig-p09-07\" class=\"ds-note-img\" alt=\"图：三种体系结构：OSI七层、TCP/IP四层、五层原理模型\">\n<p><strong>各层之间的关系</strong>：第n层实现该层功能的软硬件模块＝该层<strong>实体</strong>；不同节点同层实体互称<strong>对等实体</strong>。<mark><strong>协议是\"水平\"的——控制对等实体间通信的规则；接口与服务是\"垂直\"的——上层通过接口（服务访问点SAP）请求相邻下层的服务</strong></mark>。</p>\n<img data-img-id=\"fig-p09-08\" class=\"ds-note-img\" alt=\"图：各层关系——实体、协议（水平）与服务（垂直）\">",
+   "images": [
+    {
+     "imgId": "fig-p09-01",
+     "file": "images/ch01/fig-p09-01.jpg"
+    },
+    {
+     "imgId": "fig-p09-02",
+     "file": "images/ch01/fig-p09-02.jpg"
+    },
+    {
+     "imgId": "fig-p09-03",
+     "file": "images/ch01/fig-p09-03.jpg"
+    },
+    {
+     "imgId": "fig-p09-04",
+     "file": "images/ch01/fig-p09-04.jpg"
+    },
+    {
+     "imgId": "fig-p09-05",
+     "file": "images/ch01/fig-p09-05.jpg"
+    },
+    {
+     "imgId": "fig-p09-06",
+     "file": "images/ch01/fig-p09-06.jpg"
+    },
+    {
+     "imgId": "fig-p09-07",
+     "file": "images/ch01/fig-p09-07.jpg"
+    },
+    {
+     "imgId": "fig-p09-08",
+     "file": "images/ch01/fig-p09-08.jpg"
+    }
+   ]
+  },
+  {
+   "tree": [
+    "第1章 计算机网络体系结构",
+    "1.2 分层结构",
+    "1.2.2 计算机网络分层结构（下）"
+   ],
+   "noteHtml": "<p><span style=\"font-size:20px;color:#7c3aed\"><strong>P10 1.2.2 计算机网络分层结构（下）（王道 1.2）</strong></span></p>\n<p>回顾：工作在某一层的软硬件模块＝这层的实体；同层实体之间遵循协议通信——<strong>协议约束水平方向的通信规则</strong>。</p>\n<img data-img-id=\"fig-p10-01\" class=\"ds-note-img\" alt=\"图：各层关系——实体、对等层与协议的定义\">\n<p><strong>水平视角</strong>：老师举\"YSCS压缩传输协议\"——发送方第5层实体压缩数据以省流量，并在<strong>首部</strong>注明压缩算法；接收方对等实体读首部、用对应算法解压。用户感受不到压缩/解压，仿佛数据原样传送。由此体会<mark><strong>为什么要分层、为什么制定协议</strong></mark>：功能分到各层后，同层对等实体要配合实现本层功能，就要靠协议约定通信规则；首部、尾部正是为落实协议附加的控制信息（几个字节、每字节含义都要规定清楚）。</p>\n<img data-img-id=\"fig-p10-02\" class=\"ds-note-img\" alt=\"图：水平视角——YSCS压缩传输协议与首部作用\">\n<p><strong>垂直视角</strong>：发送方数据逐层向下，每层按本层协议加控制信息：应用层加H5→传输层加H4→网络层加H3（含源/目的IP）→链路层加H2和尾部T2→物理层把比特流原样送上媒体。中间<span style=\"color:#dc2626\"><strong>路由器只实现下三层</strong></span>：检查H3决定下一跳，再重新封装H2/T2发出；接收主机逐层检查、拆掉本层首部，最终把\"干净\"的数据交给用户——每层实体只关心本层控制信息。</p>\n<img data-img-id=\"fig-p10-03\" class=\"ds-note-img\" alt=\"图：垂直视角——逐层封装与解封装（H5/H4/H3/H2/T2）\">\n<p><strong>三个易混概念</strong>：<strong>协议数据单元PDU</strong>＝对等层间传送的数据单位；<strong>协议控制信息PCI</strong>＝控制协议操作的信息（即首部＋尾部）；<strong>服务数据单元SDU</strong>＝为完成上层功能而传送的数据。<mark><strong>n-SDU＋n-PCI＝n-PDU＝(n-1)-SDU</strong></mark>——建议对照图示体会。</p>\n<img data-img-id=\"fig-p10-04\" class=\"ds-note-img\" alt=\"图：PDU、SDU、PCI的概念与关系式\">\n<p><strong>协议三要素</strong>：<strong>语法</strong>——数据与控制信息的格式（首部几字节、每字节含义、SDU最长多少）；<strong>语义</strong>——发何种控制信息、完成何种动作、做出何种应答（要不要回\"传输成功/失败\"）；<strong>同步</strong>（真题写作<span style=\"color:#dc2626\"><strong>时序</strong></span>）——事件执行的顺序与条件（\"收到数据须立即应答；10秒内未收到成功应答则重传\"）。<strong>语义说\"做什么\"，时序说\"何时做\"</strong>。</p>\n<img data-img-id=\"fig-p10-05\" class=\"ds-note-img\" alt=\"图：协议的三要素——语法、语义、同步（时序）\">\n<p>知识回顾：三种体系结构→实体、协议、接口、服务→PDU三兄弟→协议三要素。服务可按可靠/不可靠、面向连接/无连接、有响应/无响应分类，后续章节再理解。</p>\n<img data-img-id=\"fig-p10-06\" class=\"ds-note-img\" alt=\"图：知识回顾——分层结构思维导图\">",
+   "images": [
+    {
+     "imgId": "fig-p10-01",
+     "file": "images/ch01/fig-p10-01.jpg"
+    },
+    {
+     "imgId": "fig-p10-02",
+     "file": "images/ch01/fig-p10-02.jpg"
+    },
+    {
+     "imgId": "fig-p10-03",
+     "file": "images/ch01/fig-p10-03.jpg"
+    },
+    {
+     "imgId": "fig-p10-04",
+     "file": "images/ch01/fig-p10-04.jpg"
+    },
+    {
+     "imgId": "fig-p10-05",
+     "file": "images/ch01/fig-p10-05.jpg"
+    },
+    {
+     "imgId": "fig-p10-06",
+     "file": "images/ch01/fig-p10-06.jpg"
+    }
+   ]
+  },
+  {
+   "tree": [
+    "第1章 计算机网络体系结构",
+    "1.2 分层结构",
+    "1.2.3_1 OSI参考模型"
+   ],
+   "noteHtml": "<p><span style=\"font-size:20px;color:#7c3aed\"><strong>P11 1.2.3_1 OSI参考模型（王道 1.2）</strong></span></p>\n<p>考研要求：记<span style=\"color:#dc2626\"><strong>各层名称与顺序</strong></span>、<span style=\"color:#dc2626\"><strong>设备所在层次</strong></span>与各层功能。术语统一：第4层叫传输层。</p>\n<img data-img-id=\"fig-p11-01\" class=\"ds-note-img\" alt=\"图：OSI参考模型导入\">\n<img data-img-id=\"fig-p11-02\" class=\"ds-note-img\" alt=\"图：OSI与TCP/IP四层对照\">\n<p><strong>七层顺序</strong>（自下而上）：物理、数据链路、网络、传输、会话、表示、应用。<span style=\"color:#7c3aed\">口诀（王道原创）：\"物联网叔会使用\"——物（物理）联（链路）网（网络）书（传输）会（会话）使（表示）用（应用）。</span></p>\n<img data-img-id=\"fig-p11-03\" class=\"ds-note-img\" alt=\"图：口诀\"物联网叔会使用\"\">\n<p><strong>常见设备的层次</strong>：主机实现全部七层；<span style=\"color:#dc2626\"><strong>集线器——物理层；交换机——物理层＋数据链路层；路由器——物理＋链路＋网络层</strong></span>。</p>\n<img data-img-id=\"fig-p11-04\" class=\"ds-note-img\" alt=\"图：设备与OSI层次对应\">\n<p><strong>1 物理层</strong>：实现相邻节点间<strong>比特</strong>（0/1）的传输——定义电路接口参数（形状、引脚数）与信号含义、电气特征（5V表示1、每比特0.1ms），接收方据此还原比特流。</p>\n<img data-img-id=\"fig-p11-05\" class=\"ds-note-img\" alt=\"图：1#物理层：接口与信号\">\n<img data-img-id=\"fig-p11-06\" class=\"ds-note-img\" alt=\"图：1#物理层：编码波形\">\n<p><strong>2 数据链路层</strong>：确保相邻节点间链路<strong>逻辑上无差错</strong>。差错控制——加校验位，检错后纠错或丢弃重发；流量控制——协调收发速率。单位为<strong>帧</strong>。</p>\n<img data-img-id=\"fig-p11-07\" class=\"ds-note-img\" alt=\"图：2#链路层：差错与流量控制\">\n<p><strong>3 网络层</strong>：把<strong>分组</strong>（数据报）从源传到目的——路由选择、分组转发、拥塞控制、网际互联，另有差错/流量控制、虚电路连接、可靠传输——链路层只保证每帧正确，推不出整个分组正确。</p>\n<img data-img-id=\"fig-p11-08\" class=\"ds-note-img\" alt=\"图：3#网络层：路由选择等\">\n<p><strong>4 传输层</strong>：实现<span style=\"color:#dc2626\"><strong>端到端（进程到进程）</strong></span>通信——给进程绑定端口号完成复用与分用；以<strong>报文段</strong>为单位（可拆成多个分组）；差错/流量控制、连接管理、可靠传输针对报文段。</p>\n<p><strong>5~7层</strong>：会话层管理进程会话，靠<strong>检查点</strong>支持断点续传；表示层<strong>数据格式转换</strong>（编码/压缩/加密）；应用层实现具体网络应用（HTTP）。</p>\n<img data-img-id=\"fig-p11-09\" class=\"ds-note-img\" alt=\"图：5~7层：会话、格式转换与应用\">\n<p>各层数据单元：<mark><strong>应用层报文→传输层报文段→网络层分组（数据报）→链路层帧→物理层比特</strong></mark>。</p>\n<img data-img-id=\"fig-p11-10\" class=\"ds-note-img\" alt=\"图：各层数据单元对照\">\n<img data-img-id=\"fig-p11-11\" class=\"ds-note-img\" alt=\"图：七层总结表\">",
+   "images": [
+    {
+     "imgId": "fig-p11-01",
+     "file": "images/ch01/fig-p11-01.jpg"
+    },
+    {
+     "imgId": "fig-p11-02",
+     "file": "images/ch01/fig-p11-02.jpg"
+    },
+    {
+     "imgId": "fig-p11-03",
+     "file": "images/ch01/fig-p11-03.jpg"
+    },
+    {
+     "imgId": "fig-p11-04",
+     "file": "images/ch01/fig-p11-04.jpg"
+    },
+    {
+     "imgId": "fig-p11-05",
+     "file": "images/ch01/fig-p11-05.jpg"
+    },
+    {
+     "imgId": "fig-p11-06",
+     "file": "images/ch01/fig-p11-06.jpg"
+    },
+    {
+     "imgId": "fig-p11-07",
+     "file": "images/ch01/fig-p11-07.jpg"
+    },
+    {
+     "imgId": "fig-p11-08",
+     "file": "images/ch01/fig-p11-08.jpg"
+    },
+    {
+     "imgId": "fig-p11-09",
+     "file": "images/ch01/fig-p11-09.jpg"
+    },
+    {
+     "imgId": "fig-p11-10",
+     "file": "images/ch01/fig-p11-10.jpg"
+    },
+    {
+     "imgId": "fig-p11-11",
+     "file": "images/ch01/fig-p11-11.jpg"
+    }
+   ]
+  },
+  {
+   "tree": [
+    "第1章 计算机网络体系结构",
+    "1.2 分层结构",
+    "1.2.3_2 TCP IP模型"
+   ],
+   "noteHtml": "<p><span style=\"font-size:20px;color:#7c3aed\"><strong>P12 1.2.3_2 TCP IP模型（王道 1.2）</strong></span></p>\n<p><strong>TCP/IP四层</strong>（自下而上）：<strong>网络接口层</strong>（≈OSI物理＋链路层）、<strong>网络层</strong>、<strong>传输层</strong>、<strong>应用层</strong>（≈OSI会话＋表示＋应用）。<span style=\"color:#7c3aed\">老师口诀：\"接网叔用\"——接上网络，书（叔）就能用。</span></p>\n<img data-img-id=\"fig-p12-01\" class=\"ds-note-img\" alt=\"图：知识框架：与OSI的区别\">\n<p><strong>理念区别一（高层）</strong>：会话管理（断点续传）、数据格式转换（编码/压缩/加密）<strong>并非每个应用都需要</strong>——编码相同就用不着转换；断网也可整个重传。TCP/IP干脆<span style=\"color:#dc2626\"><strong>去掉会话层和表示层</strong></span>，这些功能下放给应用层协议按需选用。</p>\n<img data-img-id=\"fig-p12-02\" class=\"ds-note-img\" alt=\"图：回顾OSI 5~7层\">\n<img data-img-id=\"fig-p12-03\" class=\"ds-note-img\" alt=\"图：网络接口层：只定任务不作规定\">\n<p><strong>理念区别二（底层）</strong>：OSI把物理层、链路层规定得太死，限制硬件厂商创新。TCP/IP在网络层之下只设<strong>网络接口层</strong>：只规定任务（相邻节点间传输、为网络层交付分组），<span style=\"color:#dc2626\"><strong>具体怎么实现不作规定</strong></span>——更灵活、更适应技术演进，赢得厂商支持。</p>\n<p>层次对应：OSI物理＋链路层↔网络接口层，会话＋表示＋应用层↔应用层；中间两层同名、理念有别。</p>\n<img data-img-id=\"fig-p12-04\" class=\"ds-note-img\" alt=\"图：OSI与TCP/IP对照图\">\n<img data-img-id=\"fig-p12-05\" class=\"ds-note-img\" alt=\"图：层次对应表：并入应用层\">\n<p><strong>理念区别三（网络层）</strong>：OSI网络层还要差错控制、流量控制、连接管理、可靠传输（功能全开＝<strong>虚电路</strong>（有连接可靠）；不用＝数据报（无连接不可靠））。TCP/IP的思路：<strong>全局正确必推出局部正确</strong>——底层不管可靠性，传输层以报文段统一把关。<span style=\"color:#7c3aed\">老师原话：网络层\"主打一个摆烂\"，只尽最大努力交付，分组可能出错、失序、丢失。</span><mark><strong>TCP/IP网络层只提供无连接、不可靠服务；可靠性交给传输层——TCP面向连接可靠、UDP无连接不可靠。</strong></mark></p>\n<img data-img-id=\"fig-p12-06\" class=\"ds-note-img\" alt=\"图：TCP/IP模型下的路由过程\">\n<img data-img-id=\"fig-p12-07\" class=\"ds-note-img\" alt=\"图：OSI与TCP/IP分色对照\">\n<p><strong>传输层的区别</strong>：80年代的OSI认为传输层只能<strong>有连接可靠</strong>；TCP/IP传输层两种皆有（TCP/UDP）。<span style=\"color:#7c3aed\">看直播丢几帧可以忍受——无连接不可靠的服务也有必要。</span></p>\n<img data-img-id=\"fig-p12-08\" class=\"ds-note-img\" alt=\"图：OSI与TCP/IP层次对照表\">\n<img data-img-id=\"fig-p12-09\" class=\"ds-note-img\" alt=\"图：总结：两模型对照及各层服务\">\n<p><span style=\"color:#dc2626\"><strong>高频考点：OSI网络层可提供虚电路/数据报两种服务、传输层仅有连接可靠；TCP/IP网络层无连接不可靠、传输层TCP/UDP皆有。</strong></span></p>",
+   "images": [
+    {
+     "imgId": "fig-p12-01",
+     "file": "images/ch01/fig-p12-01.jpg"
+    },
+    {
+     "imgId": "fig-p12-02",
+     "file": "images/ch01/fig-p12-02.jpg"
+    },
+    {
+     "imgId": "fig-p12-03",
+     "file": "images/ch01/fig-p12-03.jpg"
+    },
+    {
+     "imgId": "fig-p12-04",
+     "file": "images/ch01/fig-p12-04.jpg"
+    },
+    {
+     "imgId": "fig-p12-05",
+     "file": "images/ch01/fig-p12-05.jpg"
+    },
+    {
+     "imgId": "fig-p12-06",
+     "file": "images/ch01/fig-p12-06.jpg"
+    },
+    {
+     "imgId": "fig-p12-07",
+     "file": "images/ch01/fig-p12-07.jpg"
+    },
+    {
+     "imgId": "fig-p12-08",
+     "file": "images/ch01/fig-p12-08.jpg"
+    },
+    {
+     "imgId": "fig-p12-09",
+     "file": "images/ch01/fig-p12-09.jpg"
+    }
+   ]
+  }
+ ]
 }
