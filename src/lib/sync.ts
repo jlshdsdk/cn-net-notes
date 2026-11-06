@@ -331,6 +331,10 @@ export async function pullNow(): Promise<void> {
       await d.delete('notes', id);
       const imgKeys = await d.getAllKeysFromIndex('images', 'by-doc', id);
       for (const k of imgKeys) await d.delete('images', k);
+      // 已删的行同时清出脏集合：防止残留排队清单把墓碑行"复活"回云端
+      const purgedNode = dirty.nodes.delete(id);
+      const purgedNote = dirty.notes.delete(id);
+      if (purgedNode || purgedNote) persistDirty();
     }
 
     let maxServerMs = Date.parse(since);
