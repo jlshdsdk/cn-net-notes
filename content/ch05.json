@@ -1,0 +1,479 @@
+{
+  "chapter": "第5章 传输层",
+  "docs": [
+    {
+      "tree": [
+        "第5章 传输层",
+        "5.1 传输层提供的服务",
+        "5.1 传输层提供的服务"
+      ],
+      "noteHtml": "<p><span style=\"font-size:20px;color:#7c3aed\"><strong>P74 5.1 传输层提供的服务（王道 5.1）</strong></span></p>\n<p>进入第5章传输层，共三块内容：传输层提供的服务（基本概念，常结合UDP/TCP考察）、UDP（历年3道小题，2024年考UDP校验）、TCP（<strong>20道小题+2道大题，绝对重点</strong>）。本节先理解<strong>端口的作用</strong>。</p>\n<img data-img-id=\"fig-p74-01\" class=\"ds-note-img\" alt=\"图：408考纲与考频\">\n<p><strong>传输层在协议栈中的位置</strong>：用户数据交给应用层进程后，进程可能在数据前添加应用层首部H5——<span style=\"color:#7c3aed\">老师说：H5可能存在也可能不存在，取决于应用程序的实现逻辑</span>。传输层添加H4首部（TCP或UDP首部，格式不同），整块交给网络层封装成IP数据报。</p>\n<img data-img-id=\"fig-p74-02\" class=\"ds-note-img\" alt=\"图：协议栈中的位置\">\n<p><strong>端口的作用</strong>：IP地址只标记一台主机，网络层实现\"主机到主机\"的传输；数据最终要交给某个进程——给进程绑定端口号（同主机不重复）即可精确定位。<mark><strong>IP地址+端口号→唯一标识网络中一台主机上的一个特定进程；传输层据此实现端到端（进程到进程）的通信</strong></mark>。</p>\n<img data-img-id=\"fig-p74-03\" class=\"ds-note-img\" alt=\"图：IP+端口定位进程\">\n<p><strong>进程、端口号与协议的关系</strong>：<span style=\"color:#dc2626\"><strong>①两台主机的端口号相互独立；②TCP与UDP的端口号也相互独立（两个886并不冲突）；③两进程通信需指明协议+本进程端口号+对方IP地址与端口号</strong></span>。C/C++为此定义<strong>套接字Socket</strong>（含IP与端口的数据结构）——<span style=\"color:#7c3aed\">老师说：它像一个\"网络指针\"，指向将要与本进程通信的另一个进程</span>。</p>\n<p><strong>端口号分类</strong>：16bit、0~65535；服务器=被动通信一方、客户端=主动发起一方。<span style=\"color:#dc2626\"><strong>熟知端口号0~1023：FTP=21、TELNET=23、SMTP=25、DNS=53、TFTP=69、HTTP=80、SNMP=161，留给全世界普遍使用的重要应用，自己开发的应用一般不用</strong></span>；其余端口实际开发无严格限制。<span style=\"color:#7c3aed\">老师说：分类只是\"建议标准\"而非\"强制标准\"。</span></p>\n<img data-img-id=\"fig-p74-04\" class=\"ds-note-img\" alt=\"图：熟知端口号表\">\n<p><strong>复用与分用</strong>：多个进程共用传输层同一协议（应用层→传输层）称<strong>复用</strong>；按目的端口号分派给对应进程（传输层→应用层）称<strong>分用</strong>。<strong>差错检测</strong>：TCP/UDP查出比特错误都丢弃，<span style=\"color:#dc2626\"><strong>区别是TCP会通知发送方重传（靠谱）、UDP不通知</strong></span>。</p>\n<img data-img-id=\"fig-p74-05\" class=\"ds-note-img\" alt=\"图：复用与分用\">\n<p><strong>有连接 vs 无连接</strong>：<span style=\"color:#7c3aed\">老师用小帅小美对话演示：有连接要先打招呼——\"在吗？说点事情\"\"在的，请讲\"（建立连接），传完数据\"说完了，拜拜\"（释放连接）；无连接不打招呼直接把数据丢给对方</span>。</p>\n<img data-img-id=\"fig-p74-06\" class=\"ds-note-img\" alt=\"图：有连接vs无连接\">\n<p><strong>可靠 vs 不可靠</strong>：可靠传输靠<strong>确认机制</strong>——发①V我50、②解救肯塔基老爷爷，逐句回\"①收到、②收到\"；不可靠则接收方毫无反馈。应用上：<strong>TCP传文件（准确性优先），UDP视频通话、直播一对多推送（实时性优先）</strong>。</p>\n<img data-img-id=\"fig-p74-07\" class=\"ds-note-img\" alt=\"图：可靠vs不可靠\">\n<p>小结：端口的作用与分类、端到端通信、复用分用、差错检测、TCP面向连接可靠/UDP无连接不可靠。</p>\n<img data-img-id=\"fig-p74-08\" class=\"ds-note-img\" alt=\"图：本节总结思维导图\">",
+      "images": [
+        {
+          "imgId": "fig-p74-01",
+          "file": "images/ch05/fig-p74-01.jpg"
+        },
+        {
+          "imgId": "fig-p74-02",
+          "file": "images/ch05/fig-p74-02.jpg"
+        },
+        {
+          "imgId": "fig-p74-03",
+          "file": "images/ch05/fig-p74-03.jpg"
+        },
+        {
+          "imgId": "fig-p74-04",
+          "file": "images/ch05/fig-p74-04.jpg"
+        },
+        {
+          "imgId": "fig-p74-05",
+          "file": "images/ch05/fig-p74-05.jpg"
+        },
+        {
+          "imgId": "fig-p74-06",
+          "file": "images/ch05/fig-p74-06.jpg"
+        },
+        {
+          "imgId": "fig-p74-07",
+          "file": "images/ch05/fig-p74-07.jpg"
+        },
+        {
+          "imgId": "fig-p74-08",
+          "file": "images/ch05/fig-p74-08.jpg"
+        }
+      ]
+    },
+    {
+      "tree": [
+        "第5章 传输层",
+        "5.2 UDP",
+        "5.2.1 UDP数据报"
+      ],
+      "noteHtml": "<p><span style=\"font-size:20px;color:#7c3aed\"><strong>P75 5.2.1 UDP数据报（王道 5.2）</strong></span></p>\n<p>UDP考题难度不高，<span style=\"color:#dc2626\"><strong>但很喜欢与TCP协议对比着考选择题</strong></span>。概念链：进程间传送的数据单元=报文；UDP在报文前添加<strong>8字节UDP首部</strong>构成<strong>UDP数据报</strong>；IP协议再加IPv4首部封装成IP数据报，经路由器转发；接收端拆封后按UDP首部中的目的端口号交付对应进程（分用）。</p>\n<img data-img-id=\"fig-p75-01\" class=\"ds-note-img\" alt=\"图：考纲定位\">\n<img data-img-id=\"fig-p75-02\" class=\"ds-note-img\" alt=\"图：UDP协议/UDP数据报/UDP首部\">\n<p><strong>UDP vs TCP</strong>：①<strong>首部</strong>：UDP仅8B，TCP最小20B、开销更大；②<span style=\"color:#dc2626\"><strong>拆分：UDP每次传输一个完整报文、不支持拆分与重装——报文太大会被直接拒绝，需在应用层自己拆好；TCP支持长报文自动拆成若干报文段、接收方重装排序后交付完整报文</strong></span>；③<strong>连接与可靠</strong>：UDP无连接不可靠、不支持拥塞控制（要可靠需应用层自己保证，UDP只尽最大努力交付）；TCP有连接、用确认机制保证可靠、支持拥塞控制（检测到拥塞通知发送方减速）；④<strong>模式</strong>：TCP仅一对一（每条连接只属于两个进程）；UDP还支持一对多——<span style=\"color:#7c3aed\">老师说：把UDP数据报封装进广播或多播IP数据报即可（目的IP写32比特全1即本网络广播），再让各客户端进程绑定同一端口（如711），直播服务器就这样把画面声音推给成千上万客户端</span>。</p>\n<img data-img-id=\"fig-p75-03\" class=\"ds-note-img\" alt=\"图：TCP对照：拆分与重装\">\n<p><strong>UDP数据报格式</strong>：固定8B首部四字段——<strong>源端口</strong>2B（不需对方回信可置全0）+<strong>目的端口</strong>2B（必填）+<strong>UDP长度</strong>2B（首部+数据总字节数）+<strong>检验和</strong>2B（发送方传输层计算，无需校验可填全0），之后紧跟数据部分。<mark><strong>UDP数据报的数据部分就是一个完整的应用层报文（UDP面向报文）；长度字段16bit→理论最大65535B，但受IP数据报运输能力限制（IP数据部分最多65515B），实际最大65515B</strong></mark>。</p>\n<img data-img-id=\"fig-p75-04\" class=\"ds-note-img\" alt=\"图：UDP数据报格式\">\n<p>课堂算例：进程1（端口3666）向进程2（端口9888）发96B报文，封装后总长度$$96+8=104\\ \\text{B}$$ 故UDP长度字段填104；再封成IP数据报（源IP 103.5.6.7→目的IP 56.1.1.7）经路由器转发到主机B。</p>\n<img data-img-id=\"fig-p75-05\" class=\"ds-note-img\" alt=\"图：UDP数据报示例96B+8B=104B\">\n<p>小结：UDP与TCP逐条对照——首部8B vs 20~60B、不支持 vs 支持拆分重装、无连接不可靠无拥塞控制 vs 有连接可靠有拥塞控制、一对一+一对多 vs 仅一对一；<span style=\"color:#7c3aed\">老师说：这些区别很喜欢在选择题当中考察</span>。</p>\n<img data-img-id=\"fig-p75-06\" class=\"ds-note-img\" alt=\"图：UDP与TCP特点对照小结\">",
+      "images": [
+        {
+          "imgId": "fig-p75-01",
+          "file": "images/ch05/fig-p75-01.jpg"
+        },
+        {
+          "imgId": "fig-p75-02",
+          "file": "images/ch05/fig-p75-02.jpg"
+        },
+        {
+          "imgId": "fig-p75-03",
+          "file": "images/ch05/fig-p75-03.jpg"
+        },
+        {
+          "imgId": "fig-p75-04",
+          "file": "images/ch05/fig-p75-04.jpg"
+        },
+        {
+          "imgId": "fig-p75-05",
+          "file": "images/ch05/fig-p75-05.jpg"
+        },
+        {
+          "imgId": "fig-p75-06",
+          "file": "images/ch05/fig-p75-06.jpg"
+        }
+      ]
+    },
+    {
+      "tree": [
+        "第5章 传输层",
+        "5.2 UDP",
+        "5.2.2 UDP检验"
+      ],
+      "noteHtml": "<p><span style=\"font-size:20px;color:#7c3aed\"><strong>P76 5.2.2 UDP检验（王道 5.2）</strong></span></p>\n<p>UDP检验=UDP的差错控制：接收方如何检出UDP数据报中的比特错误。本节先学新的差错检测方法，再套进UDP完整流程。</p>\n<img data-img-id=\"fig-p76-01\" class=\"ds-note-img\" alt=\"图：本节内容：UDP检验\">\n<p><strong>算法核心</strong>：原始数据按16bit一组做二进制加法，<span style=\"color:#dc2626\"><strong>最高位产生的进位要\"回卷\"——加回到最低位</strong></span>；加法结果<strong>逐位取反</strong>得16bit校验和，随原始数据一起发送。接收方把收到的全部内容（含校验和）同样分组求和（含回卷）：<mark><strong>结果为16位全1→无差错；不是全1→有比特错误</strong></mark>。</p>\n<img data-img-id=\"fig-p76-02\" class=\"ds-note-img\" alt=\"图：16bit分组反码求和算例（回卷）\">\n<p><strong>发送方四步</strong>：①计算前先在UDP数据报前临时添加<strong>12B伪首部</strong>——源IP 4B+目的IP 4B+全0 1B+协议17 1B+UDP长度2B（与首部中UDP长度字段相等）；②<strong>伪首部+首部+数据</strong>全部按16bit分组二进制加法（进位回卷）；③结果逐位取反得16bit检验和填入首部；④<span style=\"color:#dc2626\"><strong>拆掉伪首部</strong></span>再交网络层封装IP数据报。<span style=\"color:#7c3aed\">老师说：为什么加伪首部不用纠结，记住\"计算前添加、计算完拆除、伪首部并不实际传输\"即可。</span></p>\n<img data-img-id=\"fig-p76-03\" class=\"ds-note-img\" alt=\"图：发送方：12B伪首部+四步\">\n<p><strong>接收方</strong>：重新构造一模一样的伪首部，伪首部+首部+数据按16bit分组求和（回卷）：全1→无差错，按<strong>目的端口号</strong>交付应用层；非全1→<strong>直接丢弃</strong>，数据不再上交。</p>\n<img data-img-id=\"fig-p76-04\" class=\"ds-note-img\" alt=\"图：接收方：全1判无差错\">\n<p><span style=\"color:#7c3aed\">【例题】（2024真题39）UDP计算校验和的中间结果为1011 1001 1011 0110，还需加上最后一个16位数0110 0101 1100 0101，求最终校验和。</span></p>\n$$1011\\,1001\\,1011\\,0110+0110\\,0101\\,1100\\,0101=1\\,0001\\,1111\\,0111\\,1011$$\n$$\\text{最高位进位回卷：}0001\\,1111\\,0111\\,1011+1=0001\\,1111\\,0111\\,1100$$\n$$\\text{逐位取反得校验和：}1110\\,0000\\,1000\\,0011$$\n<p><span style=\"color:#dc2626\"><strong>答案：1110 0000 1000 0011（选C）。易错点：进位必须回卷、结果必须取反。</strong></span><span style=\"color:#7c3aed\">老师说：24年这道题的算法与课件算例如出一辙，算错的同学检查是哪个环节出了问题。</span></p>\n<img data-img-id=\"fig-p76-05\" class=\"ds-note-img\" alt=\"图：例题：2024真题39\">\n<p><strong>与IP首部校验和对比</strong>：方法本质相同（16bit分组反码求和），但IP只检验<strong>首部</strong>且<span style=\"color:#dc2626\"><strong>不加伪首部</strong></span>；UDP检验范围=伪首部+首部+整个数据部分。要点见总结树。</p>\n<img data-img-id=\"fig-p76-06\" class=\"ds-note-img\" alt=\"图：UDP检验要点总结树\">",
+      "images": [
+        {
+          "imgId": "fig-p76-01",
+          "file": "images/ch05/fig-p76-01.jpg"
+        },
+        {
+          "imgId": "fig-p76-02",
+          "file": "images/ch05/fig-p76-02.jpg"
+        },
+        {
+          "imgId": "fig-p76-03",
+          "file": "images/ch05/fig-p76-03.jpg"
+        },
+        {
+          "imgId": "fig-p76-04",
+          "file": "images/ch05/fig-p76-04.jpg"
+        },
+        {
+          "imgId": "fig-p76-05",
+          "file": "images/ch05/fig-p76-05.jpg"
+        },
+        {
+          "imgId": "fig-p76-06",
+          "file": "images/ch05/fig-p76-06.jpg"
+        }
+      ]
+    },
+    {
+      "tree": [
+        "第5章 传输层",
+        "5.3 TCP",
+        "5.3.1 TCP协议的框架梳理"
+      ],
+      "noteHtml": "<p><span style=\"font-size:20px;color:#7c3aed\"><strong>P77 5.3.1 TCP协议的框架梳理（王道 5.3）</strong></span></p>\n<p>开始TCP协议的学习。\"TCP报文段\"与\"TCP段\"是同一东西的两种译法——前者强调运输的是应用层长报文的<strong>分段</strong>，后者更贴近英文原文segment，看书做题两种说法都会出现、混用。</p>\n<img data-img-id=\"fig-p77-01\" class=\"ds-note-img\" alt=\"图：本节内容：TCP报文段（TCP段）\">\n<p><strong>封装视角</strong>：两个进程的通信可使用TCP协议完成；应用层长报文会被TCP拆成若干段，每段添加TCP首部（20~60B）构成TCP报文段，再封装成IP数据报，经路由器转发到目的主机。</p>\n<img data-img-id=\"fig-p77-02\" class=\"ds-note-img\" alt=\"图：TCP报文段封装图\">\n<p><strong>TCP工作三大阶段：建立连接→数据传输→释放连接</strong>。主动发起连接的一方=客户端，被动等待的一方=服务器。建立连接互传3个TCP段=<strong>三次握手</strong>；之后双向传输=<strong>全双工</strong>；释放连接共2+2=4个TCP段=<strong>四次挥手</strong>——<span style=\"color:#dc2626\"><strong>前两次挥手只断开一个方向的连接（A不能再给B发数据，但B仍可单向发给A），后两次挥手才彻底结束通信</strong></span>。<span style=\"color:#7c3aed\">老师说：像和陌生人对话——先握手、聊完挥手告别；先发完数据的一方也可以先发起挥手（释放顺序可颠倒），但建立连接必定由客户端发出第一次握手。</span></p>\n<img data-img-id=\"fig-p77-03\" class=\"ds-note-img\" alt=\"图：TCP协议三大阶段\">\n<p><strong>一次TCP连接可传多个报文</strong>：设协商<strong>MSS（最大段长）=1000B</strong>——一个TCP段最多可携带的有效数据字节数（不含TCP首部）。报文Y 1600B+Z 1800B共3400B拆成4段：Y前1000B、Y后600B+Z前400B、Z中1000B、Z后400B，各封装成独立IP数据报；<span style=\"color:#dc2626\"><strong>可能乱序到达（各IP数据报路由路径可能不同），但TCP确保按序递交给目的进程</strong></span>。<mark><strong>TCP面向字节流：把应用层交来的数据看作无结构的字节流，不关心哪些字节属于哪个报文，只按MSS拆段传输；UDP面向报文：每个UDP数据报运输一个完整报文——选择题高频</strong></mark>。TCP不强制每段满载，不超MSS即可。</p>\n<img data-img-id=\"fig-p77-04\" class=\"ds-note-img\" alt=\"图：一次连接传多个报文（MSS=1000B）\">\n<p>下节逐字段学习TCP段格式：TCP段=首部+数据部分，整体作为IP数据报的数据部分。<span style=\"color:#dc2626\"><strong>各字段在首部中的位置不用记（考试给示意图），但必须理解并记住每个字段的含义作用</strong></span>。</p>\n<img data-img-id=\"fig-p77-05\" class=\"ds-note-img\" alt=\"图：TCP段格式总图\">",
+      "images": [
+        {
+          "imgId": "fig-p77-01",
+          "file": "images/ch05/fig-p77-01.jpg"
+        },
+        {
+          "imgId": "fig-p77-02",
+          "file": "images/ch05/fig-p77-02.jpg"
+        },
+        {
+          "imgId": "fig-p77-03",
+          "file": "images/ch05/fig-p77-03.jpg"
+        },
+        {
+          "imgId": "fig-p77-04",
+          "file": "images/ch05/fig-p77-04.jpg"
+        },
+        {
+          "imgId": "fig-p77-05",
+          "file": "images/ch05/fig-p77-05.jpg"
+        }
+      ]
+    },
+    {
+      "tree": [
+        "第5章 传输层",
+        "5.3 TCP",
+        "5.3.2 TCP报文段"
+      ],
+      "noteHtml": "<p><span style=\"font-size:20px;color:#7c3aed\"><strong>P78 5.3.2 TCP报文段（王道 5.3）</strong></span></p>\n<p>TCP首部固定20B+可变部分，整体20~60B（与IP首部类似，结合记忆）；一行=32bit=4B。</p>\n<img data-img-id=\"fig-p78-01\" class=\"ds-note-img\" alt=\"图：TCP段格式结构图\">\n<p><strong>源端口/目的端口</strong>（各16bit，0~65535）：发送方/接收方进程的端口。<strong>序号seq</strong>（32bit）：<span style=\"color:#dc2626\"><strong>标记本段数据部分第一个字节在原始字节流中的位置</strong></span>；起始序号由发送方自设、不一定从0。例：起始序号500、每段1000B，四段序号填500/1500/2500/3500。</p>\n<img data-img-id=\"fig-p78-02\" class=\"ds-note-img\" alt=\"图：序号seq与确认号ack（常考）\">\n<img data-img-id=\"fig-p78-03\" class=\"ds-note-img\" alt=\"图：拆分与序号示例\">\n<p><strong>确认号</strong>（小写ack/ack_seq；大写ACK是1bit标志位，注意区分）：ACK=1时确认号才有效，<span style=\"color:#dc2626\"><strong>全通信过程只有握手①的ACK=0</strong></span>；含义=确认号之前所有字节已正确收到，具<strong>累积确认</strong>特性（已收第1、2、4段，确认号仍填2500）。</p>\n<p><strong>数据偏移</strong>（4bit）：<span style=\"color:#dc2626\"><strong>表示TCP首部长度，以4B为单位</strong></span>，取值0~15→首部最长60B、必为4B整数倍（\"填充\"即为凑整）——它与IP首部\"首部长度\"如出一辙，可联合记忆。首部无字段记录总长/数据长（由IP首部推算）。<strong>保留</strong>6bit无作用、通常全0。</p>\n<img data-img-id=\"fig-p78-04\" class=\"ds-note-img\" alt=\"图：数据偏移与首部长度\">\n<p><strong>六个标志位</strong>（各1bit）：<strong>URG</strong>=1紧急数据尽快插队发送、紧急指针有效（紧急数据另编一套序号）；<strong>PSH</strong>=1希望接收方尽快回复；<strong>RST</strong>=1严重差错须释放连接或拒绝非法报文段——这三个考频低。<strong>SYN</strong>=1连接请求/接受报文，<span style=\"color:#dc2626\"><strong>只有握手①②的SYN=1</strong></span>；<strong>FIN</strong>=1数据发完请求释放连接，<span style=\"color:#dc2626\"><strong>只有挥手①③的FIN=1</strong></span>。考题称SYN段/FIN段/ACK段，<strong>标志位不互斥</strong>（握手②既是SYN段又是ACK段）。</p>\n<img data-img-id=\"fig-p78-05\" class=\"ds-note-img\" alt=\"图：标志位专题：SYN与FIN\">\n<p><strong>窗口</strong>（16bit，rwnd/rcvwnd）=接收窗口大小：告诉发送方\"从确认号起还能接收多少字节\"，<strong>流量控制的关键</strong>。例：接收缓冲区2500B、已收2000B未交付→回确认号2500+窗口500。<strong>校验和</strong>：与UDP算法一样，算前加12B伪首部（协议17改为<strong>6</strong>、UDP长度改为TCP总长）。<span style=\"color:#7c3aed\">老师说：大纲只要求UDP检验，要考算法肯定放UDP那边考。</span></p>\n<img data-img-id=\"fig-p78-06\" class=\"ds-note-img\" alt=\"图：TCP伪首部：17改6\">\n<p><strong>选项</strong>（可变长）+填充：<strong>MSS在握手①②中通过选项字段协商</strong>——让对方据此预留接收缓冲区（如64×MSS）；现实中双方MSS可不相等，考试一般统一设值、最常见1KB；<span style=\"color:#dc2626\"><strong>MSS不宜太大，以免IP数据报被分片</strong></span>。</p>\n<img data-img-id=\"fig-p78-07\" class=\"ds-note-img\" alt=\"图：握手指挥手总览（MSS协商）\">\n<p><span style=\"color:#7c3aed\">老师说：这节课全部都是重点——像背单词一样看图回忆每个字段的含义。</span><mark><strong>最常考：序号、确认号、窗口+ACK、SYN、FIN；URG/PSH/RST与紧急指针考前短时记忆即可</strong></mark>。</p>\n<img data-img-id=\"fig-p78-08\" class=\"ds-note-img\" alt=\"图：总结页：看图复习字段\">",
+      "images": [
+        {
+          "imgId": "fig-p78-01",
+          "file": "images/ch05/fig-p78-01.jpg"
+        },
+        {
+          "imgId": "fig-p78-02",
+          "file": "images/ch05/fig-p78-02.jpg"
+        },
+        {
+          "imgId": "fig-p78-03",
+          "file": "images/ch05/fig-p78-03.jpg"
+        },
+        {
+          "imgId": "fig-p78-04",
+          "file": "images/ch05/fig-p78-04.jpg"
+        },
+        {
+          "imgId": "fig-p78-05",
+          "file": "images/ch05/fig-p78-05.jpg"
+        },
+        {
+          "imgId": "fig-p78-06",
+          "file": "images/ch05/fig-p78-06.jpg"
+        },
+        {
+          "imgId": "fig-p78-07",
+          "file": "images/ch05/fig-p78-07.jpg"
+        },
+        {
+          "imgId": "fig-p78-08",
+          "file": "images/ch05/fig-p78-08.jpg"
+        }
+      ]
+    },
+    {
+      "tree": [
+        "第5章 传输层",
+        "5.3 TCP",
+        "5.3.3_1 TCP连接管理（建立连接）"
+      ],
+      "noteHtml": "<p><span style=\"font-size:20px;color:#7c3aed\"><strong>P79 5.3.3_1 TCP连接管理（建立连接）（王道 5.3）</strong></span></p>\n<p>TCP连接管理=考察三次握手与四次挥手背后的细节，三大命题角度：①SYN/ACK/FIN/seq/ack_seq各是多少；②每发/收一个报文段后TCP状态如何转换；③建立/释放连接的最短耗时。本节看建立连接。</p>\n<img data-img-id=\"fig-p79-01\" class=\"ds-note-img\" alt=\"图：考纲定位\">\n<p>回顾：客户端主动发起连接、服务器被动等待；三次握手→全双工传输→2+2四次挥手；常考字段seq、ack(ack_seq)、ACK/SYN/FIN、窗口。</p>\n<img data-img-id=\"fig-p79-02\" class=\"ds-note-img\" alt=\"图：三大阶段总览\">\n<img data-img-id=\"fig-p79-03\" class=\"ds-note-img\" alt=\"图：常考字段回顾\">\n<p>三个命题角度即本节主线。</p>\n<img data-img-id=\"fig-p79-04\" class=\"ds-note-img\" alt=\"图：命题三角度\">\n<p><strong>三次握手逐段拆解</strong>：</p>\n<ul>\n<li><strong>握手①</strong>（客户→服务器）：SYN=1、ACK=0、FIN=0；seq=客户自定<strong>起始序号</strong>（设666）。通信刚开始未收到任何数据，确认号无效→ACK=0。</li>\n<li><strong>握手②</strong>（服务器→客户）：SYN=1、ACK=1；ack_seq=666+1=667——<span style=\"color:#dc2626\"><strong>握手①不携带数据，但规定要消耗一个序号</strong></span>；seq=服务器自定起始序号（设50），双方各自给自己的数据定起始序号、别搞混。</li>\n<li><strong>握手③</strong>（客户→服务器）：SYN=0、ACK=1、FIN=0；ack_seq=50+1=51（握手②同样不携数据但消耗序号）；seq=667=客户端真正数据的起始序号。<span style=\"color:#dc2626\"><strong>握手③可不携带数据（不消耗序号）也可携带数据（带100B→消耗100个序号、服务器回确认号767）——与握手①②必须消耗一个序号不同</strong></span>。</li>\n</ul>\n<p><span style=\"color:#dc2626\"><strong>为什么不能两次握手？若两次握手，服务器发出握手②后立即进入ESTABLISHED、单方面建立连接：当客户端早已失效的旧连接请求（滞留网络中的握手①）迟到到达时，服务器误当新请求回复并建立连接、白白分配资源等数据，而客户端并未请求此连接；三次握手下服务器必须收到握手③才真正建立连接，失效请求等不来握手③，即可避免这种错误。</strong></span></p>\n<img data-img-id=\"fig-p79-05\" class=\"ds-note-img\" alt=\"图：三次握手时序图\">\n<p><span style=\"color:#7c3aed\">【例题】（2011真题39）主机甲向乙发送SYN=1、seq=11220的TCP段期望建立连接，乙接受请求后回发的正确TCP段是？</span></p>\n$$\\text{甲主动发起}\\Rightarrow\\text{该段为握手①}\\Rightarrow\\text{乙回握手②}：\\text{SYN}=1,\\ \\text{ACK}=1,\\ ack\\_seq=11220+1=11221$$\n<p><span style=\"color:#dc2626\"><strong>答案：选C。SYN=0先排除；握手②的seq是服务器自定起始序号（填多少都可能，属干扰信息）——判断依据只有SYN=1、ACK=1、ack_seq=11221。</strong></span></p>\n<img data-img-id=\"fig-p79-06\" class=\"ds-note-img\" alt=\"图：例题：2011真题39\">\n<p><strong>状态转换</strong>：客户 CLOSED→发握手①→SYN-SENT→收握手②→ESTABLISHED；服务器 CLOSED→监听→LISTEN→收握手①→SYN-RCVD→收握手③→ESTABLISHED。<span style=\"color:#7c3aed\">老师说：纯记忆型考点，\"下周问我我也可能忘了\"——写个备忘录、考前短时记忆即可。</span></p>\n<img data-img-id=\"fig-p79-07\" class=\"ds-note-img\" alt=\"图：状态流转图\">\n<p><strong>最短耗时</strong>：<span style=\"color:#dc2626\"><strong>发出握手①→客户端可发数据（收握手②）至少1RTT；→服务器可发数据（收握手③）至少1.5RTT</strong></span>（握手③再需0.5RTT单向传播）。<mark><strong>核心：客户端收到握手②才能发数据、服务器收到握手③才能发数据</strong></mark>——<span style=\"color:#7c3aed\">老师说：不要死记，理解了就能以不变应万变。</span></p>\n<img data-img-id=\"fig-p79-08\" class=\"ds-note-img\" alt=\"图：建连耗时分析\">\n<p>小结：三问——字段值、状态、耗时；释放连接下节展开。</p>\n<img data-img-id=\"fig-p79-09\" class=\"ds-note-img\" alt=\"图：命题角度小结\">",
+      "images": [
+        {
+          "imgId": "fig-p79-01",
+          "file": "images/ch05/fig-p79-01.jpg"
+        },
+        {
+          "imgId": "fig-p79-02",
+          "file": "images/ch05/fig-p79-02.jpg"
+        },
+        {
+          "imgId": "fig-p79-03",
+          "file": "images/ch05/fig-p79-03.jpg"
+        },
+        {
+          "imgId": "fig-p79-04",
+          "file": "images/ch05/fig-p79-04.jpg"
+        },
+        {
+          "imgId": "fig-p79-05",
+          "file": "images/ch05/fig-p79-05.jpg"
+        },
+        {
+          "imgId": "fig-p79-06",
+          "file": "images/ch05/fig-p79-06.jpg"
+        },
+        {
+          "imgId": "fig-p79-07",
+          "file": "images/ch05/fig-p79-07.jpg"
+        },
+        {
+          "imgId": "fig-p79-08",
+          "file": "images/ch05/fig-p79-08.jpg"
+        },
+        {
+          "imgId": "fig-p79-09",
+          "file": "images/ch05/fig-p79-09.jpg"
+        }
+      ]
+    },
+    {
+      "tree": [
+        "第5章 传输层",
+        "5.3 TCP",
+        "5.3.3_2 TCP连接管理（释放连接）"
+      ],
+      "noteHtml": "<p><span style=\"font-size:20px;color:#7c3aed\"><strong>P80 5.3.3_2 TCP连接管理（释放连接）（王道 5.3）</strong></span></p>\n<p>本节探讨释放连接（四次挥手），命题角度与建立连接相同：字段值、状态转换、最短耗时。</p>\n<img data-img-id=\"fig-p80-01\" class=\"ds-note-img\" alt=\"图：本节导入\">\n<img data-img-id=\"fig-p80-02\" class=\"ds-note-img\" alt=\"图：命题三角度\">\n<p><strong>四次挥手逐段拆解</strong>（设客户先挥手）：四段SYN都=0、ACK都=1；<span style=\"color:#dc2626\"><strong>只有挥手①③的FIN=1</strong></span>（\"数据发完了，请求释放连接\"，称FIN段）。序号：挥手①seq=9999，<span style=\"color:#dc2626\"><strong>不携带数据也要消耗一个序号</strong></span>→挥手②ack=10000；若②③之间服务器又单向传2200B（5600→7800），挥手③seq=7800→挥手④ack=7801。携带数据：<span style=\"color:#dc2626\"><strong>挥手①③可携带（现实与考题通常默认不带）；挥手②可携带；挥手④不可携带</strong></span>（①②后客户→服务器通道已关闭）。</p>\n<img data-img-id=\"fig-p80-03\" class=\"ds-note-img\" alt=\"图：四次挥手时序图\">\n<p><strong>状态转换</strong>：客户 ESTABLISHED→发挥手①→FIN-WAIT-1→收挥手②→FIN-WAIT-2→收挥手③回挥手④→TIME-WAIT（启动2MSL计时器，再收重复挥手③就重传挥手④并重置计时）→CLOSED；服务器 ESTABLISHED→收挥手①→CLOSE-WAIT→发挥手③→LAST-ACK→收挥手④→CLOSED。</p>\n<p><span style=\"color:#7c3aed\">【例题】（2021真题38）客户向服务器发FIN段请求断开；客户收到服务器的FIN段并回发ACK段后，客户的TCP状态变为？</span>——收FIN段=挥手③、回ACK段=挥手④→<span style=\"color:#dc2626\"><strong>答案：TIME_WAIT（B）。陷阱：若改为服务器先发FIN段，客户收FIN回ACK对应挥手②→状态应为CLOSE_WAIT——谁先挥手角色一变全变，务必审题。</strong></span></p>\n<img data-img-id=\"fig-p80-04\" class=\"ds-note-img\" alt=\"图：例题：2021真题38\">\n<p><strong>TIME_WAIT为何等2MSL</strong>：MSL=最长报文段寿命（TCP规定的时间长度；与MSS\"最大段长·字节\"区分）。<span style=\"color:#dc2626\"><strong>两个原因：①保证最后的ACK（挥手④）可达——挥手④丢失则服务器重发挥手③，客户在2MSL内收到重复挥手③就重传挥手④并重置计时器，一直没收到才说明对方已收到、可放心关闭；②让本连接的所有报文段从网络中消逝，防止失效旧报文段出现在之后的新连接中造成错误</strong></span>（原因②为教材补充）。<strong>最短耗时</strong>（最短情形=服务器收挥手①时已无待传数据，②③连发、CLOSE-WAIT≈0）：<mark><strong>客户从发挥手①到CLOSED至少1RTT+2MSL；服务器从客户发挥手①起到CLOSED至少1.5RTT</strong></mark>。</p>\n<p><span style=\"color:#7c3aed\">【例题】（2022真题39）RTT=50ms、MSL=800ms，客户主动断开：求从客户发出FIN起客户、服务器进入CLOSED的最短时间。</span></p>\n$$t_{\\text{客户}}=RTT+2\\times MSL=50+2\\times 800=1650\\ \\text{ms}$$\n$$t_{\\text{服务器}}=1.5\\times RTT=75\\ \\text{ms}$$\n<p><span style=\"color:#dc2626\"><strong>答案：选D（1650ms、75ms）。</strong></span>改编：从服务器收挥手①起到关闭=1RTT；从服务器发挥手②起到客户CLOSED=0.5RTT+2MSL——理解RTT与2MSL各花在哪段即可。</p>\n<img data-img-id=\"fig-p80-05\" class=\"ds-note-img\" alt=\"图：例题：2022真题39\">\n<img data-img-id=\"fig-p80-06\" class=\"ds-note-img\" alt=\"图：释放耗时与状态流转\">\n<p><strong>要点回顾</strong>：只有握手①的ACK=0；只有握手①②的SYN=1；只有挥手①③的FIN=1；<strong>建连接记序号、释放连接记状态</strong>；最短耗时1RTT/1.5RTT/1RTT+2MSL。<span style=\"color:#7c3aed\">老师说：状态变化\"不看几天肯定就忘\"，考前快速回顾。</span></p>\n<img data-img-id=\"fig-p80-07\" class=\"ds-note-img\" alt=\"图：要点回顾记忆清单\">",
+      "images": [
+        {
+          "imgId": "fig-p80-01",
+          "file": "images/ch05/fig-p80-01.jpg"
+        },
+        {
+          "imgId": "fig-p80-02",
+          "file": "images/ch05/fig-p80-02.jpg"
+        },
+        {
+          "imgId": "fig-p80-03",
+          "file": "images/ch05/fig-p80-03.jpg"
+        },
+        {
+          "imgId": "fig-p80-04",
+          "file": "images/ch05/fig-p80-04.jpg"
+        },
+        {
+          "imgId": "fig-p80-05",
+          "file": "images/ch05/fig-p80-05.jpg"
+        },
+        {
+          "imgId": "fig-p80-06",
+          "file": "images/ch05/fig-p80-06.jpg"
+        },
+        {
+          "imgId": "fig-p80-07",
+          "file": "images/ch05/fig-p80-07.jpg"
+        }
+      ]
+    },
+    {
+      "tree": [
+        "第5章 传输层",
+        "5.3 TCP",
+        "5.3.4+5_1 TCP可靠传输、流量控制"
+      ],
+      "noteHtml": "<p><span style=\"font-size:20px;color:#7c3aed\"><strong>P81 5.3.4+5_1 TCP可靠传输、流量控制（王道 5.3）</strong></span></p>\n<p>为什么可靠传输和流量控制放一起讲？<span style=\"color:#7c3aed\">老师说：二者都需要收发双方配合——可靠传输是接收方告诉发送方\"哪些数据已被正确接收\"，流量控制是接收方告诉发送方\"发送速度控制在什么范围\"；而拥塞控制不是接收方反馈，是发送方监测网络自行调速。</span>本节大小题高频。</p>\n<img data-img-id=\"fig-p81-01\" class=\"ds-note-img\" alt=\"图：本节内容\">\n<img data-img-id=\"fig-p81-02\" class=\"ds-note-img\" alt=\"图：考纲定位\">\n<p><strong>知识框架</strong>：可靠传输=<strong>序号+确认机制+重传机制</strong>（与数据链路层原理相通：那里以帧为单位、这里以TCP报文段为单位）；流量控制=<strong>滑动窗口机制</strong>——接收方维持<strong>接收窗口rwnd</strong>（反映接收能力、随ACK告知），发送方维持发送窗口。<mark><strong>发送窗口不能大于发送缓冲区，也不能大于对方接收窗口——这是流量控制的关键</strong></mark>。</p>\n<img data-img-id=\"fig-p81-03\" class=\"ds-note-img\" alt=\"图：知识总览树\">\n<p>回顾字段：seq=数据第一个字节在字节流中的位置；ack=确认号（之前的字节全收到，ACK=1才有效，只有握手①的ACK=0）；rwnd以字节为单位。</p>\n<img data-img-id=\"fig-p81-04\" class=\"ds-note-img\" alt=\"图：回顾相关字段\">\n<p><span style=\"color:#7c3aed\">老师说：本例由多张小图首尾相连（如此张累积确认图），每图右侧有\"重点关注\"提示、重要概念黄色高亮——把高亮处理解了就懂了背后的逻辑。</span></p>\n<img data-img-id=\"fig-p81-05\" class=\"ds-note-img\" alt=\"图：累积确认时序图\">\n<p><strong>例子开演（建连）</strong>：握手①seq=599（客户初始序号，消耗一个序号）→握手②seq=199（服务器初始序号）、ack=600、<strong>rwnd=8</strong>（服务器接收缓冲区8B，现实一般以KB计、这里为简化设小）→握手③seq=600、ack=200、<strong>rwnd=10</strong>（客户缓冲区10B）。故客户发送窗口被限为8——<span style=\"color:#dc2626\"><strong>对方接收窗口是发送量上限，超过就缓冲区溢出、数据丢失</strong></span>。</p>\n<img data-img-id=\"fig-p81-06\" class=\"ds-note-img\" alt=\"图：握手例子的开头\">\n<p><strong>内存视角（重点体会）</strong>：应用层进程在内存<strong>用户区</strong>，TCP协议在<strong>内核区</strong>。进程绑定端口（客户1111/服务器996）后请求操作系统创建<strong>socket对象</strong>——记录对方IP端口+本机端口的数据结构，还包含<strong>发送缓冲区与接收缓冲区</strong>；<span style=\"color:#7c3aed\">老师说：别被缓冲区浮夸的名词吓到，本质就是操作系统为这条TCP连接分配的char型数组</span>。调send函数→待发数据（100B的char数组，下标0~99对应序号600~699）按序填入发送缓冲区（10B、先填0~9）；对方数据到接收缓冲区后进程调receive读走。<strong>一个端口可支持多个TCP连接</strong>：服务器用同一端口996经不同socket分别连客户进程1、2（四元组区分）；<span style=\"color:#dc2626\"><strong>但每条连接仅一对一全双工；同一socket收发缓冲区大小可不等，由内核决定</strong></span>。</p>\n<img data-img-id=\"fig-p81-07\" class=\"ds-note-img\" alt=\"图：一个端口多个TCP连接\">\n<p>本节先体会底层原理框架图——缓冲区与两个窗口的本质，下节让数据动起来。</p>\n<img data-img-id=\"fig-p81-08\" class=\"ds-note-img\" alt=\"图：底层原理全批注\">",
+      "images": [
+        {
+          "imgId": "fig-p81-01",
+          "file": "images/ch05/fig-p81-01.jpg"
+        },
+        {
+          "imgId": "fig-p81-02",
+          "file": "images/ch05/fig-p81-02.jpg"
+        },
+        {
+          "imgId": "fig-p81-03",
+          "file": "images/ch05/fig-p81-03.jpg"
+        },
+        {
+          "imgId": "fig-p81-04",
+          "file": "images/ch05/fig-p81-04.jpg"
+        },
+        {
+          "imgId": "fig-p81-05",
+          "file": "images/ch05/fig-p81-05.jpg"
+        },
+        {
+          "imgId": "fig-p81-06",
+          "file": "images/ch05/fig-p81-06.jpg"
+        },
+        {
+          "imgId": "fig-p81-07",
+          "file": "images/ch05/fig-p81-07.jpg"
+        },
+        {
+          "imgId": "fig-p81-08",
+          "file": "images/ch05/fig-p81-08.jpg"
+        }
+      ]
+    },
+    {
+      "tree": [
+        "第5章 传输层",
+        "5.3 TCP",
+        "5.3.4+5_2 TCP可靠传输、流量控制"
+      ],
+      "noteHtml": "<p><span style=\"font-size:20px;color:#7c3aed\"><strong>P82 5.3.4+5_2 TCP可靠传输、流量控制（王道 5.3）</strong></span></p>\n<p>数据动起来。客户发3字节（seq=600）→服务器校验无误回ACK：seq=200、<strong>ack=603</strong>（期待下一字节603，即603前全收到）、<strong>rwnd=5</strong>（8B缓冲区已占3B）→客户把已确认字节移出发送缓冲区，发送窗口缩为5（只能发603~607）。<span style=\"color:#7c3aed\">老师说：直观体会确认号与接收窗口的作用——服务器随报文返回最新确认号与最新接收窗口。</span></p>\n<img data-img-id=\"fig-p82-01\" class=\"ds-note-img\" alt=\"图：首笔数据：ack=603、rwnd=5\">\n<img data-img-id=\"fig-p82-02\" class=\"ds-note-img\" alt=\"图：底层原理：缓存与数组\">\n<img data-img-id=\"fig-p82-03\" class=\"ds-note-img\" alt=\"图：回顾相关字段\">\n<p><strong>累积确认</strong>：连发两段（seq=603带2B、605带2B），乱序到达也能按seq填进缓冲区正确位置，只回<strong>一个</strong>ACK：ack=607、rwnd=1→客户窗口=1，只能再发1字节（607）。该段到达后缓冲区满，<span style=\"color:#dc2626\"><strong>应尽快按序交付应用层、清空缓冲区</strong></span>→接收窗口又变大（ack=608、rwnd=8）。<span style=\"color:#7c3aed\">老师说：\"太好了，我又行了。\"</span></p>\n<img data-img-id=\"fig-p82-04\" class=\"ds-note-img\" alt=\"图：累积确认\">\n<p><strong>捎带确认</strong>：客户发2B（608起）时服务器恰好备好5B数据（200~204），回ACK顺带捎上：seq=200、ack=610、rwnd=6→客户也捎带：发6B（610起）、ack=205、rwnd=5→服务器交付后回ack=616、rwnd=8。另：缓冲区未满时只要数据<strong>有序</strong>也可提前交付（让接收窗口尽量大）；乱序时必须等缺口补齐——<span style=\"color:#dc2626\"><strong>TCP保证交给应用层的数据有序</strong></span>。</p>\n<img data-img-id=\"fig-p82-05\" class=\"ds-note-img\" alt=\"图：捎带确认\">\n<p><strong>超时重传</strong>：每发出一个报文段就设一个超时重传计时器。①段丢失（seq=618）→超时→重传并重置计时器→收ack=620；②ACK丢失：服务器回的ack=622丢了→客户超时重传→服务器按当前确认号622发现<strong>重复数据</strong>、丢弃后再次回ack=622。<mark><strong>无论报文段丢失还是ACK丢失，超时重传都能正确处理——TCP可靠性的保证</strong></mark>。</p>\n<img data-img-id=\"fig-p82-06\" class=\"ds-note-img\" alt=\"图：超时重传\">\n<p><strong>总结</strong>：①<strong>序号</strong>：建连定起始序号、每字节一个序号；②<strong>确认机制</strong>：累积确认；两种ACK段=<strong>捎带确认</strong>（顺带带数据）与<strong>专门确认</strong>（纯ACK段——<span style=\"color:#7c3aed\">老师说：专门确认是我自造的术语，教材只有捎带确认的说法</span>）；返回时机：推迟确认≤0.5秒、自己有数据时立即捎带返回、<span style=\"color:#dc2626\"><strong>连续收到两个MSS长度的报文段必须立即确认</strong></span>（长报文重传代价大）；③<strong>重传机制</strong>：超时重传+快重传（冗余ACK触发，配套<strong>立即确认</strong>，下节展开）。流量控制：发送窗口框住\"已发送未确认+可发送未发送\"的数据。</p>\n<img data-img-id=\"fig-p82-07\" class=\"ds-note-img\" alt=\"图：可靠传输总结树\">\n<p><span style=\"color:#7c3aed\">【例题】（滑动窗口/流量控制计算，取自课堂例子）服务器接收缓冲区8B、握手②中rwnd=8；客户发送缓冲区10B，连发seq=600（3B）、603（2B）、605（2B）三段，均被正确接收且尚未交付应用层。求①客户发送窗口上限；②服务器返回的确认号与接收窗口。</span></p>\n$$\\text{①}W_{\\text{发}}\\leq\\min(10,\\ 8)=8\\ \\text{B}；\\quad \\text{②}ack=600+3+2+2=607$$\n$$rwnd=8-7=1\\ \\text{B}$$\n<p><span style=\"color:#dc2626\"><strong>答案：①上限8B；②确认号607、接收窗口1B（此后最多再发1字节——序号607）。</strong></span></p>",
+      "images": [
+        {
+          "imgId": "fig-p82-01",
+          "file": "images/ch05/fig-p82-01.jpg"
+        },
+        {
+          "imgId": "fig-p82-02",
+          "file": "images/ch05/fig-p82-02.jpg"
+        },
+        {
+          "imgId": "fig-p82-03",
+          "file": "images/ch05/fig-p82-03.jpg"
+        },
+        {
+          "imgId": "fig-p82-04",
+          "file": "images/ch05/fig-p82-04.jpg"
+        },
+        {
+          "imgId": "fig-p82-05",
+          "file": "images/ch05/fig-p82-05.jpg"
+        },
+        {
+          "imgId": "fig-p82-06",
+          "file": "images/ch05/fig-p82-06.jpg"
+        },
+        {
+          "imgId": "fig-p82-07",
+          "file": "images/ch05/fig-p82-07.jpg"
+        }
+      ]
+    },
+    {
+      "tree": [
+        "第5章 传输层",
+        "5.3 TCP",
+        "5.3.4+5_3 TCP可靠传输、流量控制"
+      ],
+      "noteHtml": "<p><span style=\"font-size:20px;color:#7c3aed\"><strong>P83 5.3.4+5_3 TCP可靠传输、流量控制（王道 5.3）</strong></span></p>\n<p>可靠传输收尾：<span style=\"color:#dc2626\"><strong>快重传机制与配套的立即确认机制</strong></span>。推迟确认能发挥累积确认优势，但缺点随之而来——左图推迟确认、右图立即确认，对比着看。</p>\n<img data-img-id=\"fig-p83-01\" class=\"ds-note-img\" alt=\"图：快重传/立即确认开场对比\">\n<p>设定：服务器接收窗口只够收4字节，客户发送窗口=4，连发4段、各1B（seq=622/623/624/625），其中第二段（seq=623）丢失，其余三段顺利到达。</p>\n<img data-img-id=\"fig-p83-02\" class=\"ds-note-img\" alt=\"图：板书：序号分配与发送窗口\">\n<p><strong>推迟确认的问题</strong>：服务器0.5秒内收到第1/3/4段，推迟满0.5秒只能回ack=623、rwnd=3。<span style=\"color:#dc2626\"><strong>注意：接收窗口要与确认号组合看——不是\"缓冲区剩多少空位就回多大窗口\"，而是\"从确认号623起还能接收3字节\"（623之前已按序收好）</strong></span>。客户发送窗口缩为3，但窗口内数据都已发出且未超时，只能干等——623/624/625三段<strong>依次超时、依次重传</strong>，而后两段早已被接收、<strong>大可不必重发</strong>；服务器丢弃重复段只补收623，缓冲区满交付后回ack=626、rwnd=8。<span style=\"color:#7c3aed\">老师说：例子每段仅1B代价不大，但实际报文段常满载1KB甚至1MB，无效重传效率很低。</span></p>\n<img data-img-id=\"fig-p83-03\" class=\"ds-note-img\" alt=\"图：立即确认完整时序\">\n<img data-img-id=\"fig-p83-04\" class=\"ds-note-img\" alt=\"图：快重传时序（推迟0.5秒标注）\">\n<p><strong>快重传（基于立即确认）</strong>：接收方<strong>每收到一个报文段就立即回ACK</strong>，<span style=\"color:#dc2626\"><strong>即使失序到达也立即回ACK</strong></span>：收624→回ack=623；收625→再回ack=623。<mark><strong>发送方连续收到3个确认号相同的冗余ACK，立即重传该确认号对应的报文段（seq=623）——计时器还没到就完成了重传</strong></mark>；已送达的两段不会被重复传输，效率大幅提升。</p>\n<img data-img-id=\"fig-p83-05\" class=\"ds-note-img\" alt=\"图：快重传完整讲解\">\n<p>要点回顾：序号→确认机制（累积确认、推迟确认、专门/捎带确认）→重传机制（超时重传、快重传(冗余ACK)+立即确认）。<span style=\"color:#7c3aed\">老师说：但凡支持快重传的TCP都采用立即确认；不支持快重传的才采用推迟确认。</span></p>\n<img data-img-id=\"fig-p83-06\" class=\"ds-note-img\" alt=\"图：总结树（快重传标红）\">",
+      "images": [
+        {
+          "imgId": "fig-p83-01",
+          "file": "images/ch05/fig-p83-01.jpg"
+        },
+        {
+          "imgId": "fig-p83-02",
+          "file": "images/ch05/fig-p83-02.jpg"
+        },
+        {
+          "imgId": "fig-p83-03",
+          "file": "images/ch05/fig-p83-03.jpg"
+        },
+        {
+          "imgId": "fig-p83-04",
+          "file": "images/ch05/fig-p83-04.jpg"
+        },
+        {
+          "imgId": "fig-p83-05",
+          "file": "images/ch05/fig-p83-05.jpg"
+        },
+        {
+          "imgId": "fig-p83-06",
+          "file": "images/ch05/fig-p83-06.jpg"
+        }
+      ]
+    },
+    {
+      "tree": [
+        "第5章 传输层",
+        "5.3 TCP",
+        "5.3.5 （必看）快重传机制的易错点"
+      ],
+      "noteHtml": "<p><span style=\"font-size:20px;color:#7c3aed\"><strong>P84 5.3.5 （必看）快重传机制的易错点（王道 5.3）</strong></span></p>\n<p><span style=\"color:#7c3aed\">老师开场：这个视频要修正之前讲解中的一个错误——\"我犯的这个错误也是大家非常容易犯的错误\"。</span>教材几乎都写\"发送方收到三个确认号相同的冗余ACK就立即重传\"，但严格说<span style=\"color:#dc2626\"><strong>第一个ACK是合理合法的正常ACK，只有后面的ACK才是冗余ACK</strong></span>——课件图已红字标注\"此图有错误\"。</p>\n<img data-img-id=\"fig-p84-01\" class=\"ds-note-img\" alt=\"图：本节内容（必看）\">\n<img data-img-id=\"fig-p84-02\" class=\"ds-note-img\" alt=\"图：易错图：第一个ACK不属于冗余ACK\">\n<p>正确理解：<span style=\"color:#dc2626\"><strong>应理解为发送方连续收到1+3个确认号相同的ACK时立即重传（后3个才是冗余ACK）；只有接收方第4次返回同一确认号（如再回一个ack=623）时才触发快重传</strong></span>。</p>\n<p><span style=\"color:#7c3aed\">【例题】（2019真题38·真题陷阱）客户A在t0时刻第一次收到确认号ack=100，随后依次发送seq=100、200、300、400的四个数据段；第一段（seq=100）丢失，服务器收到后三个失序段时均立即回ack=100（A在t1、t2、t3时刻各收到一个）。问A重传seq=100数据段的时刻？</span></p>\n$$\\text{t0正常ACK}+\\underbrace{\\text{t1、t2、t3}}_{\\text{3个冗余ACK}}\\Rightarrow \\text{收到第3个冗余ACK（t3）时立即重传}$$\n<p><span style=\"color:#dc2626\"><strong>答案：选C（t3时刻）。真题陷阱：t0的第一次ack=100是正常ACK、不算冗余ACK——误把它算进去就会错选t2。</strong></span></p>\n<img data-img-id=\"fig-p84-03\" class=\"ds-note-img\" alt=\"图：例题：2019真题38\">\n<p>在总结树上补红字：<span style=\"color:#dc2626\"><strong>发送方连续收到三个确认号相同的冗余ACK（=1+3个确认号相同的ACK）时，立即重传该确认号对应的报文段</strong></span>。<mark><strong>本节必看：此细节真题（2019-38）已考过，是快重传最典型的陷阱，务必记牢</strong></mark>。<span style=\"color:#7c3aed\">老师说：这个容易出错的小细节还请大家记一下。</span></p>\n<img data-img-id=\"fig-p84-04\" class=\"ds-note-img\" alt=\"图：总结树+易错红字\">",
+      "images": [
+        {
+          "imgId": "fig-p84-01",
+          "file": "images/ch05/fig-p84-01.jpg"
+        },
+        {
+          "imgId": "fig-p84-02",
+          "file": "images/ch05/fig-p84-02.jpg"
+        },
+        {
+          "imgId": "fig-p84-03",
+          "file": "images/ch05/fig-p84-03.jpg"
+        },
+        {
+          "imgId": "fig-p84-04",
+          "file": "images/ch05/fig-p84-04.jpg"
+        }
+      ]
+    },
+    {
+      "tree": [
+        "第5章 传输层",
+        "5.3 TCP",
+        "5.3.6_1 TCP拥塞控制（慢开始和拥塞避免）"
+      ],
+      "noteHtml": "<p><span style=\"font-size:20px;color:#7c3aed\"><strong>P85 5.3.6_1 TCP拥塞控制（慢开始和拥塞避免）（王道 5.3）</strong></span></p>\n<p>四种算法：<strong>慢开始、拥塞避免</strong>（<span style=\"color:#dc2626\"><strong>历年真题几乎都考这两个</strong></span>）、快重传（冗余ACK）→快恢复（下节讲）。</p>\n<img data-img-id=\"fig-p85-01\" class=\"ds-note-img\" alt=\"图：考纲定位\">\n<img data-img-id=\"fig-p85-02\" class=\"ds-note-img\" alt=\"图：拥塞控制四种算法\">\n<p><strong>拥塞控制 vs 流量控制</strong>：流量控制是收发双方\"点对点\"的事；<mark><strong>拥塞控制是全局性问题——控制整个网络中每台主机的数据发送量</strong></mark>。<span style=\"color:#7c3aed\">老师说：高峰期全网疯狂注入数据、路由器频繁丢包——这就是拥塞，大家都少发即可缓解，\"只要人人都献出一点爱\"。</span>发送方为此维护<strong>拥塞窗口cwnd</strong>，<span style=\"color:#dc2626\"><strong>发送窗口≤min(rwnd, cwnd)</strong></span>。超时→严重拥塞；冗余ACK→轻度拥塞。</p>\n<img data-img-id=\"fig-p85-03\" class=\"ds-note-img\" alt=\"图：拥塞控制vs流量控制\">\n<p><strong>考题五特点</strong>：①与流量控制综合（发送窗口=min[rwnd,cwnd]）；②单向传输；③每段满载MSS；④cwnd以MSS计；⑤立即确认。</p>\n<img data-img-id=\"fig-p85-04\" class=\"ds-note-img\" alt=\"图：慢开始/拥塞避免曲线\">\n<p><strong>慢开始</strong>：图中横轴=传输轮次（RTT倍数）、纵轴=cwnd（MSS倍数）、<strong>ssthresh</strong>=慢开始门限（真题称阈值，初始16）。cwnd从1起步，<span style=\"color:#dc2626\"><strong>每收到一个ACK就cwnd+1→每经一个RTT翻倍</strong></span>（1→2→4→8→16）。<span style=\"color:#7c3aed\">老师比喻：像从不锻炼的人健身、每天翻倍很快累死，到阈值后每天只敢加1。</span>cwnd≥ssthresh→<strong>拥塞避免</strong>：<span style=\"color:#dc2626\"><strong>一个RTT内即使收到多个ACK，cwnd也只能+1</strong></span>（16→17→…→24）。12RTT超时→cwnd重置为1、ssthresh=超时时cwnd的一半（24/2=12）；重新慢开始1→2→4→8，到12转拥塞避免。<span style=\"color:#7c3aed\">老师说：王道书\"网络拥塞\"处应补注\"指超时重传事件\"——只有超时才把cwnd打回1。</span></p>\n<img data-img-id=\"fig-p85-05\" class=\"ds-note-img\" alt=\"图：考题五特点\">\n<p><span style=\"color:#7c3aed\">【例题】（2009真题39）MSS=1KB、数据足够多；cwnd=16KB时超时，之后4个RTT都成功，求第4个RTT的段都获确认后的cwnd。超时时ssthresh=16÷2=8、cwnd=1：</span></p>\n<ul>\n<li>第1轮：cwnd=1，发1段收1个ACK→2</li>\n<li>第2轮：cwnd=2，发2段收2个ACK→4</li>\n<li>第3轮：cwnd=4，发4段收4个ACK→8（=ssthresh）</li>\n<li>第4轮：cwnd=8，收8个ACK→拥塞避免只能+1→9</li>\n</ul>\n$$cwnd=9\\times MSS=9\\ \\text{KB}$$\n<p><span style=\"color:#dc2626\"><strong>答案：选C（9KB）。若MSS=2KB则答案=2×9=18KB——cwnd数字必须乘MSS（细节坑）。</strong></span></p>\n<img data-img-id=\"fig-p85-06\" class=\"ds-note-img\" alt=\"图：例题：2009真题39\">\n<p><strong>综合流控</strong>（2015真题39）：MSS=1KB、初始阈值32KB、乙16KB缓存只进不出、立即确认，求4个RTT后甲的发送窗口。逐RTT追踪cwnd=C、rwnd剩余=R（发送窗口=min(C,R)）：C依次1→2→4→8→16，R依次16→15→13→9→1，故t4时W=min(16,1)=1。<span style=\"color:#dc2626\"><strong>答案：选A（1KB）。</strong></span></p>\n<img data-img-id=\"fig-p85-07\" class=\"ds-note-img\" alt=\"图：例题：2015真题39\">\n<p><span style=\"color:#7c3aed\">老师说：真题目前只考这两个算法，复习\"只要理解这张图就完全够用\"；做题先写下MSS，每隔一个RTT梳理阈值、rwnd、cwnd、发送窗口。</span></p>\n<img data-img-id=\"fig-p85-08\" class=\"ds-note-img\" alt=\"图：完整曲线总结\">",
+      "images": [
+        {
+          "imgId": "fig-p85-01",
+          "file": "images/ch05/fig-p85-01.jpg"
+        },
+        {
+          "imgId": "fig-p85-02",
+          "file": "images/ch05/fig-p85-02.jpg"
+        },
+        {
+          "imgId": "fig-p85-03",
+          "file": "images/ch05/fig-p85-03.jpg"
+        },
+        {
+          "imgId": "fig-p85-04",
+          "file": "images/ch05/fig-p85-04.jpg"
+        },
+        {
+          "imgId": "fig-p85-05",
+          "file": "images/ch05/fig-p85-05.jpg"
+        },
+        {
+          "imgId": "fig-p85-06",
+          "file": "images/ch05/fig-p85-06.jpg"
+        },
+        {
+          "imgId": "fig-p85-07",
+          "file": "images/ch05/fig-p85-07.jpg"
+        },
+        {
+          "imgId": "fig-p85-08",
+          "file": "images/ch05/fig-p85-08.jpg"
+        }
+      ]
+    },
+    {
+      "tree": [
+        "第5章 传输层",
+        "5.3 TCP",
+        "5.3.6_2 TCP拥塞控制(快重传和快恢复)"
+      ],
+      "noteHtml": "<p><span style=\"font-size:20px;color:#7c3aed\"><strong>P86 5.3.6_2 TCP拥塞控制(快重传和快恢复)（王道 5.3）</strong></span></p>\n<p>曲线回顾：0~4RTT慢开始、4~12RTT拥塞避免，与上节相同。上节假设12时刻发生<span style=\"color:#dc2626\"><strong>超时</strong></span>——严重拥塞→cwnd=1、ssthresh减半、重新慢开始；本节改为：12时刻<span style=\"color:#dc2626\"><strong>没有超时，而是收到3个重复（冗余）ACK，触发快重传</strong></span>。</p>\n<img data-img-id=\"fig-p86-01\" class=\"ds-note-img\" alt=\"图：本节内容\">\n<img data-img-id=\"fig-p86-02\" class=\"ds-note-img\" alt=\"图：慢开始/拥塞避免曲线回顾\">\n<p>冗余ACK=个别报文段丢失、网络<strong>有点拥塞但不严重</strong>（发4个能到3个），处理不必激进、无需打回1，而是适当缩小——<strong>快恢复算法</strong>（拥塞控制仍是与\"点对点\"流量控制相对的全局问题，发送窗口仍取min(rwnd,cwnd)）：<mark><strong>把ssthresh和cwnd都设为当前cwnd的一半</strong></mark>（cwnd=24→12、ssthresh=12）；减半后cwnd=ssthresh，<strong>立即进入拥塞避免</strong>（每RTT最多+1）：13时刻连发12段收12个ACK→14时刻cwnd只加1到13。<span style=\"color:#dc2626\"><strong>细节：ssthresh不能小于2</strong></span>。<span style=\"color:#7c3aed\">老师说：快重传这个事件引发快恢复，快恢复做的事很简单——就是减半。</span></p>\n<img data-img-id=\"fig-p86-03\" class=\"ds-note-img\" alt=\"图：拥塞控制vs流量控制\">\n<p><span style=\"color:#7c3aed\">【例题】（快重传+快恢复的cwnd变化）设初始cwnd=1 MSS、ssthresh=16 MSS，接收方立即确认、报文段满载：慢开始每轮翻倍、达阈值后拥塞避免每轮+1；cwnd=24时收到3个冗余ACK触发快重传；之后增长到cwnd=16时又发生超时。全程变化：</span></p>\n<ul>\n<li>慢开始（指数增长）：1→2→4→8→16（到达ssthresh转拥塞避免）</li>\n<li>拥塞避免（加法增大）：17→18→…→24（每轮只+1）</li>\n<li>cwnd=24收到3个冗余ACK：快重传+快恢复→ssthresh=cwnd=24÷2=12、cwnd=12（不回到1），直接拥塞避免</li>\n<li>拥塞避免：12→13→…→16</li>\n<li>cwnd=16超时：ssthresh=16÷2=8、cwnd=1，重新慢开始1→2→4→8→拥塞避免9→…</li>\n</ul>\n$$\\text{快恢复：}ssthresh=cwnd=\\frac{24}{2}=12；\\quad \\text{超时：}ssthresh=\\frac{16}{2}=8,\\ cwnd=1$$\n<p><span style=\"color:#dc2626\"><strong>答案：快重传后cwnd=12、ssthresh=12继续拥塞避免；超时后cwnd=1、ssthresh=8重新慢开始。对比记忆：超时=严重拥塞→打回1重来；3个冗余ACK=轻度拥塞→减半后直接拥塞避免。</strong></span></p>\n<p>图中虚线=TCP Tahoe早期版本（快重传也回1，已废弃）；实线=现行TCP Reno（快重传配快恢复）。<span style=\"color:#7c3aed\">老师说：\"以上就是第五章传输层的所有内容，恭喜大家又过了一关。\"</span></p>\n<img data-img-id=\"fig-p86-04\" class=\"ds-note-img\" alt=\"图：快重传快恢复总结曲线\">",
+      "images": [
+        {
+          "imgId": "fig-p86-01",
+          "file": "images/ch05/fig-p86-01.jpg"
+        },
+        {
+          "imgId": "fig-p86-02",
+          "file": "images/ch05/fig-p86-02.jpg"
+        },
+        {
+          "imgId": "fig-p86-03",
+          "file": "images/ch05/fig-p86-03.jpg"
+        },
+        {
+          "imgId": "fig-p86-04",
+          "file": "images/ch05/fig-p86-04.jpg"
+        }
+      ]
+    }
+  ]
+}
