@@ -1,1111 +1,1111 @@
 {
- "chapter": "第4章 网络层",
- "docs": [
-  {
-   "tree": [
-    "第4章 网络层",
-    "4.1 网络层的功能",
-    "4.1 网络层的功能"
-   ],
-   "noteHtml": "<p><span style=\"font-size:20px;color:#7c3aed\"><strong>P45 4.1 网络层的功能（王道 4.1）</strong></span></p>\n<p>网络层在五层体系结构中处于第三层，为上层传输层提供服务。回顾数据流动：应用层把<strong>报文</strong>交给传输层拆成<strong>报文段</strong>，网络层在报文段基础上加上首部，得到 <strong>IP 数据报（IP 分组）</strong>——这两个术语在课程中完全等价。首部中的源/目的 IP 地址指明了发送方与接收方，中间的路由器据此决定分组往哪转发。</p>\n<p><mark><strong>数据链路层实现相邻结点间的传输，网络层实现主机到主机的传输。</strong></mark></p>\n<img data-img-id=\"fig-p45-01\" class=\"ds-note-img\" alt=\"图：网络层在五层模型中的地位与逐层封装\">\n<p>老师建议先去百度搜“IP地址”查一下本机公网 IP，提前熟悉概念：IP 地址共 32 比特，点分十进制每 8 位一段，每段取值 0~255。</p>\n<img data-img-id=\"fig-p45-02\" class=\"ds-note-img\" alt=\"图：百度搜索IP地址查询本机公网IP演示\">\n<p><span style=\"color:#7c3aed\">王道书完全按 408 大纲顺序编排：路由算法与路由协议合在 4.4 讲。考频结论：4.2 IPv4 历年考频最高（约八成大题涉及），4.4 与 4.7 次之；4.5 IP 多播、4.6 移动 IP 从未考过、内容独立，时间紧可后置；4.3 IPv6 仅考过一个选择题。SDN 是 2022 年新增考点（2023 年已考概念题），建议放到学完路由协议之后再理解。</span></p>\n<p>按大纲需了解的网络层功能有三个：</p>\n<ul>\n<li><strong>异构网络互联</strong>：各网络的拓扑、物理层/链路层实现各不相同（以太网、802.11 无线局域网、令牌环等），路由器把它们连成更大的互联网，<strong>屏蔽物理层、链路层的差异</strong>。<span style=\"color:#dc2626\"><strong>易考术语：在 TCP/IP 文献中路由器也被称为网关。</strong></span></li>\n<li><strong>路由与转发</strong>：路由需各路由器运行同一种路由协议（如 RIP/OSPF）相互配合，最终各自生成路由表；把路由表精简得到检索更快的<strong>转发表</strong>，转发是单台路由器查表送出分组的事情。<span style=\"color:#dc2626\"><strong>路由是多台路由器协作的过程，转发是一台路由器自己的动作。</strong></span></li>\n<li><strong>拥塞控制</strong>：网络中过量分组导致吞吐率不升反降即为拥塞（类比节假日堵车）。静态策略为<strong>开环控制</strong>（部署前设计好、运行中不再改，像老司机提前支招“成华大道堵就走小道”）；动态策略为<strong>闭环控制</strong>（动态监测网络、及时通告拥塞信息给相关路由器并调整，像高德地图实时规划路线）。拥塞信息可通过 ICMP 报文传递。</li>\n</ul>\n<img data-img-id=\"fig-p45-03\" class=\"ds-note-img\" alt=\"图：网络层功能总览思维导图\">\n<p>结合拓扑体会路由：R1 通告邻居“经我可到 192.1.1.0”，R2 通告“经我可到 192.1.6.0”，于是 R3 在路由表中记录到这两个网络的下一跳都走 R1；若 R2 监测到 192.1.6.0 网络拥塞，可向相关路由器发 ICMP 报文，让它们放慢向该网发送分组的速度。</p>\n<img data-img-id=\"fig-p45-04\" class=\"ds-note-img\" alt=\"图：R1/R2互联两个子网的示例拓扑\">\n<p><span style=\"color:#7c3aed\">老师提醒：本节“简要了解即可”，这些功能都会在后续小节展开细聊；SDN 基本概念放到 4.4 之后再学更好理解。</span></p>",
-   "images": [
+  "chapter": "第4章 网络层",
+  "docs": [
     {
-     "imgId": "fig-p45-01",
-     "file": "images/ch04/fig-p45-01.jpg"
+      "tree": [
+        "第4章 网络层",
+        "4.1 网络层的功能",
+        "4.1 网络层的功能"
+      ],
+      "noteHtml": "<p><span style=\"font-size:20px;color:#7c3aed\"><strong>P45 4.1 网络层的功能（王道 4.1）</strong></span></p>\n<p>网络层在五层体系结构中处于第三层，为上层传输层提供服务。回顾数据流动：应用层把<strong>报文</strong>交给传输层拆成<strong>报文段</strong>，网络层在报文段基础上加上首部，得到 <strong>IP 数据报（IP 分组）</strong>——这两个术语在课程中完全等价。首部中的源/目的 IP 地址指明了发送方与接收方，中间的路由器据此决定分组往哪转发。</p>\n<p><mark><strong>数据链路层实现相邻结点间的传输，网络层实现主机到主机的传输。</strong></mark></p>\n<img data-img-id=\"fig-p45-01\" class=\"ds-note-img\" alt=\"图：网络层在五层模型中的地位与逐层封装\">\n<p>老师建议先去百度搜“IP地址”查一下本机公网 IP，提前熟悉概念：IP 地址共 32 比特，点分十进制每 8 位一段，每段取值 0~255。</p>\n<img data-img-id=\"fig-p45-02\" class=\"ds-note-img\" alt=\"图：百度搜索IP地址查询本机公网IP演示\">\n<p><span style=\"color:#7c3aed\">王道书完全按 408 大纲顺序编排：路由算法与路由协议合在 4.4 讲。考频结论：4.2 IPv4 历年考频最高（约八成大题涉及），4.4 与 4.7 次之；4.5 IP 多播、4.6 移动 IP 从未考过、内容独立，时间紧可后置；4.3 IPv6 仅考过一个选择题。SDN 是 2022 年新增考点（2023 年已考概念题），建议放到学完路由协议之后再理解。</span></p>\n<p>按大纲需了解的网络层功能有三个：</p>\n<ul>\n<li><strong>异构网络互联</strong>：各网络的拓扑、物理层/链路层实现各不相同（以太网、802.11 无线局域网、令牌环等），路由器把它们连成更大的互联网，<strong>屏蔽物理层、链路层的差异</strong>。<span style=\"color:#dc2626\"><strong>易考术语：在 TCP/IP 文献中路由器也被称为网关。</strong></span></li>\n<li><strong>路由与转发</strong>：路由需各路由器运行同一种路由协议（如 RIP/OSPF）相互配合，最终各自生成路由表；把路由表精简得到检索更快的<strong>转发表</strong>，转发是单台路由器查表送出分组的事情。<span style=\"color:#dc2626\"><strong>路由是多台路由器协作的过程，转发是一台路由器自己的动作。</strong></span></li>\n<li><strong>拥塞控制</strong>：网络中过量分组导致吞吐率不升反降即为拥塞（类比节假日堵车）。静态策略为<strong>开环控制</strong>（部署前设计好、运行中不再改，像老司机提前支招“成华大道堵就走小道”）；动态策略为<strong>闭环控制</strong>（动态监测网络、及时通告拥塞信息给相关路由器并调整，像高德地图实时规划路线）。拥塞信息可通过 ICMP 报文传递。</li>\n</ul>\n<img data-img-id=\"fig-p45-03\" class=\"ds-note-img\" alt=\"图：网络层功能总览思维导图\">\n<p>结合拓扑体会路由：R1 通告邻居“经我可到 192.1.1.0”，R2 通告“经我可到 192.1.6.0”，于是 R3 在路由表中记录到这两个网络的下一跳都走 R1；若 R2 监测到 192.1.6.0 网络拥塞，可向相关路由器发 ICMP 报文，让它们放慢向该网发送分组的速度。</p>\n<img data-img-id=\"fig-p45-04\" class=\"ds-note-img\" alt=\"图：R1/R2互联两个子网的示例拓扑\">\n<p><span style=\"color:#7c3aed\">老师提醒：本节“简要了解即可”，这些功能都会在后续小节展开细聊；SDN 基本概念放到 4.4 之后再学更好理解。</span></p>",
+      "images": [
+        {
+          "imgId": "fig-p45-01",
+          "file": "images/ch04/fig-p45-01.jpg"
+        },
+        {
+          "imgId": "fig-p45-02",
+          "file": "images/ch04/fig-p45-02.jpg"
+        },
+        {
+          "imgId": "fig-p45-03",
+          "file": "images/ch04/fig-p45-03.jpg"
+        },
+        {
+          "imgId": "fig-p45-04",
+          "file": "images/ch04/fig-p45-04.jpg"
+        }
+      ]
     },
     {
-     "imgId": "fig-p45-02",
-     "file": "images/ch04/fig-p45-02.jpg"
+      "tree": [
+        "第4章 网络层",
+        "4.2 IPv4与配套协议",
+        "4.2.1 IPv4分组"
+      ],
+      "noteHtml": "<p><span style=\"font-size:20px;color:#7c3aed\"><strong>P46 4.2.1 IPv4分组（王道 4.2）</strong></span></p>\n<img data-img-id=\"fig-p46-01\" class=\"ds-note-img\" alt=\"图：408考研大纲网络层八大考点清单\">\n<p>从协议关系图看 IP 的核心地位：应用层协议（HTTP、DNS、DHCP 等）经 TCP/UDP 到网络层 IP，ARP、ICMP、IGMP 与 IP 并列配合，<strong>IP 是整个互联网的核心</strong>。</p>\n<img data-img-id=\"fig-p46-02\" class=\"ds-note-img\" alt=\"图：各种协议之间的服务关系\">\n<p><strong>IPv4 分组首部</strong>：固定部分 20B，加选项最多 60B（且为 4B 的整数倍）。逐字段过一遍：</p>\n<img data-img-id=\"fig-p46-03\" class=\"ds-note-img\" alt=\"图：IP数据报首部格式\">\n<ul>\n<li><strong>版本</strong>（4bit）：IPv4 填 4。</li>\n<li><strong>首部长度</strong>（4bit）：<span style=\"color:#dc2626\"><strong>单位 4B</strong></span>，取值 5~15。</li>\n<li><strong>总长度</strong>（16bit）：首部+数据，单位 1B，最大 65535B。</li>\n<li><strong>标识</strong>（16bit）：同一数据报的各分片标识相同（是“属于同一原数据报”的记号，不是序号）。</li>\n<li><strong>标志</strong>：MF=1 表示后面还有分片（最后一片 MF=0）；DF=1 不允许分片。</li>\n<li><strong>片偏移</strong>（13bit）：<span style=\"color:#dc2626\"><strong>单位 8B</strong></span>，指出本片数据在原数据部分中的相对起点。</li>\n<li><strong>TTL</strong>（8bit）：每过一个路由器减 1，减到 0 丢弃并回 ICMP 时间超过报文。</li>\n<li><strong>协议</strong>（8bit）：数据部分是哪个协议的 PDU——<strong>TCP=6、UDP=17</strong>（另 ICMP=1、IGMP=2、OSPF=89）。</li>\n<li><strong>首部校验和</strong>（16bit）：只校验首部；每过一跳 TTL 变了就要重算。</li>\n<li><strong>源地址、目的地址</strong>各 32bit。</li>\n</ul>\n<p><span style=\"color:#7c3aed\"><strong>【例题】</strong></span>（2012 真题 47 改编）抓到某 IP 分组的前 40 字节，首部第一个字节为 45H，总长度字段为 0030H。求首部长度、总长度与数据部分长度。</p>\n$$45\\text{H} = 0100\\ 0101\\text{B} \\Rightarrow \\text{版本}=4,\\ \\text{首部长度字段}=5$$\n$$\\text{首部} = 5 \\times 4\\text{B} = 20\\text{B},\\quad \\text{总长度} = 0030\\text{H} = 48\\text{B}$$\n$$\\text{数据部分} = 48 - 20 = 28\\text{B}$$\n<p><span style=\"color:#dc2626\"><strong>答案：首部 20B、总长度 48B、数据 28B。</strong></span></p>\n<img data-img-id=\"fig-p46-04\" class=\"ds-note-img\" alt=\"图：2012年真题47例题讲解\">\n<p>数据链路层帧的数据字段有上限（MTU，以太网 1500B），超长就得<strong>分片</strong>。</p>\n<p><span style=\"color:#7c3aed\"><strong>【例题】</strong></span>某 IP 数据报总长 4000B（首部 20B、数据 3980B），标识 777，经过 MTU=1500B 的链路。求分片情况。</p>\n$$L_{\\text{max}} = 1500 - 20 = 1480\\text{B} = 8 \\times 185\\ (\\text{是 8 的倍数})$$\n$$3980 = 1480 \\times 2 + 1020 \\Rightarrow \\text{共 } 3 \\text{ 片}$$\n$$\\text{片1：偏移} = 0/8 = 0,\\ MF=1;\\quad \\text{片2：偏移} = 1480/8 = 185,\\ MF=1$$\n$$\\text{片3：偏移} = 2960/8 = 370,\\ MF=0$$\n<p><span style=\"color:#dc2626\"><strong>答案：3 片——片偏移分别为 0、185、370，MF 为 1、1、0，标识均为 777；数据长度 1480B、1480B、1020B。</strong></span></p>\n<img data-img-id=\"fig-p46-05\" class=\"ds-note-img\" alt=\"图：4000B数据报过MTU1500链路的分片计算\">\n<p><strong>分片注意事项</strong>：分片可发生在源主机或任一中间路由器；<span style=\"color:#dc2626\"><strong>重组只在目的主机进行</strong></span>（各分片独立路由，中间路由器不重组）；片偏移以 8B 为单位，所以每片数据长度必须是 8B 的整数倍。</p>\n<img data-img-id=\"fig-p46-06\" class=\"ds-note-img\" alt=\"图：IP数据报分片注意事项与路径示意\">\n<p><strong>TTL 不可达示例</strong>：TTL=4 的分组每过一个路由器减 1，4→3→2→1→0，减到 0 的路由器丢弃该分组并向源主机发 ICMP 报文——这就是“生存时间”防环的体现。</p>\n<img data-img-id=\"fig-p46-07\" class=\"ds-note-img\" alt=\"图：TTL逐跳递减示意图\">\n<p>本节回顾：首部结构（固定 20B + 可变 0~40B）、三个长度字段（首部长度 4B 单位、总长度 1B 单位、片偏移 8B 单位）、MTU 与分片、MF/DF 标志、TTL 字段——<mark><strong>命题重点集中在字段单位与分片计算</strong></mark>。</p>\n<img data-img-id=\"fig-p46-08\" class=\"ds-note-img\" alt=\"图：IPv4分组整节回顾思维导图\">\n<p><span style=\"color:#6a737d\">（本节B站未生成AI字幕，笔记依据课件与教材整理）</span></p>",
+      "images": [
+        {
+          "imgId": "fig-p46-01",
+          "file": "images/ch04/fig-p46-01.jpg"
+        },
+        {
+          "imgId": "fig-p46-02",
+          "file": "images/ch04/fig-p46-02.jpg"
+        },
+        {
+          "imgId": "fig-p46-03",
+          "file": "images/ch04/fig-p46-03.jpg"
+        },
+        {
+          "imgId": "fig-p46-04",
+          "file": "images/ch04/fig-p46-04.jpg"
+        },
+        {
+          "imgId": "fig-p46-05",
+          "file": "images/ch04/fig-p46-05.jpg"
+        },
+        {
+          "imgId": "fig-p46-06",
+          "file": "images/ch04/fig-p46-06.jpg"
+        },
+        {
+          "imgId": "fig-p46-07",
+          "file": "images/ch04/fig-p46-07.jpg"
+        },
+        {
+          "imgId": "fig-p46-08",
+          "file": "images/ch04/fig-p46-08.jpg"
+        }
+      ]
     },
     {
-     "imgId": "fig-p45-03",
-     "file": "images/ch04/fig-p45-03.jpg"
+      "tree": [
+        "第4章 网络层",
+        "4.2 IPv4与配套协议",
+        "4.2.2 IP地址+ 整章串讲"
+      ],
+      "noteHtml": "<p><span style=\"font-size:20px;color:#7c3aed\"><strong>P47 4.2.2 IP地址+整章串讲（王道 4.2）</strong></span></p>\n<p>先理清 IP 地址的技术演进脉络：<strong>分类编址（ABCDE）→ 1985 子网划分 → 1993 CIDR → 1994 NAT</strong>。大纲按考点罗列，但学习必须按这个时代顺序来理解，因此老师并未严格按书本顺序讲。</p>\n<p>IPv4 地址 32bit，共 $2^{32}\\approx 42$ 亿个。把视角拉回 1981 年——那时互联网只有政府、学校、军队在用，32bit 看似绝对够用；由 ICANN 统一管理，把地址分为五类：</p>\n<img data-img-id=\"fig-p47-01\" class=\"ds-note-img\" alt=\"图：最初IP地址分类方案A~E类划分\">\n<ul>\n<li><strong>A 类</strong>：首 bit 为 0，网络号 8bit、主机号 24bit；首字节 1~126。</li>\n<li><strong>B 类</strong>：前两 bit 为 10，网络号 16bit、主机号 16bit；首字节 128~191。</li>\n<li><strong>C 类</strong>：前三 bit 为 110，网络号 24bit、主机号 8bit；首字节 192~223。</li>\n<li><strong>D 类</strong>：前四 bit 1110，<strong>多播地址</strong>（224~239）。</li>\n<li><strong>E 类</strong>：1111 开头，保留。</li>\n</ul>\n<p>A、B、C 三类是<strong>单播地址</strong>（个人 QQ 号，可分配给一台主机）；D 类是多播地址（QQ 群号，一组主机绑定同一个群号）。网络号位数不定长，所以看前几个 bit 就能判断类别。</p>\n<p><strong>地址分配规则</strong>（上世纪 80 年代场景）：单位向管理机构租用号段——网络号由管理机构定死，主机号由单位自己分配。学校申请 B 类 166.1.x.x：校园内所有结点的网络号必须一致；公司申请 C 类 200.1.1.x 同理。<span style=\"color:#dc2626\"><strong>若把 H7 配成 200.1.2.2（网络号与其他结点不一致），它在该网络中就无法正常工作——常考小题。</strong></span>路由器与路由器直连的接口可以不配 IP；与其他结点相连的接口必须配全球唯一的 IP。新主机接入网络要配两样：IP 地址与<strong>默认网关</strong>（早期文献“网关”即路由器，默认网关就是帮主机把分组送出本网络的那台路由器接口的 IP）。</p>\n<img data-img-id=\"fig-p47-02\" class=\"ds-note-img\" alt=\"图：学校B类与公司C类接入ISP的综合拓扑及转发表\">\n<p><strong>H1 给 H7 发送数据报（跨网转发主线）</strong>：H1 构造 IP 数据报（源 166.1.0.1，目的 200.1.1.2）；判断目的不在本网络 → 先交给默认网关 166.1.0.5（经 ARP 查到网关 MAC，帧目的 MAC 写网关）；学校路由器查转发表（目的网络号+转发接口两列），匹配 200.1.1 后从 B0 口发给公司路由器；公司路由器再查表从 C2 口发出，经 ARP 得到 H7 的 MAC 精准交付。<mark><strong>整个逐跳转发过程中，IP 数据报的源/目的 IP 地址始终不变，而 MAC 帧的地址每过一跳就变一次。</strong></mark></p>\n<p><strong>H1 给 H6 发送数据报（同网直接交付）</strong>：H1 用 B 类规则对比双方前 16bit，相同 → 同一网络，无需网关；ARP 查到 H6 的 MAC 直接封装发送，经交换机、集线器（集线器无脑向所有端口转发），H5 收到帧发现目的 MAC 不是自己便丢弃，H6 收下并拆封。这就是“内网流量不过路由器”。</p>\n<p><strong>特殊用途 IP 地址</strong>（选择题常考，均不可指派给主机私用）：</p>\n<img data-img-id=\"fig-p47-03\" class=\"ds-note-img\" alt=\"图：特殊用途IP地址表格\">\n<ul>\n<li>网络号 Y + 主机号全 0：表示“网络本身”，只用于路由表/转发表，不能作分组的源或目的地址。</li>\n<li>网络号 Y + 主机号全 1：<strong>直接广播地址</strong>，向 Y 网络所有主机广播，只能作目的地址（如 H1 给公司全网广播写 200.1.1.255）。</li>\n<li><span style=\"color:#dc2626\"><strong>全 1（255.255.255.255）：受限广播，只在本网络广播，只能作目的地址；全 0（0.0.0.0）：本网络的本主机，只能作源地址</strong></span>——主机刚接入网络还没有 IP 时（DHCP 申请阶段）源地址就只能写全 0，目的写全 1 广播 DHCP 报文，老师原话“i am nobody，我暂时还没有名字”。</li>\n<li>127.x.x.x：<strong>环回自检地址</strong>（A 类跳过了 127），本机客户端进程与服务器进程通信可用 127.0.0.1，这种数据报不会发到网络上，常用于本地软件开发；可作源地址也可作目的地址。</li>\n</ul>\n<p>由前两条得重要结论：主机号占 N bit 的网络，最大可分配主机/路由器数 = $2^{N}-2$（全 0、全 1 两个不能分）。<span style=\"color:#7c3aed\">老师强调：本节把第四章最重要的几条大流程（默认网关、转发表查表、ARP 预告、IP 不变 MAC 变）都提前捋了一遍，是整章的“任督二脉”。</span></p>",
+      "images": [
+        {
+          "imgId": "fig-p47-01",
+          "file": "images/ch04/fig-p47-01.jpg"
+        },
+        {
+          "imgId": "fig-p47-02",
+          "file": "images/ch04/fig-p47-02.jpg"
+        },
+        {
+          "imgId": "fig-p47-03",
+          "file": "images/ch04/fig-p47-03.jpg"
+        }
+      ]
     },
     {
-     "imgId": "fig-p45-04",
-     "file": "images/ch04/fig-p45-04.jpg"
+      "tree": [
+        "第4章 网络层",
+        "4.2 IPv4与配套协议",
+        "4.2.3 子网划分与和子网掩码"
+      ],
+      "noteHtml": "<p><span style=\"font-size:20px;color:#7c3aed\"><strong>P48 4.2.3 子网划分与和子网掩码（王道 4.2）</strong></span></p>\n<p><strong>为什么提出子网划分</strong>：学校申请 B 类地址后一个局域网可容纳 $2^{16}-2$ 台主机，但小局域网根本用不了这么多主机号。于是从主机号最高位抠出 k bit 作<strong>子网号</strong>：IP 地址从两级变为<mark><strong>网络号+子网号+主机号</strong></mark>三级结构，可划分出 $2^{k}$ 个大小相等的子网（扣 1 bit 得两个子网、扣 2 bit 得四个），每个子网就是一个独立的网络，分别接路由器的不同接口——现实意义如一个号段拆给两个校区，提高 IP 地址利用率。</p>\n<img data-img-id=\"fig-p48-01\" class=\"ds-note-img\" alt=\"图：五条画图训练任务页\">\n<p><strong>子网掩码</strong>：划分子网后，判断两个 IP 是否同网不能再只看类别前缀，必须把网络号+子网号（合称<strong>网络前缀</strong>）整体比出来。子网掩码是与网络前缀对齐的 32bit 全 1、主机位全 0 的串：<span style=\"color:#dc2626\"><strong>IP 地址 AND 子网掩码 = 网络地址</strong></span>。本例学校取 1 bit 子网号，掩码即 17 个 1 加 15 个 0（255.255.128.0）。主机与路由器接口都要配置“IP 地址 + 默认网关 + 子网掩码”三件套；支持子网划分的路由器，转发表每项要增加<strong>子网掩码</strong>一列。</p>\n<img data-img-id=\"fig-p48-02\" class=\"ds-note-img\" alt=\"图：学校166.1.x.x划分两个子网的主拓扑\">\n<p><span style=\"color:#7c3aed\"><strong>【例题】</strong></span>（按位与求网络地址）主机 IP 为 166.1.66.5，子网掩码 255.255.128.0，求其所在子网的网络地址，并判断它与 166.1.130.1 是否同网。</p>\n$$66 = 01000010\\text{B},\\quad 128 = 10000000\\text{B}$$\n$$01000010 \\wedge 10000000 = 00000000 \\Rightarrow \\text{网络地址} = 166.1.0.0$$\n$$130 = 10000010 \\wedge 10000000 = 10000000 \\Rightarrow 166.1.128.0$$\n<p><span style=\"color:#dc2626\"><strong>答案：该主机属子网 166.1.0.0（子网 0）；166.1.130.1 属 166.1.128.0（子网 1），两者不同网。</strong></span></p>\n<p><strong>主机发送 IP 数据报的两步逻辑</strong>：先用本机掩码分别与“自己的 IP、目的 IP”相与比对——网络前缀相同则同网，ARP 目的主机 MAC 直接封装送达；不同则跨网，ARP <span style=\"color:#dc2626\"><strong>默认网关</strong></span>的 MAC，把帧发给网关转发。</p>\n<img data-img-id=\"fig-p48-03\" class=\"ds-note-img\" alt=\"图：主拓扑与学校、公司路由器转发表\">\n<p><strong>路由器查表</strong>：目的 IP 依次与每项的子网掩码相与，结果与该项目的网络比对，匹配即从对应接口转发；全部不匹配则走<strong>默认路由</strong>（目的网络与掩码全 0，与任何地址相与必为全 0，一定能兜底匹配）。若查表发现出接口与入接口相同（如 H1 出 bug 把发给 H2 的分组封装成广播帧送到路由器），则直接丢弃、不再转发回去。</p>\n<p>传统路由器没有掩码列，按类别取前缀即可——本质同一套逻辑，这保证了<strong>子网划分网络与未划分子网的传统网络互相兼容</strong>，新技术不必要求全球设备同时升级。相应引入<strong>默认子网掩码</strong>：A 类 255.0.0.0、B 类 255.255.0.0、C 类 255.255.255.0；掩码也常用斜线记法（166.1.0.1/17 即前 17bit 为网络前缀），转发表里同样可用“目的网络/17”这种写法。</p>\n<img data-img-id=\"fig-p48-04\" class=\"ds-note-img\" alt=\"图：公司主机配置默认网关标注\">\n<p><strong>训练串讲（结合拓扑）</strong>：训练一 H3→H6 同子网：掩码相与同前缀，ARP 直取 H6 的 MAC，帧经交换机、集线器送达，局域网内部完成，不经路由器。训练二 H1→H3 跨子网：前缀不同 → 发默认网关，路由器查表第二项匹配从 B2 口转出。训练三 H1→H7（子网划分网络 → 传统 C 类网络）：学校路由器第三项 200.1.1.0/24 匹配，公司路由器按 C 类取前 24bit 比对、C2 口交付。训练四 H7→H1 反向：公司路由器按 B 类取 16bit、166.1.0.0 匹配；学校路由器逐项相与，第一项 166.1.0.0/17 匹配从 B3 口出——出接口 IP 与目的 IP 同网，ARP 直取 H1 的 MAC 精准投递。</p>\n<img data-img-id=\"fig-p48-05\" class=\"ds-note-img\" alt=\"图：训练三H1到H7的转发过程讲解\">\n<img data-img-id=\"fig-p48-06\" class=\"ds-note-img\" alt=\"图：训练三 H1→H7 去程\">\n<p><span style=\"color:#7c3aed\">逐跳转发中的帧地址变化：公司路由器发出的帧源 MAC 换成自己出接口、目的 MAC 是下一跳接口；IP 数据报首部源目地址不动。老师手写标注了每段链路上帧的源/目的地址，务必对照理解。</span></p>\n<img data-img-id=\"fig-p48-07\" class=\"ds-note-img\" alt=\"图：公司路由器转发表与逐跳帧地址标注\">\n<img data-img-id=\"fig-p48-08\" class=\"ds-note-img\" alt=\"图：学校路由器转发表含默认路由\">\n<p>训练五 H1→Internet（目的 111.2.3.4）：H1 判不同网 → 交网关；学校路由器三行都对不上 → 默认路由 0.0.0.0/0 兜底从 B1 出；ISP 老式路由器按 A 类取前 8bit 也对不上 → 从 A1 送往互联网逐跳转发。<span style=\"color:#dc2626\"><strong>默认路由的价值：所有表项都不匹配时它必然匹配，保证路由器正常工作。</strong></span></p>\n<img data-img-id=\"fig-p48-09\" class=\"ds-note-img\" alt=\"图：训练五H1发往Internet与默认网关配置\">\n<p>知识框架回顾：子网掩码（A/B/C 默认值）、子网地址、默认路由 0.0.0.0；主机发数据报判断同网/跨网的完整流程；路由器查表流程（掩码相与→比对→转发）。</p>\n<img data-img-id=\"fig-p48-10\" class=\"ds-note-img\" alt=\"图：子网划分技术思维导图总结\">\n<img data-img-id=\"fig-p48-11\" class=\"ds-note-img\" alt=\"图：主机发送IP数据报过程思维导图\">\n<p><span style=\"color:#7c3aed\">课后拓展：把学校划成 4 个子网、加多台内部路由器分担总路由器压力（跨子网通信不再都麻烦总路由器）——圈内这些路由器、主机、交换机构成一个<strong>自治系统（AS）</strong>，此概念 4.4 节会正式遇到。</span></p>\n<img data-img-id=\"fig-p48-12\" class=\"ds-note-img\" alt=\"图：目的IP与子网掩码逐位与运算判断所属子网\">\n<img data-img-id=\"fig-p48-13\" class=\"ds-note-img\" alt=\"图：子网划分综合终态总图\">",
+      "images": [
+        {
+          "imgId": "fig-p48-01",
+          "file": "images/ch04/fig-p48-01.jpg"
+        },
+        {
+          "imgId": "fig-p48-02",
+          "file": "images/ch04/fig-p48-02.jpg"
+        },
+        {
+          "imgId": "fig-p48-03",
+          "file": "images/ch04/fig-p48-03.jpg"
+        },
+        {
+          "imgId": "fig-p48-04",
+          "file": "images/ch04/fig-p48-04.jpg"
+        },
+        {
+          "imgId": "fig-p48-05",
+          "file": "images/ch04/fig-p48-05.jpg"
+        },
+        {
+          "imgId": "fig-p48-06",
+          "file": "images/ch04/fig-p48-06.jpg"
+        },
+        {
+          "imgId": "fig-p48-07",
+          "file": "images/ch04/fig-p48-07.jpg"
+        },
+        {
+          "imgId": "fig-p48-08",
+          "file": "images/ch04/fig-p48-08.jpg"
+        },
+        {
+          "imgId": "fig-p48-09",
+          "file": "images/ch04/fig-p48-09.jpg"
+        },
+        {
+          "imgId": "fig-p48-10",
+          "file": "images/ch04/fig-p48-10.jpg"
+        },
+        {
+          "imgId": "fig-p48-11",
+          "file": "images/ch04/fig-p48-11.jpg"
+        },
+        {
+          "imgId": "fig-p48-12",
+          "file": "images/ch04/fig-p48-12.jpg"
+        },
+        {
+          "imgId": "fig-p48-13",
+          "file": "images/ch04/fig-p48-13.jpg"
+        }
+      ]
+    },
+    {
+      "tree": [
+        "第4章 网络层",
+        "4.2 IPv4与配套协议",
+        "4.2.4 无分类编址 CIDR"
+      ],
+      "noteHtml": "<p><span style=\"font-size:20px;color:#7c3aed\"><strong>P49 4.2.4 无分类编址 CIDR（王道 4.2）</strong></span></p>\n<p><strong>时代背景</strong>：1993 年互联网民用大放异彩，每台入网主机都要消耗一个全球唯一 IP，地址资源告急，于是提出 CIDR（无分类编址）。</p>\n<img data-img-id=\"fig-p49-01\" class=\"ds-note-img\" alt=\"图：CIDR知识总览思维导图\">\n<p><strong>传统分类方案的缺陷</strong>：某单位 2000 台主机要入网——C 类块只有 256 个地址不够用，只能给 B 类（6 万多个），实际只用 2000 多个，浪费巨大、加速耗尽。</p>\n<img data-img-id=\"fig-p49-02\" class=\"ds-note-img\" alt=\"图：传统IP地址分配方案的缺陷\">\n<p><strong>CIDR 基本原理</strong>：取消 A~E 分类，IP 地址 = <mark><strong>{网络前缀, 主机号}，前缀长度不定</strong></mark>。2000 台主机的单位分配 /21 前缀的地址块即可：$2^{11} = 2048$ 个地址刚刚好。<strong>CIDR 记法（斜线记法）</strong>：IP/n 表示前 n bit 为网络前缀，相当于掩码前 n 个 1；地址块范围即主机号全 0 到全 1。</p>\n<img data-img-id=\"fig-p49-03\" class=\"ds-note-img\" alt=\"图：CIDR原理与斜线记法\">\n<p>拿到地址块后内部还要划子网，两种策略：<strong>定长子网划分</strong>——抠出 k bit 作定长子网号，得 $2^{k}$ 个等大子网；<strong>变长子网划分</strong>——各子网大小可不同、更灵活。</p>\n<img data-img-id=\"fig-p49-04\" class=\"ds-note-img\" alt=\"图：定长与变长子网划分概念\">\n<p>定长的缺陷：166.1.x.x 均分 4 份每份 $2^{12}$ 个，但四个校区需求差异大——第四校区只要 $2^{10}$ 浪费严重，第一校区要 $2^{15}$ 又不够用。</p>\n<img data-img-id=\"fig-p49-05\" class=\"ds-note-img\" alt=\"图：定长子网划分浪费示例\">\n<p><strong>例 1（逐级分配）</strong>：ICANN 给中国电信 /6 块（$2^{26}$，约 6700 多万个地址）；电信再按各地需求分：北京、上海人口多各给 /9（约 838 万），青海给 /11（约 209 万）……每往下分一级，就是把自己的地址块按需求做变长子网划分，实现分层管理。</p>\n<img data-img-id=\"fig-p49-06\" class=\"ds-note-img\" alt=\"图：ICANN到一级ISP逐级分配示例\">\n<p><strong>例 2（咸鱼电信大题）</strong>：咸鱼电信租到 128.14.32.128/27，主机号 5bit、共 32 个 IP。网吧（12 台电脑）取 /28（16 个地址，第 28bit=0）；旺财家（5 台）从剩余地址再对半分取 /29（8 个地址，可用 $2^{3}-2=6$ 个）；狗剩家路由器—主机点对点直连，最小的子网也要保留 2bit 主机号（00 与 11 不可用，01、10 分给两端）取 /30（4 个地址）。剩余 4 个无法再分（再抠 1bit 主机号只剩 1bit，全 0 全 1 都不可分配）。路由器转发表按 /28、/29、/30 分别指向 F1、F2、F3。</p>\n<img data-img-id=\"fig-p49-07\" class=\"ds-note-img\" alt=\"图：咸鱼电信128.14.32.128/27变长划分综合大题\">\n<p><span style=\"color:#7c3aed\"><strong>解题技巧：从根到叶构造二叉“哈夫曼树”</strong></span>——原始地址块作根（可自由分配的主机号 H bit），每次对半拆分左 0 右 1，每个叶子对应一个子网，叶子深度即追加的子网号位数；任何一个子网的网络前缀都不会是其他子网前缀的前缀。<span style=\"color:#dc2626\"><strong>树高不能超过 H-1（最小的子网也要留 2bit 主机号）。</strong></span></p>\n<p><span style=\"color:#7c3aed\"><strong>【例题】</strong></span>（2017 真题 38）将 21.3.0.0/16 划分为 128 个规模相同的子网，每个子网可分配的最大 IP 地址数是多少？</p>\n$$2^{7} = 128 \\Rightarrow \\text{定长子网号占 7bit}$$\n$$\\text{每子网主机号} = 16 - 7 = 9\\text{bit} \\Rightarrow 2^{9} - 2 = 510$$\n<p><span style=\"color:#dc2626\"><strong>答案：510 个（选 C）。减 2 是因为主机号全 0、全 1 不可分配。</strong></span></p>\n<img data-img-id=\"fig-p49-08\" class=\"ds-note-img\" alt=\"图：2017真题38定长子网划分逐位图解\">\n<p><span style=\"color:#7c3aed\"><strong>【例题】</strong></span>（2019 真题 37）将 101.200.16.0/20 划分为 5 个子网，求可能的最小子网可分配 IP 数。解题无需展开前 20bit——能自由分配的只有低 12bit。构造 5 个叶子的树并尽量长深：12bit 中拿出 4bit 网络前缀给最深的子网，剩 8bit 主机号。</p>\n$$2^{8} - 2 = 254$$\n<p><span style=\"color:#dc2626\"><strong>答案：254 个（选 B）。</strong></span></p>\n<img data-img-id=\"fig-p49-09\" class=\"ds-note-img\" alt=\"图：2019真题37二叉前缀树构造\">\n<p>回顾要点：取消分类、{网络前缀,主机号}、CIDR 记法、路由聚合（下节）、定长/变长划分；再次强调<span style=\"color:#dc2626\"><strong\">每个子网中主机号全 0 与全 1 的地址永远不能分配给特定结点</strong></span>。</p>\n<img data-img-id=\"fig-p49-10\" class=\"ds-note-img\" alt=\"图：CIDR知识点回顾思维导图\">",
+      "images": [
+        {
+          "imgId": "fig-p49-01",
+          "file": "images/ch04/fig-p49-01.jpg"
+        },
+        {
+          "imgId": "fig-p49-02",
+          "file": "images/ch04/fig-p49-02.jpg"
+        },
+        {
+          "imgId": "fig-p49-03",
+          "file": "images/ch04/fig-p49-03.jpg"
+        },
+        {
+          "imgId": "fig-p49-04",
+          "file": "images/ch04/fig-p49-04.jpg"
+        },
+        {
+          "imgId": "fig-p49-05",
+          "file": "images/ch04/fig-p49-05.jpg"
+        },
+        {
+          "imgId": "fig-p49-06",
+          "file": "images/ch04/fig-p49-06.jpg"
+        },
+        {
+          "imgId": "fig-p49-07",
+          "file": "images/ch04/fig-p49-07.jpg"
+        },
+        {
+          "imgId": "fig-p49-08",
+          "file": "images/ch04/fig-p49-08.jpg"
+        },
+        {
+          "imgId": "fig-p49-09",
+          "file": "images/ch04/fig-p49-09.jpg"
+        },
+        {
+          "imgId": "fig-p49-10",
+          "file": "images/ch04/fig-p49-10.jpg"
+        }
+      ]
+    },
+    {
+      "tree": [
+        "第4章 网络层",
+        "4.2 IPv4与配套协议",
+        "4.2.5 路由聚合"
+      ],
+      "noteHtml": "<p><span style=\"font-size:20px;color:#7c3aed\"><strong>P50 4.2.5 路由聚合（王道 4.2）</strong></span></p>\n<p><strong>路由聚合（构成超网）</strong>：转发表中若有几条表项的<strong>转发接口相同</strong>、且网络前缀有公共部分，可聚合为一条更短前缀的表项，缩减路由表规模。注意前提：咸鱼电信转发表中前三个表项虽然前缀相近，但转发接口各不相同（F1/F2/F3），<span style=\"color:#dc2626\"><strong>接口不同则不能聚合</strong></span>。</p>\n<img data-img-id=\"fig-p50-01\" class=\"ds-note-img\" alt=\"图：咸鱼电信路由器转发表与聚合条件\">\n<p><span style=\"color:#7c3aed\"><strong>【例题】</strong></span>（路由聚合）某路由器转发表含四条表项：128.14.32.128/28、128.14.32.144/29、128.14.32.152/30、128.14.32.156/30，转发接口均为 F1。求聚合后的表项。</p>\n$$/28:\\ .128 \\sim .143;\\quad /29:\\ .144 \\sim .151$$\n$$/30:\\ .152 \\sim .155;\\quad /30:\\ .156 \\sim .159$$\n$$\\text{四块连续覆盖 } .128 \\sim .159 \\Rightarrow 128.14.32.128/27$$\n<p><span style=\"color:#dc2626\"><strong>答案：聚合为 128.14.32.128/27（32 个地址），下一跳接口 F1。</strong></span></p>\n<p><mark><strong>最长前缀匹配原则</strong></mark>：一个目的 IP 可能同时匹配多条表项（前缀长短不同），此时<span style=\"color:#dc2626\"><strong>选网络前缀最长的那条</strong></span>——前缀越长越具体、指向越精确。</p>\n<img data-img-id=\"fig-p50-02\" class=\"ds-note-img\" alt=\"图：县里电信路由器最长前缀匹配示例\">\n<p><span style=\"color:#7c3aed\"><strong>【例题】</strong></span>（最长前缀匹配）县里电信路由器转发表：128.14.32.128/28 → 铁柱网吧；128.14.32.128/25 → 咸鱼电信其余子网；0.0.0.0/0 → 默认路由。收到目的 IP 为 128.14.32.131 的数据报应如何转发？</p>\n$$131 \\in .128 \\sim .143\\ (\\text{匹配}/28),\\quad 131 \\in .128 \\sim .255\\ (\\text{匹配}/25)$$\n$$28 \\gt 25 \\Rightarrow \\text{按最长前缀选 } /28 \\text{ 表项}$$\n<p><span style=\"color:#dc2626\"><strong>答案：两条都能匹配，按最长前缀匹配选 128.14.32.128/28，发往铁柱网吧方向。</strong></span></p>\n<p><strong>路由转发专题总结</strong>（理解了就能分析大题）：第一步，主机判断目的与本机是否同网——用子网掩码逐位与后比较网络前缀；第二步，路由器转发流程——接收分组 → 首部校验 → 取目的 IP → 查转发表（目的网络、子网掩码、转发接口三项，逐项相与比对、最长前缀匹配）→ 从匹配接口转发。</p>\n<img data-img-id=\"fig-p50-03\" class=\"ds-note-img\" alt=\"图：路由转发专题总结\">\n<p>综合大题终态拓扑：咸鱼电信/县里电信、学校、公司、铁柱网咖多路由器全联网，128.14.32.128/28、/29、/30 子网划分与聚合、默认路由 0.0.0.0/0、各主机标注——建议对照此图把训练一至训练五完整推演一遍。</p>\n<img data-img-id=\"fig-p50-04\" class=\"ds-note-img\" alt=\"图：路由聚合综合大题完整拓扑终态\">\n<p><span style=\"color:#6a737d\">（本节B站未生成AI字幕，笔记依据课件与教材整理）</span></p>",
+      "images": [
+        {
+          "imgId": "fig-p50-01",
+          "file": "images/ch04/fig-p50-01.jpg"
+        },
+        {
+          "imgId": "fig-p50-02",
+          "file": "images/ch04/fig-p50-02.jpg"
+        },
+        {
+          "imgId": "fig-p50-03",
+          "file": "images/ch04/fig-p50-03.jpg"
+        },
+        {
+          "imgId": "fig-p50-04",
+          "file": "images/ch04/fig-p50-04.jpg"
+        }
+      ]
+    },
+    {
+      "tree": [
+        "第4章 网络层",
+        "4.2 IPv4与配套协议",
+        "4.2.6 网络地址转换 NAT"
+      ],
+      "noteHtml": "<p><span style=\"font-size:20px;color:#7c3aed\"><strong>P51 4.2.6 网络地址转换 NAT（王道 4.2）</strong></span></p>\n<p>技术演进线：1981 IPv4 分类 → 1985 子网划分 → 1993 CIDR → <strong>1994 NAT</strong>。互联网发展太快，每个主机都要消耗全球唯一 IP，42 亿不够用，NAT 让<strong>一个局域网内的多台主机共享一个全球唯一的公网 IP</strong>。</p>\n<img data-img-id=\"fig-p51-01\" class=\"ds-note-img\" alt=\"图：本节内容目录页\">\n<p><strong>端口号铺垫</strong>（传输层概念）：通信的真正主体是进程。IP 地址定位主机，<strong>端口号</strong>（软件概念，16bit，每台主机约 6.5 万个）定位主机上的进程，IP+端口即可精准定位全网某个进程。各主机独立分配端口，<span style=\"color:#dc2626\"><strong>不同主机上端口号可以重复</strong></span>。</p>\n<img data-img-id=\"fig-p51-02\" class=\"ds-note-img\" alt=\"图：主机199.1.1.5上进程与端口号对应关系\">\n<p>既然如此——<mark><strong>共享的公网 IP + 不同端口号，就能映射到局域网内不同主机的不同进程，这正是 NAT 的核心思想。</strong></mark></p>\n<img data-img-id=\"fig-p51-03\" class=\"ds-note-img\" alt=\"图：IP地址不够用引出NAT\">\n<p><strong>外网 IP（公网 IP）</strong>：全球唯一，由 ISP 分配；<strong>内网 IP（私有 IP）</strong>：只允许分配给局域网内部结点，每个局域网都可复用。实测验证：百度搜“IP地址”查到的是公网 IP（如 59.175.49.153，ISP 分配）；系统设置里看到的是内网 IP（如 192.168.3.74，家用路由器分配），同网手机的公网 IP 与电脑相同——两设备共享一个公网 IP。</p>\n<img data-img-id=\"fig-p51-04\" class=\"ds-note-img\" alt=\"图：百度查公网IP与内网IP区别\">\n<img data-img-id=\"fig-p51-05\" class=\"ds-note-img\" alt=\"图：局域网多设备共享公网IP访问Internet\">\n<p>家用路由器集路由、交换、无线 AP、NAT 功能于一身。<strong>NAT 路由器</strong>内部除路由转发表外还有一个关键数据结构——<strong>NAT 表</strong>，记录“外网 IP:端口 ↔ 内网 IP:端口”的映射。例如电脑浏览器进程 192.168.3.74:2111 映射为 59.175.49.153:某端口，手机微信 192.168.3.48:9855 映射为另一端口。</p>\n<img data-img-id=\"fig-p51-06\" class=\"ds-note-img\" alt=\"图：NAT工作演示初始态与NAT表\">\n<p><strong>训练一（手机1微信 → 手机2微信）</strong>完整走一遍：手机1封装 TCP（源端口 9855）+ IP（源 192.168.3.48 内网；目的必须写对方<strong>外网</strong> IP——跨局域网通信只能用外网地址，目的端口也写对方对外暴露的外网端口 4096 而非内网 6666，这些信息可经服务器查询）→ 发默认网关 → NAT 路由器查表<strong>改写源 IP+源端口</strong>为外网映射 → 互联网层层转发 → 对端 NAT 路由器查表<strong>改写目的 IP+目的端口</strong>为内网映射 → 精准送达手机2微信进程。<span style=\"color:#dc2626\"><strong>出向改“源”、入向改“目的”；普通路由器转发绝不改 IP 地址，而 NAT 路由器两样都改。</strong></span></p>\n<img data-img-id=\"fig-p51-07\" class=\"ds-note-img\" alt=\"图：另一个局域网接入后NAT表演进\">\n<img data-img-id=\"fig-p51-08\" class=\"ds-note-img\" alt=\"图：两个局域网经各自NAT路由器访问服务器的完整拓扑\">\n<p><span style=\"color:#7c3aed\"><strong>【例题】</strong></span>（NAT 转换表）NAT 路由器公网 IP 为 59.175.40.125，NAT 表中有表项 59.175.40.125:5250 ↔ 192.168.3.7:4016。内网主机 192.168.3.7:4016 向外网服务器发送分组，以及外网回程分组到达时，NAT 各做什么改写？</p>\n$$\\text{出向：源 } 192.168.3.7{:}4016 \\Rightarrow 59.175.40.125{:}5250$$\n$$\\text{回程：目的 } 59.175.40.125{:}5250 \\Rightarrow 192.168.3.7{:}4016$$\n<p><span style=\"color:#dc2626\"><strong>答案：出向改写源 IP 和源端口；回程按表把目的 IP、目的端口改写为 192.168.3.7:4016 后转发内网主机。</strong></span></p>\n<img data-img-id=\"fig-p51-09\" class=\"ds-note-img\" alt=\"图：NAT回程数据按表转换示例\">\n<p>训练三（电脑浏览器 → DiliDili web 服务器 80 端口）同法：出向查表改源，对端服务器无 NAT 则按目的 IP 直接交付。NAT 路由器要修改传输层首部（端口号），<span style=\"color:#dc2626\"><strong>所以 NAT 路由器功能包含传输层；普通路由器只包含网络层及以下</strong></span>。</p>\n<img data-img-id=\"fig-p51-10\" class=\"ds-note-img\" alt=\"图：NAT要点总结思维导图\">\n<p><span style=\"color:#7c3aed\">私有地址三段要记牢：10/8、172.16~31（/12）、192.168/16，仅局域网内有效可重复；理解 NAT 最好的办法是把训练自己“让数据流动起来”跑一遍。</span></p>",
+      "images": [
+        {
+          "imgId": "fig-p51-01",
+          "file": "images/ch04/fig-p51-01.jpg"
+        },
+        {
+          "imgId": "fig-p51-02",
+          "file": "images/ch04/fig-p51-02.jpg"
+        },
+        {
+          "imgId": "fig-p51-03",
+          "file": "images/ch04/fig-p51-03.jpg"
+        },
+        {
+          "imgId": "fig-p51-04",
+          "file": "images/ch04/fig-p51-04.jpg"
+        },
+        {
+          "imgId": "fig-p51-05",
+          "file": "images/ch04/fig-p51-05.jpg"
+        },
+        {
+          "imgId": "fig-p51-06",
+          "file": "images/ch04/fig-p51-06.jpg"
+        },
+        {
+          "imgId": "fig-p51-07",
+          "file": "images/ch04/fig-p51-07.jpg"
+        },
+        {
+          "imgId": "fig-p51-08",
+          "file": "images/ch04/fig-p51-08.jpg"
+        },
+        {
+          "imgId": "fig-p51-09",
+          "file": "images/ch04/fig-p51-09.jpg"
+        },
+        {
+          "imgId": "fig-p51-10",
+          "file": "images/ch04/fig-p51-10.jpg"
+        }
+      ]
+    },
+    {
+      "tree": [
+        "第4章 网络层",
+        "4.2 IPv4与配套协议",
+        "4.2.7 地址解析协议ARP"
+      ],
+      "noteHtml": "<p><span style=\"font-size:20px;color:#7c3aed\"><strong>P52 4.2.7 地址解析协议ARP（王道 4.2）</strong></span></p>\n<p><strong>两个地址</strong>：<strong>MAC 地址</strong>（物理地址）48bit，出厂固化、全球唯一——主机至少一块网卡即至少一个 MAC，路由器多接口多 MAC；<strong>IP 地址</strong>是逻辑地址。数据报封装成 MAC 帧时必须写目的 MAC，而网络层只认识 IP，于是需要 <mark><strong>ARP（地址解析协议）完成 IP 地址 → MAC 地址的映射</strong></mark>。</p>\n<img data-img-id=\"fig-p52-01\" class=\"ds-note-img\" alt=\"图：ARP概念页：MAC地址与IP到MAC映射\">\n<p><strong>工作过程</strong>：每台主机维护<strong>ARP 高速缓存</strong>（本局域网内各主机/路由器接口的 IP→MAC 映射，有时效）。查不到就发 <strong>ARP 请求</strong>——封装成<strong>广播帧</strong>（目的 MAC 全 1：FF-FF-FF-FF-FF-FF）在本网络内广播，目标主机以<strong>单播 ARP 响应</strong>回填缓存，其余主机收到不响应。</p>\n<img data-img-id=\"fig-p52-02\" class=\"ds-note-img\" alt=\"图：H3与H4间ARP请求广播与响应单播全过程\">\n<p><span style=\"color:#dc2626\"><strong>跨网通信的易错点：ARP 查的不是目的主机的 MAC，而是“下一跳”的 MAC——同网查目的主机，跨网查默认网关。</strong></span>主机 H3 给外网发数据报：帧的源 MAC 是 H3、目的 MAC 是网关接口；IP 首部源目 IP 不变。数据报到目的网络后，最后一跳路由器与目的主机同网，才 ARP 目的主机的 MAC 直接交付。</p>\n<p><strong>对照训练三问</strong>（H3 视角）：① H3 给本网 H4 发数据——ARP 查 H4 的 MAC；② H3 给外网某主机发数据——ARP 查默认网关的 MAC；③ Internet 某主机给 H3 发数据——途中每跳路由器都按下一跳逐段解析 MAC，最后一跳路由器 ARP 查 H3 的 MAC。</p>\n<p><span style=\"color:#7c3aed\">拓展（不会考这么深）：ARP 分组共 28B，字段含硬件类型、协议类型、硬件/协议地址长度、操作码（1 请求 2 响应）、发送方/目标以太网地址与 IP 地址等。</span></p>\n<img data-img-id=\"fig-p52-03\" class=\"ds-note-img\" alt=\"图：ARP分组格式28字节字段\">\n<p>回顾：ARP 分组封装进 MAC 帧发送，帧<strong>类型字段</strong>指明上层协议（ARP/IPv4 等），广播帧目的地址全 1。ARP 解决“同网内 IP→MAC”，是逐跳转发得以落地的一环。</p>\n<img data-img-id=\"fig-p52-04\" class=\"ds-note-img\" alt=\"图：ARP分组封装进以太网MAC帧\">\n<p><span style=\"color:#6a737d\">（本节B站未生成AI字幕，笔记依据课件与教材整理）</span></p>",
+      "images": [
+        {
+          "imgId": "fig-p52-01",
+          "file": "images/ch04/fig-p52-01.jpg"
+        },
+        {
+          "imgId": "fig-p52-02",
+          "file": "images/ch04/fig-p52-02.jpg"
+        },
+        {
+          "imgId": "fig-p52-03",
+          "file": "images/ch04/fig-p52-03.jpg"
+        },
+        {
+          "imgId": "fig-p52-04",
+          "file": "images/ch04/fig-p52-04.jpg"
+        }
+      ]
+    },
+    {
+      "tree": [
+        "第4章 网络层",
+        "4.2 IPv4与配套协议",
+        "4.2.8 动态主机配置协议DHCP"
+      ],
+      "noteHtml": "<p><span style=\"font-size:20px;color:#7c3aed\"><strong>P53 4.2.8 动态主机配置协议DHCP（王道 4.2）</strong></span></p>\n<p><strong>DHCP 的作用</strong>：主机刚接入网络时还没有 IP 地址，需给它动态分配 IP 并配置子网掩码、默认网关等参数——这些全由 DHCP 协议自动完成（即插即用）。<span style=\"color:#dc2626\"><strong>DHCP 属于应用层协议，基于 UDP（服务器端口 67、客户机端口 68），采用客户/服务器（C/S）模型</strong></span>；大纲把它放在网络层章节，是因为它主要为网络层参数做初始化。</p>\n<img data-img-id=\"fig-p53-01\" class=\"ds-note-img\" alt=\"图：DHCP协议知识树思维导图\">\n<p>每个（子）网络通常配一台 DHCP 服务器，管理本网地址池；不同服务器管辖的地址池不同。例中学校划两个子网（前缀 17bit），左侧服务器管理 166.1.0.x 池、右侧管理 166.1.128.x 池。</p>\n<img data-img-id=\"fig-p53-02\" class=\"ds-note-img\" alt=\"图：DHCP实例拓扑与时序图\">\n<p><strong>四步工作过程</strong>（新主机 H3 接入网络）：① <strong>DHCP 发现报文（DISCOVER）</strong>——H3 广播寻找服务器：应用层自报 MAC 地址（AA:BB:CC:DD:EE:33）；UDP 源端口 68 → 目的端口 67；IP 层源 0.0.0.0（本网络的本主机，i am nobody）、目的 255.255.255.255 广播；链路层源 MAC 自己、目的 MAC 全 F 广播帧。普通主机没有绑定 67 端口的进程，收到后在传输层即丢弃——只有 DHCP 服务器进程响应（67 是服务器专用的熟知端口）。</p>\n<img data-img-id=\"fig-p53-03\" class=\"ds-note-img\" alt=\"图：校园拓扑与DHCP发现报文流向\">\n<img data-img-id=\"fig-p53-04\" class=\"ds-note-img\" alt=\"图：DHCP DISCOVER报文各层封装字段\">\n<p>② <strong>DHCP 提供报文（OFFER）</strong>——服务器从地址池挑一个空闲 IP（如 166.1.128.2）“提供”给 H3，报文中含分配的 IP、<strong>租用期</strong>（可续租）、子网掩码（255.255.128.0）、默认网关（166.1.128.1）；UDP 67→68；IP 层源=服务器 IP、目的=255.255.255.255（H3 还没有 IP，只能广播）；链路层却可<strong>单播</strong>——服务器已从发现报文得知 H3 的 MAC。</p>\n<img data-img-id=\"fig-p53-05\" class=\"ds-note-img\" alt=\"图：DHCP OFFER提供报文字段详解\">\n<p>③ <strong>DHCP 请求报文（REQUEST）</strong>——H3 广播“我最终选用的是谁分配的 IP”。<span style=\"color:#dc2626\"><strong>为何仍用广播：一个网络可能有多台 DHCP 服务器，它们都会回 OFFER，H3 只能接受一个，必须广而告之让落选的服务器也知道，避免地址管理混乱——高频考点。</strong></span>此时 IP 层源仍为 0.0.0.0（流程未完成，地址尚未真正属于 H3）。</p>\n<img data-img-id=\"fig-p53-06\" class=\"ds-note-img\" alt=\"图：DHCP报文传输路径拓扑\">\n<img data-img-id=\"fig-p53-07\" class=\"ds-note-img\" alt=\"图：DHCP REQUEST请求报文封装\">\n<p>④ <strong>DHCP 确认报文（ACK）</strong>——服务器再次确认分配信息，源=服务器 IP、目的=广播 IP，链路层单播送达；H3 收到后才真正拥有 IP、掩码、默认网关。</p>\n<img data-img-id=\"fig-p53-08\" class=\"ds-note-img\" alt=\"图：DHCP ACK确认报文\">\n<p>四步时序总览：<mark><strong>DISCOVER → OFFER → REQUEST → ACK</strong></mark>，各主机 IP 与服务器 IP 对应关系一目了然。</p>\n<img data-img-id=\"fig-p53-09\" class=\"ds-note-img\" alt=\"图：DHCP四步交互时序图\">\n<p><span style=\"color:#dc2626\"><strong>考点浓缩：四个报文的名称与作用；各报文在 IP 层/链路层的源、目的地址如何填（发现/请求广播、提供/确认 IP 层广播但帧层可单播）；端口 67/68。</strong></span>家庭网络中通常由家用路由器兼职 DHCP 服务器。</p>\n<img data-img-id=\"fig-p53-10\" class=\"ds-note-img\" alt=\"图：DHCP四步交互总结思维导图\">",
+      "images": [
+        {
+          "imgId": "fig-p53-01",
+          "file": "images/ch04/fig-p53-01.jpg"
+        },
+        {
+          "imgId": "fig-p53-02",
+          "file": "images/ch04/fig-p53-02.jpg"
+        },
+        {
+          "imgId": "fig-p53-03",
+          "file": "images/ch04/fig-p53-03.jpg"
+        },
+        {
+          "imgId": "fig-p53-04",
+          "file": "images/ch04/fig-p53-04.jpg"
+        },
+        {
+          "imgId": "fig-p53-05",
+          "file": "images/ch04/fig-p53-05.jpg"
+        },
+        {
+          "imgId": "fig-p53-06",
+          "file": "images/ch04/fig-p53-06.jpg"
+        },
+        {
+          "imgId": "fig-p53-07",
+          "file": "images/ch04/fig-p53-07.jpg"
+        },
+        {
+          "imgId": "fig-p53-08",
+          "file": "images/ch04/fig-p53-08.jpg"
+        },
+        {
+          "imgId": "fig-p53-09",
+          "file": "images/ch04/fig-p53-09.jpg"
+        },
+        {
+          "imgId": "fig-p53-10",
+          "file": "images/ch04/fig-p53-10.jpg"
+        }
+      ]
+    },
+    {
+      "tree": [
+        "第4章 网络层",
+        "4.2 IPv4与配套协议",
+        "4.2.9_1 ICMP网际控制报文协议"
+      ],
+      "noteHtml": "<p><span style=\"font-size:20px;color:#7c3aed\"><strong>P54 4.2.9_1 ICMP网际控制报文协议（王道 4.2）</strong></span></p>\n<p><strong>ICMP（网际控制报文协议）</strong>让主机或路由器报告传输中的差错与异常。它属于<strong>网络层</strong>，ICMP 报文作为数据部分<strong>封装在 IP 数据报中传输</strong>（IP 为 ICMP 提供服务）。</p>\n<img data-img-id=\"fig-p54-01\" class=\"ds-note-img\" alt=\"图：ICMP章节封面\">\n<p>ICMP 报文分两大类：<mark><strong>差错报告报文</strong></mark>与<strong>询问报文</strong>。类比寄快递：包裹在中途破损、地址有误，快递小哥（路由器）要反馈给你——这是差错报告；寄件前先问一句“在吗，方便收快递吗”——这是询问报文。</p>\n<img data-img-id=\"fig-p54-02\" class=\"ds-note-img\" alt=\"图：ICMP知识框架思维导图\">\n<p>报文最前 1 字节是<strong>类型</strong>字段，标明具体分类。</p>\n<img data-img-id=\"fig-p54-03\" class=\"ds-note-img\" alt=\"图：ICMP在网络层为IP协议服务的关系图\">\n<ul>\n<li><strong>终点不可达</strong>：路由器发现目的网络不存在该主机，或目的主机交付传输层时端口 6666 无对应进程——都向源点反馈不可达。</li>\n<li><strong>时间超过</strong>：路由器转发时 TTL 减到 0，丢弃分组并告知发送方；或目的主机分片重组超时（部分分片未到齐，收到的全部丢弃并报告）。</li>\n<li><strong>参数问题</strong>：路由器检测出 IP 首部校验错误或参数不合法，丢弃并反馈。</li>\n<li><strong>改变路由（重定向）</strong>：路由器发现“发我这是绕路，下次这个网络直接发给 32.129 那台更近”，据此主机更新路由选择。</li>\n<li><strong>源点抑制</strong>：网络拥塞丢包时“求求你发慢点”——2012 年后已从标准废弃，了解即可。</li>\n</ul>\n<img data-img-id=\"fig-p54-04\" class=\"ds-note-img\" alt=\"图：时间超过差错报文场景\">\n<img data-img-id=\"fig-p54-05\" class=\"ds-note-img\" alt=\"图：源点抑制已废弃的批注\">\n<img data-img-id=\"fig-p54-06\" class=\"ds-note-img\" alt=\"图：终点不可达等其他差错情形\">\n<p><strong>询问报文</strong>（成对出现）：<strong>回送请求/回送回答</strong>（Echo Request/Reply，“在吗？回答我！”）探测连通性；<strong>时间戳请求/回答</strong>询问时间，可对表（用于系统时间自动校准）。</p>\n<img data-img-id=\"fig-p54-07\" class=\"ds-note-img\" alt=\"图：回送请求与回送回答询问报文\">\n<p><strong>典型应用 ping</strong>：底层就是回送请求/回答。终端 ping www.sina.com 的输出里：64 bytes from 38.2.127.173 是服务器回复；TTL=52 结合初始 64 可推算中间经过了 64-52=12 台路由器；time 值是往返时延 RTT（发出请求时启动计时器，收到回答时停止）。</p>\n<img data-img-id=\"fig-p54-08\" class=\"ds-note-img\" alt=\"图：ping命令测试连通性截图\">\n<img data-img-id=\"fig-p54-09\" class=\"ds-note-img\" alt=\"图：时间戳请求与回答报文\">\n<p><span style=\"color:#dc2626\"><strong>四种不应发送 ICMP 差错报告报文的情况（选择题高频）：</strong></span>① 对 ICMP 差错报文本身出错不再发（避免无限反馈）；② 对分片的所有分片，后续分片出错不再发（一个数据报只反馈一次）；③ 对具有多播地址的数据报不发（群发不针对个人）；④ 对特殊地址（如 127.0.0.1、0.0.0.0）不发——“冤有头债有主”，可源头无法追溯。</p>\n<img data-img-id=\"fig-p54-10\" class=\"ds-note-img\" alt=\"图：ICMP思维导图全貌\">\n<img data-img-id=\"fig-p54-11\" class=\"ds-note-img\" alt=\"图：不应发送ICMP差错报告的四种情况\">\n<p><span style=\"color:#7c3aed\">本协议重在记忆：差错报告与询问报文的分类考前要回顾，靠短时记忆就能拿下选择题。另一个典型应用 traceroute 见下一节。</span></p>",
+      "images": [
+        {
+          "imgId": "fig-p54-01",
+          "file": "images/ch04/fig-p54-01.jpg"
+        },
+        {
+          "imgId": "fig-p54-02",
+          "file": "images/ch04/fig-p54-02.jpg"
+        },
+        {
+          "imgId": "fig-p54-03",
+          "file": "images/ch04/fig-p54-03.jpg"
+        },
+        {
+          "imgId": "fig-p54-04",
+          "file": "images/ch04/fig-p54-04.jpg"
+        },
+        {
+          "imgId": "fig-p54-05",
+          "file": "images/ch04/fig-p54-05.jpg"
+        },
+        {
+          "imgId": "fig-p54-06",
+          "file": "images/ch04/fig-p54-06.jpg"
+        },
+        {
+          "imgId": "fig-p54-07",
+          "file": "images/ch04/fig-p54-07.jpg"
+        },
+        {
+          "imgId": "fig-p54-08",
+          "file": "images/ch04/fig-p54-08.jpg"
+        },
+        {
+          "imgId": "fig-p54-09",
+          "file": "images/ch04/fig-p54-09.jpg"
+        },
+        {
+          "imgId": "fig-p54-10",
+          "file": "images/ch04/fig-p54-10.jpg"
+        },
+        {
+          "imgId": "fig-p54-11",
+          "file": "images/ch04/fig-p54-11.jpg"
+        }
+      ]
+    },
+    {
+      "tree": [
+        "第4章 网络层",
+        "4.2 IPv4与配套协议",
+        "4.2.9_2 （选学）traceroute的实现原理"
+      ],
+      "noteHtml": "<p><span style=\"font-size:20px;color:#7c3aed\"><strong>P55 4.2.9_2 traceroute的实现原理（选学）（王道 4.2）</strong></span></p>\n<p><strong>traceroute（Windows 下为 tracert）</strong>：追踪从本机到目的主机逐跳经过的路由器。Mac/Linux 用 traceroute -I www.baidu.com（-I 指定用 ICMP 实现，不加则默认用 UDP）；Windows 直接 tracert www.baidu.com（默认 ICMP）。</p>\n<img data-img-id=\"fig-p55-01\" class=\"ds-note-img\" alt=\"图：traceroute逐跳显示13行路由器IP与延迟\">\n<p>输出共 13 行：从家用路由器内网 IP 开始，经光猫、运营商路由器，直到百度服务器——中间几跳因防火墙不回应而显示星号。细看会发现两次查询百度解析到的服务器 IP 不同：网址是逻辑地址，背后绑定多台物理服务器，按负载分配。</p>\n<img data-img-id=\"fig-p55-02\" class=\"ds-note-img\" alt=\"图：traceroute批注：同一路由器多IP与多主机\">\n<p><strong>实现原理</strong>——巧妙利用 <strong>ICMP 时间超过报文</strong>：<span style=\"color:#dc2626\"><strong>路由器收到 TTL 减为 0 的数据报会丢弃并回送时间超过报文</strong></span>。于是源主机故意构造 <strong>TTL=1</strong> 的数据报：第一台路由器把 TTL 减到 0 丢弃并回报告，源主机由此得知第一跳的 IP 与往返时延；再发 <strong>TTL=2</strong> 的数据报探测第二跳……逐跳递增 TTL，即可把整条路径一跳一跳摸出来。每跳默认发 3 个探测包，所以每行有 3 个时延值。</p>\n<img data-img-id=\"fig-p55-03\" class=\"ds-note-img\" alt=\"图：TTL逐跳递增探测与时间超过报文返回原理\">\n<p><mark><strong>核心结论：ping 用回送请求/回答测试连通性；traceroute 用 TTL 递增 + ICMP 时间超过报文追踪转发路径。</strong></mark><span style=\"color:#7c3aed\">选学内容，考试记住结论即可，动手跑一遍 traceroute 印象更深。</span></p>",
+      "images": [
+        {
+          "imgId": "fig-p55-01",
+          "file": "images/ch04/fig-p55-01.jpg"
+        },
+        {
+          "imgId": "fig-p55-02",
+          "file": "images/ch04/fig-p55-02.jpg"
+        },
+        {
+          "imgId": "fig-p55-03",
+          "file": "images/ch04/fig-p55-03.jpg"
+        }
+      ]
+    },
+    {
+      "tree": [
+        "第4章 网络层",
+        "4.3 IPv6",
+        "4.3_1 IPv6地址"
+      ],
+      "noteHtml": "<p><span style=\"font-size:20px;color:#7c3aed\"><strong>P56 4.3_1 IPv6地址（王道 4.3）</strong></span></p>\n<img data-img-id=\"fig-p56-01\" class=\"ds-note-img\" alt=\"图：408大纲IPv6主要特点与IPv6地址考点\">\n<p><strong>从 IPv4 到 IPv6</strong>：IPv4（1981）32bit 共约 42 亿地址，全球 80 多亿人一人一个都不够；NAT（1994）只能缓解不能根治。IPv6（1998）地址 <mark><strong>128bit</strong></mark>，$2^{128} \\approx 3.4 \\times 10^{38}$ 个，平均每人可分 $4.3 \\times 10^{28}$ 个，足够万物互联时代长期使用。<span style=\"color:#7c3aed\">IPv5 曾存在过，是实验性协议，不具备推广条件。</span></p>\n<img data-img-id=\"fig-p56-02\" class=\"ds-note-img\" alt=\"图：IPv4与IPv6对比页\">\n<p><strong>冒号十六进制记法</strong>：128bit 每 16bit 一段、共 8 段，段间用冒号分隔，每段写成 4 位十六进制数，如 2001:0db8:85a3:0000:0000:8a2e:0370:7334。</p>\n<img data-img-id=\"fig-p56-03\" class=\"ds-note-img\" alt=\"图：冒号十六进制记法与点分十进制对比\">\n<p><strong>压缩规则 1</strong>：每段<strong>前导零</strong>可省（0db8 → db8、0370 → 370），段内不到 4 位即知前面省略了零。</p>\n<img data-img-id=\"fig-p56-04\" class=\"ds-note-img\" alt=\"图：去前导零压缩规则图解\">\n<p><strong>压缩规则 2</strong>：连续多段全 0 可用<strong>双冒号 ::</strong> 代替（0000:0000 → ::）。恢复时先补齐各段前导零，数出已有 32 位十六进制数中的个数，缺多少补多少段 0。</p>\n<p><span style=\"color:#dc2626\"><strong>一个地址中双冒号只能出现一次，否则无法确定每处各代表几段 0——非法。</strong></span></p>\n<img data-img-id=\"fig-p56-05\" class=\"ds-note-img\" alt=\"图：双冒号代替连续零规则\">\n<p><span style=\"color:#7c3aed\"><strong>【例题】</strong></span>（最简压缩形式）2001:0db8:0000:0000:0000:0000:0000:0001 的最简写法是？0db8 去前导零得 db8，其后直到末尾 1 之间全是 0 段，用一个 :: 代替。</p>\n$$2001{:}0db8{:}0000{:}0000{:}0000{:}0000{:}0000{:}0001 \\Rightarrow 2001{:}db8{::}1$$\n<p><span style=\"color:#dc2626\"><strong>答案：2001:db8::1（:: 只能用一次；已补前导零后其余 7 段中 5 段全 0 均并入 ::）。</strong></span>常见干扰项：出现两次 ::（语法错误）、::1 后还留 0 段（非最简）、三个冒号连写（非法）。</p>\n<img data-img-id=\"fig-p56-06\" class=\"ds-note-img\" alt=\"图：IPv6最简压缩选择题\">\n<p><strong>地址分配</strong>：与 IPv4 同思路——ICANN 逐级分配。结构 = <strong>前缀 n bit + 子网标识 + 接口标识（128-n bit）</strong>，接口标识相当于 IPv4 的主机号；IPv6 同样支持 CIDR 灵活划分子网，地址空间大还可支持更多层级。</p>\n<img data-img-id=\"fig-p56-07\" class=\"ds-note-img\" alt=\"图：IPv4地址资源分配层级回顾\">\n<img data-img-id=\"fig-p56-08\" class=\"ds-note-img\" alt=\"图：IPv6地址结构：前缀与接口标识\">\n<p><strong>即插即用（地址自动配置）</strong>：某学校获 /64 前缀块，主机接入后只需向本网任一路由器询问网络前缀，即可<strong>用自己的 MAC 地址作接口标识</strong>自行拼出全球唯一的 IPv6 地址——“出门在外，身份是自己给的”；而 DHCP 方式则是“身份是别人给的”。IPv6 大多数场景不再需要 DHCP 服务器，但安全要求高的场合仍支持 DHCP 统一管理。</p>\n<img data-img-id=\"fig-p56-09\" class=\"ds-note-img\" alt=\"图：IPv6地址分配板书：前缀64bit+接口标识64bit\">\n<p><strong>IPv6 地址分类</strong>（按二进制前缀判断，选择题考记忆）：</p>\n<ul>\n<li><strong>未指定地址</strong>：128bit 全 0（::/128），类似 IPv4 的 0.0.0.0；</li>\n<li><strong>环回地址</strong>：前 127bit 全 0 末位 1（::1/128），类似 127.0.0.1；</li>\n<li><strong>多播地址</strong>：FF00::/8（前 8bit 全 1），QQ 群号式一对多；</li>\n<li><strong>本地链路单播地址</strong>：FE80::/10，仅本局域网内部通信、不会被路由器转到其他网络；</li>\n<li><strong>全球单播地址</strong>：不属上述特殊形态的地址（如 2000::/3 起始），可全球分配。</li>\n</ul>\n<img data-img-id=\"fig-p56-10\" class=\"ds-note-img\" alt=\"图：IPv6地址分类表\">\n<p><span style=\"color:#7c3aed\"><strong>【例题】</strong></span>下列哪个是未指定地址？A. ::　B. ::1　C. 0:0:0:0:0:0:0:1 的等价压缩　D. FE80:: 开头　E. FF02:: 开头——全零即未指定。</p>\n<p><span style=\"color:#dc2626\"><strong>答案：A（:: 即 128bit 全 0）；B/C 是环回，D 是本地链路单播，E 是多播。</strong></span></p>\n<img data-img-id=\"fig-p56-11\" class=\"ds-note-img\" alt=\"图：IPv6地址分类选择题\">\n<p><strong>任播（IPv6 特有）</strong>：任播地址终点是一组计算机，但数据报<strong>只交付其中最近的一台</strong>——像在饭店喊一声“服务员”，离你最近的先应答；常用于 DNS 根服务器，主机向统一任播地址查询，自动由最近的 DNS 服务器响应。</p>\n<p>回顾：128bit、冒号十六进制、两条压缩规则（前导零、:: 仅一次）、分配与即插即用、地址分类、单播/多播/任播。</p>\n<img data-img-id=\"fig-p56-12\" class=\"ds-note-img\" alt=\"图：IPv6知识回顾思维导图\">",
+      "images": [
+        {
+          "imgId": "fig-p56-01",
+          "file": "images/ch04/fig-p56-01.jpg"
+        },
+        {
+          "imgId": "fig-p56-02",
+          "file": "images/ch04/fig-p56-02.jpg"
+        },
+        {
+          "imgId": "fig-p56-03",
+          "file": "images/ch04/fig-p56-03.jpg"
+        },
+        {
+          "imgId": "fig-p56-04",
+          "file": "images/ch04/fig-p56-04.jpg"
+        },
+        {
+          "imgId": "fig-p56-05",
+          "file": "images/ch04/fig-p56-05.jpg"
+        },
+        {
+          "imgId": "fig-p56-06",
+          "file": "images/ch04/fig-p56-06.jpg"
+        },
+        {
+          "imgId": "fig-p56-07",
+          "file": "images/ch04/fig-p56-07.jpg"
+        },
+        {
+          "imgId": "fig-p56-08",
+          "file": "images/ch04/fig-p56-08.jpg"
+        },
+        {
+          "imgId": "fig-p56-09",
+          "file": "images/ch04/fig-p56-09.jpg"
+        },
+        {
+          "imgId": "fig-p56-10",
+          "file": "images/ch04/fig-p56-10.jpg"
+        },
+        {
+          "imgId": "fig-p56-11",
+          "file": "images/ch04/fig-p56-11.jpg"
+        },
+        {
+          "imgId": "fig-p56-12",
+          "file": "images/ch04/fig-p56-12.jpg"
+        }
+      ]
+    },
+    {
+      "tree": [
+        "第4章 网络层",
+        "4.4 路由算法与路由协议",
+        "4.4.1 路由算法"
+      ],
+      "noteHtml": "<p><span style=\"font-size:20px;color:#7c3aed\"><strong>P57 4.4.1 路由算法（王道 4.4）</strong></span></p>\n<img data-img-id=\"fig-p57-01\" class=\"ds-note-img\" alt=\"图：408大纲路由算法与路由协议考点\">\n<p><strong>路由协议与路由算法的关系</strong>：路由器运行至少一种路由协议（RIP/OSPF/BGP），协议规定路由器之间<strong>如何交换必要的信息</strong>；交换来的网络实际情况作为<strong>路由算法</strong>的输入，算出最佳转发路径，最终生成<strong>路由表</strong>（此前课里都是我们手工配表，实际由算法自动得到）。</p>\n<img data-img-id=\"fig-p57-02\" class=\"ds-note-img\" alt=\"图：路由算法知识总览思维导图\">\n<img data-img-id=\"fig-p57-03\" class=\"ds-note-img\" alt=\"图：路由协议与路由算法关系流程图\">\n<p><span style=\"color:#dc2626\"><strong>路由算法的本质 = 图的最短路径问题</strong></span>：把路由器和网络视为顶点、链路视为带权边，路由协议用某种规则度量边权（如 RIP 用跳数、也可用 RTT 等）。R1~R8 连接网1~网8 的拓扑中找最短路即是一例。</p>\n<img data-img-id=\"fig-p57-04\" class=\"ds-note-img\" alt=\"图：R1~R8加权拓扑图与最短路径\">\n<p><strong>分类</strong>：<strong>静态路由算法</strong>——管理员手工配置每一条路由（此前画图训练就是充当管理员），简单但不自适应、拓扑一变就得重配，只适用小网络；<strong>动态路由算法</strong>——按流量与拓扑变化动态调整路由表，自适应。大纲要求掌握两种动态算法：<strong>距离向量路由算法</strong>（RIP 的基础）与<strong>链路状态路由算法</strong>（OSPF 的基础）；BGP 内部用的是路径向量算法（暂不深究）。</p>\n<img data-img-id=\"fig-p57-05\" class=\"ds-note-img\" alt=\"图：路由算法分类静态与动态\">\n<p><strong>距离向量路由算法</strong>——先讲故事：你想给苹果 CEO 递纸条但不认识他，于是问遍身边的 k 个熟人“你和 CEO 隔几层关系？”舍友一说隔两层、舍友二说隔六层……比较后把纸条托给“隔层最少”的舍友一。<span style=\"color:#dc2626\"><strong>你不需要知道全网拓扑，只需知道到各邻居的距离 + 各邻居到终点的距离</strong></span>——这就是距离向量思想。数学化即 Bellman-Ford 方程：</p>\n<img data-img-id=\"fig-p57-06\" class=\"ds-note-img\" alt=\"图：距离向量算法打听消息类比图\">\n$$d_{x}(\\text{net}) = \\min\\{\\, c(x,v) + d_{v}(\\text{net}) \\,\\},\\quad v \\in \\text{邻居}$$\n<p>其中 $c(x,v)$ 是 x 到邻居 v 的链路代价（RIP 规定直连为 1），$d_{v}$ 是 v 到目的网络的最短距离。多个目的网络的最短距离排成向量即为<mark><strong>距离向量</strong></mark>。</p>\n<img data-img-id=\"fig-p57-07\" class=\"ds-note-img\" alt=\"图：距离向量算法的Bellman-Ford描述\">\n<img data-img-id=\"fig-p57-08\" class=\"ds-note-img\" alt=\"图：各邻居距离向量计算图解\">\n<p><span style=\"color:#7c3aed\"><strong>【例题】</strong><p><span style=\"color:#7c3aed\"><strong>【例题】</strong></span>（2021年408真题 37）路由器 E 与邻居 A、B、C、D 的直接链路距离分别为 8、10、12、6；E 收到的距离向量：A=(1, 12, 24, 36)、B=(23, 35, 18, 30)、C=(20, 30, 16, 8)、D=(22, 28, 36, 24)（分量依次对应 Net1~Net4）。求 E 更新后到 Net1~Net4 的距离。</p>\n<p>逐列\"邻居向量 + 链路距离\"再取最小：</p>\n<p>$$\\text{Net1}: \\min(1{+}8,\\ 23{+}10,\\ 20{+}12,\\ 22{+}6)=\\min(9, 33, 32, 28)=9$$</p>\n<p>$$\\text{Net2}: \\min(12{+}8,\\ 35{+}10,\\ 30{+}12,\\ 28{+}6)=\\min(20, 45, 42, 34)=20$$</p>\n<p>$$\\text{Net3}: \\min(24{+}8,\\ 18{+}10,\\ 16{+}12,\\ 36{+}6)=\\min(32, 28, 28, 42)=28$$</p>\n<p>$$\\text{Net4}: \\min(36{+}8,\\ 30{+}10,\\ 8{+}12,\\ 24{+}6)=\\min(44, 40, 20, 30)=20$$</p>\n<p><span style=\"color:#dc2626\"><strong>答案：9、20、28、20（选 D）；Net1/Net2 经 A，Net3 经 B 或 C 等价，Net4 经 C。</strong></span>老师说这道题是理解距离向量算法工作过程的核心复习资料。</p>\n<img data-img-id=\"fig-p57-09\" class=\"ds-note-img\" alt=\"图：2021真题37距离向量表逐格计算\">\n<p><strong>链路状态路由算法</strong>——另一个故事：把身边所有人的人际关系网摸通摸透（谁和谁直接认识、每条关系的“代价”），掌握<strong>全部网络拓扑</strong>后自己跑<strong>迪杰斯特拉算法</strong>算最短路。难点不在算法（数据结构已学），而在<strong>怎么让每台路由器都知道全网拓扑</strong>——这正是 OSPF 要解决的问题。</p>\n<img data-img-id=\"fig-p57-10\" class=\"ds-note-img\" alt=\"图：链路状态算法人际关系类比\">\n<p><span style=\"color:#dc2626\"><strong>对比必背：距离向量 = Bellman-Ford，只知邻居、问路式；链路状态 = Dijkstra，全知拓扑、自算式。</strong></span></p>\n<img data-img-id=\"fig-p57-11\" class=\"ds-note-img\" alt=\"图：路由算法知识回顾思维导图\">",
+      "images": [
+        {
+          "imgId": "fig-p57-01",
+          "file": "images/ch04/fig-p57-01.jpg"
+        },
+        {
+          "imgId": "fig-p57-02",
+          "file": "images/ch04/fig-p57-02.jpg"
+        },
+        {
+          "imgId": "fig-p57-03",
+          "file": "images/ch04/fig-p57-03.jpg"
+        },
+        {
+          "imgId": "fig-p57-04",
+          "file": "images/ch04/fig-p57-04.jpg"
+        },
+        {
+          "imgId": "fig-p57-05",
+          "file": "images/ch04/fig-p57-05.jpg"
+        },
+        {
+          "imgId": "fig-p57-06",
+          "file": "images/ch04/fig-p57-06.jpg"
+        },
+        {
+          "imgId": "fig-p57-07",
+          "file": "images/ch04/fig-p57-07.jpg"
+        },
+        {
+          "imgId": "fig-p57-08",
+          "file": "images/ch04/fig-p57-08.jpg"
+        },
+        {
+          "imgId": "fig-p57-09",
+          "file": "images/ch04/fig-p57-09.jpg"
+        },
+        {
+          "imgId": "fig-p57-10",
+          "file": "images/ch04/fig-p57-10.jpg"
+        },
+        {
+          "imgId": "fig-p57-11",
+          "file": "images/ch04/fig-p57-11.jpg"
+        }
+      ]
+    },
+    {
+      "tree": [
+        "第4章 网络层",
+        "4.4 路由算法与路由协议",
+        "4.4.2 分层次的路由协议"
+      ],
+      "noteHtml": "<p><span style=\"font-size:20px;color:#7c3aed\"><strong>P58 4.4.2 分层次的路由协议（王道 4.4）</strong></span></p>\n<p><strong>思考题：能否让全世界路由器统一运行 RIP 或 OSPF？</strong>——不能。RIP 的距离向量维度 = 网络数，全球数以亿计的网络会让向量大到无法交换；OSPF 要求每台路由器建立全网拓扑图，数亿节点的图复杂度也无法承受。于是需要<strong>分层次的路由协议</strong>。</p>\n<img data-img-id=\"fig-p58-01\" class=\"ds-note-img\" alt=\"图：R1~R8全网运行单一协议的思考题\">\n<p><strong>自治系统（AS）</strong>：把互联网划分为多个相互独立的自治系统，如咸鱼电信、某大型企业、各大 ISP 都可构建自己的 AS。<span style=\"color:#dc2626\"><strong>AS 内部用哪种内部路由协议由该 AS 管理单位自行决定</strong></span>（咸鱼电信选 OSPF、某企业选 RIP 都行）；每个 AS 至少一台<strong>自治系统边界路由器</strong>（如 R6）与其他 AS 相连——现实中的边界路由器性能强悍、价格昂贵。</p>\n<img data-img-id=\"fig-p58-02\" class=\"ds-note-img\" alt=\"图：划分为多个自治系统与边界路由器\">\n<p>AS 之间统一使用外部路由协议 <strong>BGP-4</strong>。术语：AS 内部选路叫<strong>域内路由选择</strong>，AS 之间选路叫<strong>域间路由选择</strong>。</p>\n<img data-img-id=\"fig-p58-03\" class=\"ds-note-img\" alt=\"图：分层次路由协议与AS边界路由器批注\">\n<p><strong>AS 的几个要点</strong>：全球目前约 8 万个 AS，每个 AS 拥有向管理机构申请的<strong>全球唯一 ASN 编号</strong>（32bit）；<span style=\"color:#dc2626\"><strong>AS 之间是平级关系，不存在嵌套</strong></span>（分层只有两层）；一个 AS 通常包含一个或多个 CIDR 地址块，对外可聚合呈现——边界路由器不必关心别的 AS 内部怎么划分子网，只需按其对外暴露的地址块转发。</p>\n<p><strong>两大类协议</strong>：<mark><strong>内部网关协议 IGP</strong></mark>——AS 内部使用，如 RIP、OSPF（“各说各话的方言”）；<strong>外部网关协议 EGP</strong>——AS 之间使用，即 BGP（“普通话”）。早期文献“网关”即路由器。</p>\n<img data-img-id=\"fig-p58-04\" class=\"ds-note-img\" alt=\"图：IGP与EGP分类图\">\n<img data-img-id=\"fig-p58-05\" class=\"ds-note-img\" alt=\"图：分层次路由协议知识回顾思维导图\">",
+      "images": [
+        {
+          "imgId": "fig-p58-01",
+          "file": "images/ch04/fig-p58-01.jpg"
+        },
+        {
+          "imgId": "fig-p58-02",
+          "file": "images/ch04/fig-p58-02.jpg"
+        },
+        {
+          "imgId": "fig-p58-03",
+          "file": "images/ch04/fig-p58-03.jpg"
+        },
+        {
+          "imgId": "fig-p58-04",
+          "file": "images/ch04/fig-p58-04.jpg"
+        },
+        {
+          "imgId": "fig-p58-05",
+          "file": "images/ch04/fig-p58-05.jpg"
+        }
+      ]
+    },
+    {
+      "tree": [
+        "第4章 网络层",
+        "4.4 路由算法与路由协议",
+        "4.4.3_1 RIP的基本概念"
+      ],
+      "noteHtml": "<p><span style=\"font-size:20px;color:#7c3aed\"><strong>P59 4.4.3_1 RIP的基本概念（王道 4.4）</strong></span></p>\n<p><strong>RIP（路由信息协议）</strong>是应用最广泛的 IGP 之一。先回顾关系：路由器运行路由协议 → 交换信息 → 路由算法 → 路由表。</p>\n<img data-img-id=\"fig-p59-01\" class=\"ds-note-img\" alt=\"图：本节内容页RIP引出\">\n<img data-img-id=\"fig-p59-02\" class=\"ds-note-img\" alt=\"图：路由协议与路由算法关系图\">\n<p><strong>RIP 在协议栈中的位置（选择题考点）</strong>：<span style=\"color:#dc2626\"><strong>RIP 属于应用层协议，使用 UDP 传送（端口 520）</strong></span>。定义 Request 请求、Response 响应两种报文（教材少讲，作拓展了解）。</p>\n<img data-img-id=\"fig-p59-03\" class=\"ds-note-img\" alt=\"图：RIP知识总览思维导图\">\n<p><strong>RIP 的三条规定</strong>：</p>\n<ul>\n<li><mark><strong>用跳数衡量距离</strong></mark>：路由器到直连网络距离为 1，每经过一个路由器距离加 1（把路由器视为顶点、点与点距离为 1）；好的路由 = 跳数最少的路由。</li>\n<li><span style=\"color:#dc2626\"><strong>一条合法路径距离不超过 15，16 表示不可达</strong></span>——因此 RIP 只适用于小型 AS（若 A 到 B 隔 20 台路由器，R1 判定不可达直接丢包；大型 AS 请用 OSPF）。</li>\n<li><strong>路由表条目</strong>至少含三个字段：&lt;目的网络 N, 距离 d, 下一跳 X>。示例表中 Net1 距离 1 即直连；<span style=\"color:#dc2626\"><strong>“Net2, 16, NULL”表示不可达，收到发往 Net2 的数据报直接丢弃——16 是 RIP 的死规定，易掉坑</strong></span>；Net3 距离 2 经 R6（说明 R8 与 R6 是邻居且 R6 直连 Net3）。目的网络实际用 CIDR 前缀表示，下一跳用路由器 IP 表示。</li>\n</ul>\n<img data-img-id=\"fig-p59-04\" class=\"ds-note-img\" alt=\"图：RIP路由表示例表\">\n<p>路由表中的距离列就是该路由器的<strong>距离向量</strong>（RIP 底层即距离向量路由算法）。</p>\n<img data-img-id=\"fig-p59-05\" class=\"ds-note-img\" alt=\"图：RIP报文经UDP再经IP的封装\">\n<p><strong>路由器间如何交换信息（Who/What/When）</strong>：Who——<strong>仅和相邻路由器</strong>交换；What——交换<strong>自己的完整路由表</strong>（一个 Response 报文最多携带 25 个表项，超了拆多个）；When——<strong>每隔 30 秒</strong>周期性发送（更新报文）。可选<strong>触发更新</strong>机制：拓扑一变立即通告，加速收敛——老师比喻：定期交换像闺蜜每 30 天同步一次八卦，同步很慢；触发更新像憋不住话的闺蜜，一有消息立即广而告之。</p>\n<img data-img-id=\"fig-p59-06\" class=\"ds-note-img\" alt=\"图：路由器间交换信息Who/What/When\">\n<img data-img-id=\"fig-p59-07\" class=\"ds-note-img\" alt=\"图：RIP规定完整版\">",
+      "images": [
+        {
+          "imgId": "fig-p59-01",
+          "file": "images/ch04/fig-p59-01.jpg"
+        },
+        {
+          "imgId": "fig-p59-02",
+          "file": "images/ch04/fig-p59-02.jpg"
+        },
+        {
+          "imgId": "fig-p59-03",
+          "file": "images/ch04/fig-p59-03.jpg"
+        },
+        {
+          "imgId": "fig-p59-04",
+          "file": "images/ch04/fig-p59-04.jpg"
+        },
+        {
+          "imgId": "fig-p59-05",
+          "file": "images/ch04/fig-p59-05.jpg"
+        },
+        {
+          "imgId": "fig-p59-06",
+          "file": "images/ch04/fig-p59-06.jpg"
+        },
+        {
+          "imgId": "fig-p59-07",
+          "file": "images/ch04/fig-p59-07.jpg"
+        }
+      ]
+    },
+    {
+      "tree": [
+        "第4章 网络层",
+        "4.4 路由算法与路由协议",
+        "4.4.3_2 RIP的工作示例（从路由器启动到收敛）"
+      ],
+      "noteHtml": "<p><span style=\"font-size:20px;color:#7c3aed\"><strong>P60 4.4.3_2 RIP的工作示例：从路由器启动到收敛（王道 4.4）</strong></span></p>\n<p><strong>处理邻居 RIP 报文的规则</strong>（王道书总结）：① 先修改报文的所有项目——下一跳字段改为邻居 X，距离全部加 1；② 若原表<strong>没有</strong>目的网络 N，则添加（发现新网络）；③ 若原表<strong>有</strong> N 且下一跳就是 X，则用收到的项目替换（以最新消息为准）；④ 若原表有 N、下一跳不是 X，仅当收到的距离更小时才更新；⑤ 超过 180 秒未收到邻居 X 的更新，把经 X 的距离置 16（不可达）。</p>\n<img data-img-id=\"fig-p60-01\" class=\"ds-note-img\" alt=\"图：RIP工作过程规定页四步骤\">\n<p><strong>故事背景</strong>：咸鱼电信 AS，R1~R4 连接 Net1~Net4，R1 是边界路由器（外部互联网记为 Net0，默认路由 0.0.0.0/0 表示），AS 内使用 RIP。假设所有设备 0 时刻同时开机。</p>\n<img data-img-id=\"fig-p60-02\" class=\"ds-note-img\" alt=\"图：咸鱼电信AS拓扑与初始路由表\">\n<p><strong>0 时刻</strong>：刚开机的路由器只能探测直连网络，初始路由表只有直连项（距离 1、直接交付）；R1 额外知道 Net0（下一跳记“外部路由”）。随后各路由器立即给邻居发完整路由表；收到后先修改（距离+1、下一跳改为来信邻居）。</p>\n<p><span style=\"color:#7c3aed\"><strong>【例题】</strong></span>（报文修改与更新判断）0 时刻 R1 收到 R2 的路由表 [Net2, 1, 直接交付]、R3 的 [Net3, 1, 直接交付]。R1 如何处理？</p>\n$$\\text{R2 表项} \\Rightarrow [\\text{Net2},\\ 1{+}1,\\ \\text{R2}] = [\\text{Net2}, 2, \\text{R2}]$$\n$$\\text{R3 表项} \\Rightarrow [\\text{Net3},\\ 1{+}1,\\ \\text{R3}] = [\\text{Net3}, 2, \\text{R3}]$$\n<p>R1 检查本表：Net2、Net3 均为新网络（规则②），两条都加入路由表。</p>\n<p><span style=\"color:#dc2626\"><strong>答案：R1 新增 [Net2,2,R2] 与 [Net3,2,R3]；同理 R2 学到 Net0/Net1（经 R1 距离 2），R3 学到 Net0/1/4，R4 学到 Net3。</strong></span></p>\n<img data-img-id=\"fig-p60-03\" class=\"ds-note-img\" alt=\"图：0时刻修改邻居报文的过程\">\n<img data-img-id=\"fig-p60-04\" class=\"ds-note-img\" alt=\"图：0时刻更新完成后四台路由器路由表\">\n<p><strong>30 时刻</strong>：第二轮交换。R1 逐项对比 R2、R3 的新报文：Net0/1/2/3 各候选路径都更长或持平——不更新；唯独 R3 报文里的 Net4 是新网络 → 添加 [Net4,3,R3]。R2 新增 [Net3,2,R1]，R4 新增 [Net0,3]、[Net1,3] 等。</p>\n<img data-img-id=\"fig-p60-05\" class=\"ds-note-img\" alt=\"图：30时刻第二轮RIP报文交换\">\n<img data-img-id=\"fig-p60-06\" class=\"ds-note-img\" alt=\"图：30时刻收到报文后的更新结果\">\n<p><strong>60 时刻</strong>：第三轮交换，距离信息继续扩散——R2 从 R1 处新学到 [Net4,3,R1]，R4 从 R3 处新学到 [Net2,3,R3]；R1、R3 无变化。</p>\n<img data-img-id=\"fig-p60-07\" class=\"ds-note-img\" alt=\"图：60时刻第三轮报文交换\">\n<p><strong>90 时刻</strong>：本轮交换后<strong>没有任何路由器需要更新</strong>——因为 60 时刻 RIP 已收敛。</p>\n<img data-img-id=\"fig-p60-08\" class=\"ds-note-img\" alt=\"图：90时刻收敛判定\">\n<p><mark><strong>RIP 收敛 = 每台路由器都已知道到达本 AS 内任一网络的最短距离和下一跳；此后虽仍每 30 秒交换，但路由表不再变化。</strong></mark></p>",
+      "images": [
+        {
+          "imgId": "fig-p60-01",
+          "file": "images/ch04/fig-p60-01.jpg"
+        },
+        {
+          "imgId": "fig-p60-02",
+          "file": "images/ch04/fig-p60-02.jpg"
+        },
+        {
+          "imgId": "fig-p60-03",
+          "file": "images/ch04/fig-p60-03.jpg"
+        },
+        {
+          "imgId": "fig-p60-04",
+          "file": "images/ch04/fig-p60-04.jpg"
+        },
+        {
+          "imgId": "fig-p60-05",
+          "file": "images/ch04/fig-p60-05.jpg"
+        },
+        {
+          "imgId": "fig-p60-06",
+          "file": "images/ch04/fig-p60-06.jpg"
+        },
+        {
+          "imgId": "fig-p60-07",
+          "file": "images/ch04/fig-p60-07.jpg"
+        },
+        {
+          "imgId": "fig-p60-08",
+          "file": "images/ch04/fig-p60-08.jpg"
+        }
+      ]
+    },
+    {
+      "tree": [
+        "第4章 网络层",
+        "4.4 路由算法与路由协议",
+        "4.4.3_3 RIP的工作示例（动态适应网络拓扑变化）"
+      ],
+      "noteHtml": "<p><span style=\"font-size:20px;color:#7c3aed\"><strong>P61 4.4.3_3 RIP的工作示例：动态适应网络拓扑变化（王道 4.4）</strong></span></p>\n<p>书接上回：90 时刻收敛后，假设 <strong>100 时刻 R1 与 R4 之间新增一条链路</strong>——网络拓扑变化场景开始。</p>\n<img data-img-id=\"fig-p61-01\" class=\"ds-note-img\" alt=\"图：90时刻收敛后的路由表回顾\">\n<p><strong>120 时刻</strong>：下一轮更新，R1 与 R4 成为新邻居、互发完整路由表（其余邻居关系照旧）。收到报文照例先修改（距离+1、下一跳改来信方），再逐项判断。</p>\n<img data-img-id=\"fig-p61-02\" class=\"ds-note-img\" alt=\"图：100时刻R1与R4新增链路设定\">\n<p><span style=\"color:#7c3aed\"><strong>【例题】</strong></span>（找到更短路径的更新）120 时刻 R1 收到 R4 的报文，其中 Net4 表项修改后为 [Net4, 2, R4]；而 R1 原表为 [Net4, 3, R3]。是否更新？</p>\n$$[\\text{Net4}, 2, \\text{R4}]\\ \\text{与}\\ [\\text{Net4}, 3, \\text{R3}]：\\text{下一跳不同}$$\n$$2 \\lt 3 \\Rightarrow \\text{按规则④用更短的替换}$$\n<p><span style=\"color:#dc2626\"><strong>答案：R1 的 Net4 更新为 [Net4,2,R4]——旧网络发现了更短路径（“找到一条新路径距离更近”分支）。</strong></span>同理 R4 收 R1 报文后，Net0/1/2 更新为 [2,R1]、[2,R1]、[3,R1]，替换原经 R3 的 3/3/4。</p>\n<img data-img-id=\"fig-p61-03\" class=\"ds-note-img\" alt=\"图：120与150时刻新链路信息扩散过程\">\n<img data-img-id=\"fig-p61-04\" class=\"ds-note-img\" alt=\"图：120时刻更新判断的两种分支\">\n<p><strong>150 时刻</strong>：R2 收到 R1 的新报文，Net4 候选 [Net4,3,R1]，原表也是 [Net4,4→? 经 R1]——<strong>下一跳相同（都是 R1）而距离变了（4→3），按规则③以更新的为准替换</strong>（“继续走老路但距离有变化”分支）。上帝视角验证：以前 R2→Net4 只能 R1→R3→R4→Net4 共 4 跳；现在 R1 直连 R4，缩短为 3 跳。本轮后 RIP 再次收敛。</p>\n<img data-img-id=\"fig-p61-05\" class=\"ds-note-img\" alt=\"图：100与120时刻路由表对比及触发更新说明\">\n<p><span style=\"color:#7c3aed\">补充：RIP 默认周期更新——新链路 100 时刻就连上，但要等 120 时刻下个周期才传播。若引入触发更新（检测到拓扑变化立即向邻居发 RIP 报文、不必等 30 秒），收敛更快；本例未引入，周期更新也更符合历年真题的常见考法。</span></p>\n<p><mark><strong>两条判断分支要背熟：下一跳相同 → 无条件以最新替换；下一跳不同 → 只有距离更短才替换。</strong></mark></p>",
+      "images": [
+        {
+          "imgId": "fig-p61-01",
+          "file": "images/ch04/fig-p61-01.jpg"
+        },
+        {
+          "imgId": "fig-p61-02",
+          "file": "images/ch04/fig-p61-02.jpg"
+        },
+        {
+          "imgId": "fig-p61-03",
+          "file": "images/ch04/fig-p61-03.jpg"
+        },
+        {
+          "imgId": "fig-p61-04",
+          "file": "images/ch04/fig-p61-04.jpg"
+        },
+        {
+          "imgId": "fig-p61-05",
+          "file": "images/ch04/fig-p61-05.jpg"
+        }
+      ]
+    },
+    {
+      "tree": [
+        "第4章 网络层",
+        "4.4 路由算法与路由协议",
+        "4.4.3_4 RIP的工作示例（反映RIP的缺点）"
+      ],
+      "noteHtml": "<p><span style=\"font-size:20px;color:#7c3aed\"><strong>P62 4.4.3_4 RIP的工作示例：坏消息传得慢（王道 4.4）</strong></span></p>\n<p>书接上回：150 时刻收敛后，假设 <strong>160 时刻路由器 R2 被老鼠咬坏</strong>（故障场景）。</p>\n<img data-img-id=\"fig-p62-01\" class=\"ds-note-img\" alt=\"图：160时刻R2损坏的故障设定\">\n<p><strong>330 时刻判定不可达</strong>：R2 最后一次与 R1 联系是 150 时刻，150+180=330 秒仍无 R2 的 RIP 报文，R1 才判定老邻居不可达，把相关距离置 16。<span style=\"color:#7c3aed\">330 之前 R1、R3、R4 间仍周期交换，但表已收敛故无任何变化。</span></p>\n<p>随后“神奇又恶心”的现象：R1 误以为经 R3 或 R4 还能到 Net2（距离 4）——因为过去 R3/R4 曾发来过 [Net2,3,…]，R1 修改后得 [Net2,4,R3/R4]；R1 只听邻居的、不掌握全网拓扑，无法知道 Net2 其实已不可达。</p>\n<img data-img-id=\"fig-p62-02\" class=\"ds-note-img\" alt=\"图：330时刻R1判定R2不可达并更新路由表\">\n<p>两条注记：① <span style=\"color:#dc2626\"><strong>RIP 支持多条等价路径共存（负载均衡）</strong></span>——R1 到 Net2 走 R3、R4 距离相同，两条都写进路由表，可轮询转发（第 1 个分组给 R3、第 2 个给 R4……）；② 这条错误路由信息使转发形成<strong>环路</strong>：R1 把发往 Net2 的分组给 R3，R3 查表又踢回 R1，像踢皮球一样来回弹，<strong>每弹一次 TTL 减 1，直到 TTL=0 被丢弃</strong>。</p>\n<img data-img-id=\"fig-p62-03\" class=\"ds-note-img\" alt=\"图：等价路径负载均衡与转发环路注记\">\n<p><strong>慢收敛过程</strong>：330 时刻（恰逢更新周期）R1/R3/R4 互发表——R3 收 R1 的 [Net2,5,R1]：下一跳是 R1 且距离变大 → 以新替旧（5）；又收 R4 的 [Net2,4,R4] 更短 → 改走 R4。R4 对称地改走 R3——互相以为对方能到 Net2，“左脚踩右脚上天”。360 时刻起，<strong>每轮交换到达 Net2 的距离整体 +1</strong>（4→5→6→…），直到增至 16 才恍然大悟：不可达。</p>\n<img data-img-id=\"fig-p62-04\" class=\"ds-note-img\" alt=\"图：330与360时刻坏消息逐轮扩散\">\n<p>算笔账：360 时刻距离为 5，距 16 还需 11 轮、每轮 30 秒，即再等 330 秒 → <strong>690 时刻</strong>全网收敛，Net2 全部置 16、下一跳 NULL（无意义）。R2 早在 160 时刻就坏了，却要 530 秒后全网才确认——这就是 <mark><strong>RIP 的缺点：坏消息传播得慢（慢收敛现象）</strong></mark>。</p>\n<img data-img-id=\"fig-p62-05\" class=\"ds-note-img\" alt=\"图：690时刻终于收敛为16不可达\">\n<p><strong>RIP 缺点总结</strong>（王道书三条）：① 最大 15 跳限制网络规模，只适用于小 AS；② 路由器间交换<strong>完整路由表</strong>，网络越大开销越大；③ 故障时慢收敛（坏消息传得慢）。<span style=\"color:#7c3aed\">注：16 跳上限正是“防转发环路”的简单粗暴手段——错误距离每轮 +1，到 16 自然终止迭代。</span></p>\n<img data-img-id=\"fig-p62-06\" class=\"ds-note-img\" alt=\"图：RIP优缺点总结页\">",
+      "images": [
+        {
+          "imgId": "fig-p62-01",
+          "file": "images/ch04/fig-p62-01.jpg"
+        },
+        {
+          "imgId": "fig-p62-02",
+          "file": "images/ch04/fig-p62-02.jpg"
+        },
+        {
+          "imgId": "fig-p62-03",
+          "file": "images/ch04/fig-p62-03.jpg"
+        },
+        {
+          "imgId": "fig-p62-04",
+          "file": "images/ch04/fig-p62-04.jpg"
+        },
+        {
+          "imgId": "fig-p62-05",
+          "file": "images/ch04/fig-p62-05.jpg"
+        },
+        {
+          "imgId": "fig-p62-06",
+          "file": "images/ch04/fig-p62-06.jpg"
+        }
+      ]
+    },
+    {
+      "tree": [
+        "第4章 网络层",
+        "4.4 路由算法与路由协议",
+        "4.4.3_5 RIP的工作示例（反映RIP的优点）"
+      ],
+      "noteHtml": "<p><span style=\"font-size:20px;color:#7c3aed\"><strong>P63 4.4.3_5 RIP的工作示例：好消息传得快（王道 4.4）</strong></span></p>\n<p>书接上回：690 时刻全网确认 Net2 不可达后，假设 <strong>700 时刻 R2 修好并重新开机</strong>。</p>\n<img data-img-id=\"fig-p63-01\" class=\"ds-note-img\" alt=\"图：700时刻R2归来的开场回顾\">\n<p><strong>好消息立即到来</strong>：刚开机的 R2“又回到最初的起点”，只能探测直连的 Net2（距离 1、直接交付），随即<strong>立即</strong>把初始路由表发给邻居 R1；同时主动向 R1 发 <strong>RIP 请求报文</strong>（Request）讨要情报——R1 立即回 Response 带上完整路由表。</p>\n<img data-img-id=\"fig-p63-02\" class=\"ds-note-img\" alt=\"图：R2归来R1迅速获得好消息\">\n<p>R1 收 R2 报文修改后得 [Net2,2,R2]：原表 Net2 为 16 不可达，新消息可达且更短 → 替换；R2 收 R1 报文一次性补齐 Net0、Net1、Net3、Net4（均加 1 后为新网络而添加）。<span style=\"color:#7c3aed\">细节：R1 发来的 Net2 表项距离已是 16，“16 到顶不再 +1”，直接以 16 记录。</span>于是“重返职场”的 R2 瞬间收敛。</p>\n<p><strong>720 时刻</strong>：R1、R3、R4 按各自周期发送 RIP 报文（R2 是 700 时刻开机，下一次要到 730 时刻——<span style=\"color:#dc2626\"><strong>RIP 在每台路由器上独立计时，互不同步也不影响协议正常运行</strong></span>）。R3、R4 从 R1 的新报文得知 Net2 可达 [Net2,3,R1]，替换原来的 16——全网迅速再次收敛。</p>\n<img data-img-id=\"fig-p63-03\" class=\"ds-note-img\" alt=\"图：720时刻R1R3R4定时发送RIP报文\">\n<img data-img-id=\"fig-p63-04\" class=\"ds-note-img\" alt=\"图：好消息迅速传遍所有路由器收敛\">\n<p><strong>RIP 优点总结</strong>：① <mark><strong>好消息传播得快——发现更短路由时，更新信息很快传遍全网</strong></mark>；② 实现简单、开销小（距离向量算法逻辑不复杂）；③ 收敛过程较快（对比故障场景，本例好消息两轮内传遍）。至此 RIP 的故事完结：从 0 时刻启动收敛 → 拓扑变化 → 故障慢收敛 → 修复快收敛，一条主线涵盖 RIP 全部要点。</p>",
+      "images": [
+        {
+          "imgId": "fig-p63-01",
+          "file": "images/ch04/fig-p63-01.jpg"
+        },
+        {
+          "imgId": "fig-p63-02",
+          "file": "images/ch04/fig-p63-02.jpg"
+        },
+        {
+          "imgId": "fig-p63-03",
+          "file": "images/ch04/fig-p63-03.jpg"
+        },
+        {
+          "imgId": "fig-p63-04",
+          "file": "images/ch04/fig-p63-04.jpg"
+        }
+      ]
+    },
+    {
+      "tree": [
+        "第4章 网络层",
+        "4.4 路由算法与路由协议",
+        "4.4.4_1 OSPF的特点"
+      ],
+      "noteHtml": "<p><span style=\"font-size:20px;color:#7c3aed\"><strong>P64 4.4.4_1 OSPF的特点（王道 4.4）</strong></span></p>\n<p><strong>OSPF（开放最短路径优先）</strong>：Open 指不被任何厂商私有（像开源软件），最短路径优先指底层用<strong>迪杰斯特拉算法</strong>求总代价最低的路径——即<strong>链路状态路由算法</strong>的协议实现。</p>\n<img data-img-id=\"fig-p64-01\" class=\"ds-note-img\" alt=\"图：OSPF章节开篇\">\n<p><strong>协议栈位置（考点）</strong>：<span style=\"color:#dc2626\"><strong>OSPF 属于网络层，直接使用 IP 协议提供服务——IP 首部协议字段 = 89</strong></span>。OSPF 的 PDU 称 OSPF 分组，首部 Type 字段区分五种分组类型（Hello 问候、DD 数据库描述、LSR 链路状态请求、LSU 链路状态更新、LSAck 链路状态确认，详见下下节）。</p>\n<img data-img-id=\"fig-p64-02\" class=\"ds-note-img\" alt=\"图：OSPF在协议栈中的位置与封装\">\n<p><strong>大致原理</strong>（咸鱼电信 AS：R1~R6 连 Net0~Net6）：每台路由器开机即可独立探测“我的邻居有谁、到各邻居的代价”——这串信息逻辑上就是一个单链表，OSPF 把它定义为 <strong>LSA（链路状态通告）</strong>；每台路由器探测自己直连的所有链路状态信息后，用<mark><strong>洪泛法（flooding）</strong></mark>发给 AS 内所有路由器。把所有路由器的 LSA 拼起来 = 带权有向图的<strong>邻接表</strong>，每台路由器据此建立全网拓扑，再各自跑 Dijkstra。</p>\n<img data-img-id=\"fig-p64-03\" class=\"ds-note-img\" alt=\"图：OSPF大致原理与邻接表构建\">\n<p><strong>What/How/When 三问</strong>：What——说与自己直连的<strong>所有链路状态</strong>；How——洪泛法一传十十传百，<span style=\"color:#dc2626\"><strong>收到洪泛信息的路由器从除入口外的所有出口转发（不可回流），且重复收到的信息不再二次转发</strong></span>（这两条防止洪泛无休无止）；When——<strong>只要探测到链路状态变化就立即洪泛</strong>，因此 OSPF 不存在 RIP“坏消息传得慢”的问题——好消息坏消息都第一时间广而告之。</p>\n<img data-img-id=\"fig-p64-04\" class=\"ds-note-img\" alt=\"图：OSPF主要特点What/How/When\">\n<p><strong>其他特点</strong>：</p>\n<ul>\n<li>链路代价由 AS 自定规则；默认 <strong>cost = 参考带宽 100Mbps ÷ 接口带宽</strong>（代价 1 即 100M 链路、代价 2 即 50M）。路由器→直连网络方向边有权值，<span style=\"color:#dc2626\"><strong>直连网络→路由器方向边权值视为 0</strong></span>（如 R1 到 Net2 总代价 3+1=4）；两路由器间无向边默认两方向同权。</li>\n<li>支持<strong>多条等价路径</strong>：R3 到 Net6 走上路 1+4+3=8、走下路 3+2+3=8，两条都保留，可轮流转发实现<strong>负载均衡</strong>。</li>\n<li>OSPF 分组具有<strong>鉴别功能</strong>：防黑客潜入机房接“黑路由”伪造链路信息洪泛、防感染病毒的路由器篡改洪泛分组，仅在可信赖的路由器间交换正确的链路状态信息。</li>\n<li>每条链路状态信息带 <strong>32bit 序号</strong>（版本号），<strong>序号越大越新</strong>——重复收到时据此决定取舍。</li>\n<li>支持<strong>可变长子网划分与 CIDR</strong>。</li>\n</ul>\n<img data-img-id=\"fig-p64-05\" class=\"ds-note-img\" alt=\"图：链路代价计算与示例\">\n<img data-img-id=\"fig-p64-06\" class=\"ds-note-img\" alt=\"图：OSPF分组鉴别功能防攻击\">\n<img data-img-id=\"fig-p64-07\" class=\"ds-note-img\" alt=\"图：链路状态32位序号示例\">\n<p>回顾要点：网络层协议字段 89、链路状态算法+Dijkstra、洪泛法、灵活代价、等价多路径、分组鉴别、32 位序号、支持 CIDR。</p>\n<img data-img-id=\"fig-p64-08\" class=\"ds-note-img\" alt=\"图：OSPF知识回顾思维导图\">",
+      "images": [
+        {
+          "imgId": "fig-p64-01",
+          "file": "images/ch04/fig-p64-01.jpg"
+        },
+        {
+          "imgId": "fig-p64-02",
+          "file": "images/ch04/fig-p64-02.jpg"
+        },
+        {
+          "imgId": "fig-p64-03",
+          "file": "images/ch04/fig-p64-03.jpg"
+        },
+        {
+          "imgId": "fig-p64-04",
+          "file": "images/ch04/fig-p64-04.jpg"
+        },
+        {
+          "imgId": "fig-p64-05",
+          "file": "images/ch04/fig-p64-05.jpg"
+        },
+        {
+          "imgId": "fig-p64-06",
+          "file": "images/ch04/fig-p64-06.jpg"
+        },
+        {
+          "imgId": "fig-p64-07",
+          "file": "images/ch04/fig-p64-07.jpg"
+        },
+        {
+          "imgId": "fig-p64-08",
+          "file": "images/ch04/fig-p64-08.jpg"
+        }
+      ]
+    },
+    {
+      "tree": [
+        "第4章 网络层",
+        "4.4 路由算法与路由协议",
+        "4.4.4_2 OSPF的基本工作原理"
+      ],
+      "noteHtml": "<p><span style=\"font-size:20px;color:#7c3aed\"><strong>P65 4.4.4_2 OSPF的基本工作原理（王道 4.4）</strong></span></p>\n<p>各路由器把自己的 LSA 洪泛出去，大家都能收集到所有 LSA——整合起来就是<strong>链路状态数据库 LSDB</strong>（本质上就是全网拓扑的邻接表存储）。</p>\n<img data-img-id=\"fig-p65-01\" class=\"ds-note-img\" alt=\"图：洪泛构建LSDB与R1运行Dijkstra结果\">\n<p><mark><strong>三步工作流程</strong></mark>：① 洪泛链路状态 → 各自构建统一 LSDB；② 每个<strong>独立</strong>运行 Dijkstra 算出最短路径（R1 到 Net0~Net6 的 cost 分别为 2、1、4、…）；③ 依结果构造<strong>路由表</strong>。</p>\n<p>OSPF 路由表三项：&lt;目的网络, 下一跳, 距离>。<span style=\"color:#dc2626\"><strong>虽然 Dijkstra 算出了完整路径，但路由表只存下一跳，不存完整路径</strong></span>——R1 到 Net6 有 R3→R5→R6 与 R3→R4→R6 两条等价路（各 cost 9），无论走哪条下一跳都是 R3，R1 只需把分组丢给 R3。</p>\n<img data-img-id=\"fig-p65-02\" class=\"ds-note-img\" alt=\"图：R1根据Dijkstra结果构造路由表\">\n<p>拓扑变化 → 相邻路由器探测到 → 立即再洪泛 → 全网 LSDB 更新 → <strong>重新运行 Dijkstra 刷新路由表</strong>。<span style=\"color:#7c3aed\">课程用的是改进版 Dijkstra：能找出多条等价最短路径（数据结构课的基础版只找一条）。</span></p>\n<p><strong>为什么要划分区域</strong>：公有云厂商的 AS 可能包含 5~10 万台路由器——统一 LSDB 太庞大、洪泛消息量爆炸、Dijkstra 开销也大。OSPF 支持把 AS 再划分为若干<strong>区域（Area，32bit 区域标识符）</strong>：<span style=\"color:#dc2626\"><strong>洪泛范围被限制在区域内部</strong></span>，区域内部路由器只需维护本区域的 LSDB——通信量减小、LSDB 变小、算法效率有保障。</p>\n<img data-img-id=\"fig-p65-03\" class=\"ds-note-img\" alt=\"图：OSPF区域划分示意\">\n<p><strong>区域规则</strong>：每个 AS 只有<strong>一个主干区域（Area 0，backbone 骨干区域）</strong>，负责连通其他所有非主干区域；每个非主干区域至少一台 ABR 与主干直接相连（非主干区域不许挂在非主干下面）。区域划分越多主干压力越大，现实大 AS 常划 30~50 个普通区域。</p>\n<img data-img-id=\"fig-p65-04\" class=\"ds-note-img\" alt=\"图：主干区域与非主干区域规则\">\n<p><strong>三类路由器</strong>：<strong>ASBR</strong>（自治系统边界路由器，如 R6）——与其他 AS 相连，可设多台；<strong>ABR</strong>（区域边界路由器，如 R3/R4/R7）——脚踏两只船，既要懂本区域又要懂主干区域，LSDB 更大；<strong>区域内部路由器</strong>（如 R1/R2/R5/R8/R9）——只管本区域，跨区域流量先交给本区域 ABR。</p>\n<img data-img-id=\"fig-p65-05\" class=\"ds-note-img\" alt=\"图：ASBR、ABR与区域内部路由器\">\n<p>回顾：① 洪泛构建 LSDB ② 运行 Dijkstra ③ 生成路由表；区域划分降低洪泛压力、让 LSDB 变小。</p>\n<img data-img-id=\"fig-p65-06\" class=\"ds-note-img\" alt=\"图：OSPF工作原理回顾思维导图\">\n<p><span style=\"color:#7c3aed\">易混术语辨析（2014 真题出现过 LSI）：<strong>LSDB</strong> 是整本书、<strong>LSA</strong> 是书中的某个章节（OSPF 定义的数据结构）、<strong>LSI</strong>（链路状态信息）泛指书的内容——某条边的信息、某段链表、整个 LSDB 都可叫 LSI。</span></p>\n<img data-img-id=\"fig-p65-07\" class=\"ds-note-img\" alt=\"图：LSA、LSI、LSDB易混术语辨析\">\n<p>拓展：更完整的 LSDB 还包含各网络结点出发的边——<strong>net→路由器方向的边权值记为 0</strong>（如 Net1→R1 权 0）；转发计算主要用到路由器出发的那部分邻接表。</p>\n<img data-img-id=\"fig-p65-08\" class=\"ds-note-img\" alt=\"图：LSDB更完整的样子与书的类比\">",
+      "images": [
+        {
+          "imgId": "fig-p65-01",
+          "file": "images/ch04/fig-p65-01.jpg"
+        },
+        {
+          "imgId": "fig-p65-02",
+          "file": "images/ch04/fig-p65-02.jpg"
+        },
+        {
+          "imgId": "fig-p65-03",
+          "file": "images/ch04/fig-p65-03.jpg"
+        },
+        {
+          "imgId": "fig-p65-04",
+          "file": "images/ch04/fig-p65-04.jpg"
+        },
+        {
+          "imgId": "fig-p65-05",
+          "file": "images/ch04/fig-p65-05.jpg"
+        },
+        {
+          "imgId": "fig-p65-06",
+          "file": "images/ch04/fig-p65-06.jpg"
+        },
+        {
+          "imgId": "fig-p65-07",
+          "file": "images/ch04/fig-p65-07.jpg"
+        },
+        {
+          "imgId": "fig-p65-08",
+          "file": "images/ch04/fig-p65-08.jpg"
+        }
+      ]
+    },
+    {
+      "tree": [
+        "第4章 网络层",
+        "4.4 路由算法与路由协议",
+        "4.4.4_3 OSPF的分组类型"
+      ],
+      "noteHtml": "<p><span style=\"font-size:20px;color:#7c3aed\"><strong>P66 4.4.4_3 OSPF的分组类型（王道 4.4）</strong></span></p>\n<p>OSPF 首部 Type 字段标明五种分组类型；先备好术语：LSA 是每台路由器描述自身直连链路的数据结构，头部（LSA Header）记录建立者与序号；LSDB 由所有 LSA 组成。</p>\n<img data-img-id=\"fig-p66-01\" class=\"ds-note-img\" alt=\"图：五种OSPF分组类型总览与封装\">\n<p>老师把邻居同步 LSDB 的过程比作<strong>新同桌互抄作业</strong>：</p>\n<ul>\n<li><strong>Type 1 Hello 问候分组</strong>：每隔 <strong>10 秒</strong>向直连邻居发一次，定期“签到打卡”维持邻居关系；<span style=\"color:#dc2626\"><strong>超过 40 秒未收到邻居 Hello 即判定其不可达</strong></span>，LSDB 随之更新并再次洪泛通告。新链路两端的 Hello 交互还能确认新邻居关系及链路代价。</li>\n<li><strong>Type 2 DD 数据库描述分组</strong>：邻居关系建立时，互相通报<strong>自己 LSDB 的摘要</strong>（即各 LSA 的头信息）——相当于告诉同桌“我会做第 1、3、4、5、6 题”。</li>\n<li><strong>Type 3 LSR 链路状态请求分组</strong>：对比对方的摘要后，把自己缺的那部分向对方请求（借答案）。</li>\n<li><strong>Type 4 LSU 链路状态更新分组</strong>：把对方请求的 LSA <strong>完整信息</strong>发过去（真正递上答案）——<mark><strong>最核心的分组类型</strong></mark>。</li>\n<li><strong>Type 5 LSAck 链路状态确认分组</strong>：收到 LSU 后回确认（“你给我的题都抄完了，谢谢你”）——只携带已收到的 LSA 头信息，保证 LSU 传输可靠（超时未确认可重发）。</li>\n</ul>\n<img data-img-id=\"fig-p66-02\" class=\"ds-note-img\" alt=\"图：Hello问候分组10秒与40秒机制\">\n<img data-img-id=\"fig-p66-03\" class=\"ds-note-img\" alt=\"图：DD数据库描述分组交换摘要\">\n<img data-img-id=\"fig-p66-04\" class=\"ds-note-img\" alt=\"图：LSR链路状态请求分组\">\n<img data-img-id=\"fig-p66-05\" class=\"ds-note-img\" alt=\"图：LSU链路状态更新分组携带完整LSA\">\n<img data-img-id=\"fig-p66-06\" class=\"ds-note-img\" alt=\"图：LSAck链路状态确认分组\">\n<p><strong>LSU 引发全网洪泛</strong>：路由器收到携带新链路状态的 LSU 时（如 R2 入网后 R1 转来 R2 的 LSA），要继续洪泛给其他邻居，全网 LSDB 迅速统一；<span style=\"color:#dc2626\"><strong>即便重复收到同一 LSU（从不同邻居），也要向发送方回 LSAck</strong></span>——既保证洪泛可靠，又使洪泛不会无休无止。</p>\n<img data-img-id=\"fig-p66-07\" class=\"ds-note-img\" alt=\"图：LSU全网洪泛与重复确认\">\n<p><span style=\"color:#7c3aed\">细节：示意图中 DD 分组画了两次，是因为 IP 分组长度有限，摘要太多时要拆成多个 DD 发送。</span></p>",
+      "images": [
+        {
+          "imgId": "fig-p66-01",
+          "file": "images/ch04/fig-p66-01.jpg"
+        },
+        {
+          "imgId": "fig-p66-02",
+          "file": "images/ch04/fig-p66-02.jpg"
+        },
+        {
+          "imgId": "fig-p66-03",
+          "file": "images/ch04/fig-p66-03.jpg"
+        },
+        {
+          "imgId": "fig-p66-04",
+          "file": "images/ch04/fig-p66-04.jpg"
+        },
+        {
+          "imgId": "fig-p66-05",
+          "file": "images/ch04/fig-p66-05.jpg"
+        },
+        {
+          "imgId": "fig-p66-06",
+          "file": "images/ch04/fig-p66-06.jpg"
+        },
+        {
+          "imgId": "fig-p66-07",
+          "file": "images/ch04/fig-p66-07.jpg"
+        }
+      ]
+    },
+    {
+      "tree": [
+        "第4章 网络层",
+        "4.4 路由算法与路由协议",
+        "4.4.5_1 BGP的特点、相关概念"
+      ],
+      "noteHtml": "<p><span style=\"font-size:20px;color:#7c3aed\"><strong>P67 4.4.5_1 BGP的特点、相关概念（王道 4.4）</strong></span></p>\n<p>回顾分类：<strong>内部网关协议 IGP</strong>（RIP、OSPF，AS 内部路由选择）与<strong>外部网关协议 EGP</strong>（本节的 <strong>BGP</strong>，AS 之间交换路由信息并实现路由选择）。全球约 8 万个 AS，AS 间靠边界路由器互连并运行 BGP。</p>\n<img data-img-id=\"fig-p67-01\" class=\"ds-note-img\" alt=\"图：BGP特点与相关概念要点页\">\n<p><strong>BGP 四大特点</strong>：</p>\n<ul>\n<li><span style=\"color:#dc2626\"><strong>力求找到“比较好的”路由而非最佳路由</strong></span>：AS 内几百上千节点跑 Dijkstra 找最佳可行；全球数亿节点算最佳开销巨大，BGP“做到 80 分就行”。</li>\n<li>AS 间路由选择须考虑<strong>政治、安全、经济因素</strong>：如途经国链路再短也不走（防窃听）、收费高的 AS 少走（省成本）。</li>\n<li>采用<mark><strong>路径向量路由算法</strong></mark>：通告路由信息时不仅告知目的地，还告知<strong>到达目的网络的完整路径</strong>（如到网络 X 要经过 [AS2, AS3, AS5]）——每个 AS 有全球唯一 32bit 的 ASN，路径向量即 ASN 序列。</li>\n<li><span style=\"color:#dc2626\"><strong>BGP 属于应用层协议，基于 TCP（端口 179）</strong></span>；运行 BGP 的路由器因此包含传输层与应用层功能（普通路由器只到网络层）。</li>\n</ul>\n<img data-img-id=\"fig-p67-02\" class=\"ds-note-img\" alt=\"图：BGP特点一与二：较好路由和政治安全经济\">\n<img data-img-id=\"fig-p67-03\" class=\"ds-note-img\" alt=\"图：路径向量路由算法与ASN\">\n<img data-img-id=\"fig-p67-04\" class=\"ds-note-img\" alt=\"图：BGP基于TCP的封装\">\n<p><strong>两个概念</strong>：两台运行 BGP 的路由器要先建立 TCP 连接，再建立 BGP 会话，然后才能传 BGP 报文——建立会话的两台路由器互称 <strong>BGP 对等方（BGP 邻居）</strong>。</p>\n<ul>\n<li><strong>eBGP 会话</strong>：两个 AS 的<strong>直连边界路由器</strong>之间长期保持的会话（物理直连）。</li>\n<li><strong>iBGP 会话</strong>：AS 内部 BGP 路由器两两保持的会话，<span style=\"color:#dc2626\"><strong>必须全连通（Full-Mesh，N 台路由器 N(N-1)/2 条）</strong></span>；基于 TCP 逻辑连接即可，<strong>不要求物理直连</strong>（R2 与 R5 无线路也可建立）。</li>\n</ul>\n<img data-img-id=\"fig-p67-05\" class=\"ds-note-img\" alt=\"图：AS边界路由器既运行IGP又运行BGP\">\n<img data-img-id=\"fig-p67-06\" class=\"ds-note-img\" alt=\"图：eBGP与iBGP两类会话全连通拓扑\">\n<p><span style=\"color:#7c3aed\">哪些路由器要跑 BGP：AS 边界路由器必须运行；AS 内部只有少部分核心路由器需要（现实中如此）。为便于理解，课程简化为图中所有路由器都同时运行内部网关协议与 BGP。</span>记忆梗：外向的“e 人”对陌生人也热络——eBGP 是跨 AS 会话；i 人只跟熟人说话——iBGP 是 AS 内部会话。</p>\n<img data-img-id=\"fig-p67-07\" class=\"ds-note-img\" alt=\"图：BGP要点总结完整版\">",
+      "images": [
+        {
+          "imgId": "fig-p67-01",
+          "file": "images/ch04/fig-p67-01.jpg"
+        },
+        {
+          "imgId": "fig-p67-02",
+          "file": "images/ch04/fig-p67-02.jpg"
+        },
+        {
+          "imgId": "fig-p67-03",
+          "file": "images/ch04/fig-p67-03.jpg"
+        },
+        {
+          "imgId": "fig-p67-04",
+          "file": "images/ch04/fig-p67-04.jpg"
+        },
+        {
+          "imgId": "fig-p67-05",
+          "file": "images/ch04/fig-p67-05.jpg"
+        },
+        {
+          "imgId": "fig-p67-06",
+          "file": "images/ch04/fig-p67-06.jpg"
+        },
+        {
+          "imgId": "fig-p67-07",
+          "file": "images/ch04/fig-p67-07.jpg"
+        }
+      ]
+    },
+    {
+      "tree": [
+        "第4章 网络层",
+        "4.4 路由算法与路由协议",
+        "4.4.5_2 BGP路由信息&工作原理"
+      ],
+      "noteHtml": "<p><span style=\"font-size:20px;color:#7c3aed\"><strong>P68 4.4.5_2 BGP路由信息与工作原理（王道 4.4）</strong></span></p>\n<p><strong>BGP 路由信息格式</strong>：<mark><strong>CIDR 前缀 + BGP 属性</strong></mark>。CIDR 前缀指向可达的目的网络 X；属性又分 <strong>AS-PATH</strong>（自治系统路径，ASN 序列）与 <strong>NEXT-HOP</strong>（下一跳）。一条路由信息即 [X, AS-PATH, NEXT-HOP]。</p>\n<img data-img-id=\"fig-p68-01\" class=\"ds-note-img\" alt=\"图：BGP路由信息格式要点总结\">\n<p><strong>逐层传播过程</strong>（AS1 含网络 X，边界路由器 R1）：R1 经 eBGP 会话告诉 AS2 的 R2：[X, AS1, R1]——<span style=\"color:#dc2626\"><strong>eBGP 发送前把下一跳修改为发送方路由器自身</strong></span>。</p>\n<img data-img-id=\"fig-p68-02\" class=\"ds-note-img\" alt=\"图：eBGP与iBGP传递路由信息拓扑\">\n<p>R2 经 iBGP 会话把该路由信息原样分发给 AS2 内的 R3、R4、R5——<strong>iBGP 默认不修改下一跳</strong>（谢希仁教材与 RFC 标准均如此；路由表里 R3/R4/R5 到 X 的“逻辑出口”就是告诉自己这条信息的 R2）。</p>\n<p><strong>R4 的三步处理</strong>（BGP 工作原理核心）：① 从 iBGP 得知 [X, AS1, R1]——到 X 要出本 AS 交给 R2 转发；② 运行<strong>内部网关协议</strong>（如 OSPF）计算从 R4 到出口 R2 的最佳路径，确定<span style=\"color:#dc2626\"><strong\">实际下一跳是 R3</strong></span>（R4 与 R2 不直连）；③ 在路由转发表中新增一行：网络前缀 X → 下一跳 R3。</p>\n<img data-img-id=\"fig-p68-03\" class=\"ds-note-img\" alt=\"图：R4处理BGP路由信息的三步\">\n<p>R4 再经 eBGP 告诉 AS3 的 R6：[X, [AS2, AS1], R4]——路径向量追加自己 AS，下一跳改为发送方 R4。R6 转发表加一行 X→R4。若 AS3 内还有 R7、R8，R6 会经 iBGP 同步给它们，原理相同。</p>\n<img data-img-id=\"fig-p68-04\" class=\"ds-note-img\" alt=\"图：R6视角的路径向量AS2AS1\">\n<p><strong>NEXT-HOP 细节</strong>：eBGP 发送的下一跳 = 发送方路由器 IP；iBGP 默认不修改（官方标准），但 <span style=\"color:#7c3aed\">2024 真题 47 第 5 小问（史上首考 BGP）中，厂商实现把 iBGP 下一跳改为了发送方 IP——两种标准现实中都有应用，做题留意题意，不影响协议工作（无论指向谁，路由器都要先找到去出口 R2 的路）。</span></p>\n<img data-img-id=\"fig-p68-05\" class=\"ds-note-img\" alt=\"图：AS-PATH与NEXT-HOP属性详解\">\n<p><strong>关键规则</strong>：<span style=\"color:#dc2626\"><strong>从 iBGP 学到的路由信息不能再通过 iBGP 传给其他 iBGP 邻居</strong></span>（防环路、防大体积路由信息在 AS 内兜圈浪费带宽）——正因如此，AS 内每台路由器都要直接从边界路由器获取信息，iBGP 才必须全连通。</p>\n<img data-img-id=\"fig-p68-06\" class=\"ds-note-img\" alt=\"图：BGP要点总结与关键规则\">",
+      "images": [
+        {
+          "imgId": "fig-p68-01",
+          "file": "images/ch04/fig-p68-01.jpg"
+        },
+        {
+          "imgId": "fig-p68-02",
+          "file": "images/ch04/fig-p68-02.jpg"
+        },
+        {
+          "imgId": "fig-p68-03",
+          "file": "images/ch04/fig-p68-03.jpg"
+        },
+        {
+          "imgId": "fig-p68-04",
+          "file": "images/ch04/fig-p68-04.jpg"
+        },
+        {
+          "imgId": "fig-p68-05",
+          "file": "images/ch04/fig-p68-05.jpg"
+        },
+        {
+          "imgId": "fig-p68-06",
+          "file": "images/ch04/fig-p68-06.jpg"
+        }
+      ]
+    },
+    {
+      "tree": [
+        "第4章 网络层",
+        "4.4 路由算法与路由协议",
+        "4.4.5_3 BGP路由选择"
+      ],
+      "noteHtml": "<p><span style=\"font-size:20px;color:#7c3aed\"><strong>P69 4.4.5_3 BGP路由选择（王道 4.4）</strong></span></p>\n<p><strong>BGP 路由选择</strong>：目的网络在外部 AS 且有多条路径可达时，选哪条走？四条规则<mark><strong>依次递补</strong></mark>——一不行用二、二不行用三、三不行用四。</p>\n<img data-img-id=\"fig-p69-01\" class=\"ds-note-img\" alt=\"图：规则一本地偏好值最高\">\n<p><strong>规则①本地偏好值最高</strong>：由本 AS 管理员手工设置（相当于优先级，综合考虑成本、安全）。AS1 到网络 X 有上路 [AS2,AS3,AS5] 与下路 [AS4,AS5]：若 AS2 收费更低，管理员就给上路更高本地偏好——除非上路故障才走下路。设置本地偏好能直接分出胜负时就不用看后面。</p>\n<img data-img-id=\"fig-p69-02\" class=\"ds-note-img\" alt=\"图：规则二AS跳数最少\">\n<p><strong>规则②AS 跳数最少</strong>（无本地偏好或都相同时）：[AS4,AS5]（2 跳）优于 [AS2,AS3,AS5]（3 跳），走上路。<span style=\"color:#dc2626\"><strong>AS 跳数最少 ≠ 路由器跳数最少</strong></span>——AS4 内部若串着很多路由器，总路由器跳数反而更多；这也印证了 BGP“只求较好不求最佳”。</p>\n<img data-img-id=\"fig-p69-03\" class=\"ds-note-img\" alt=\"图：规则三热土豆路由算法\">\n<p><strong>规则③热土豆路由算法</strong>（本地偏好与 AS 跳数都打平时）：理念“烫手的土豆尽快脱手”——借助内部网关协议，选让 IP 分组以<strong>最小代价离开本 AS</strong> 的那条路。RIP 度量跳数：上路 2 跳出界、下路 3 跳出界 → 走上路；OSPF 度量总代价：上路代价 6、下路代价 2+3=5 → 走下路（哪怕路由器跳数更多）。核心是“尽快把分组丢出去，出了本 AS 就不归我管”。</p>\n<img data-img-id=\"fig-p69-04\" class=\"ds-note-img\" alt=\"图：热土豆算法基于OSPF的示例\">\n<img data-img-id=\"fig-p69-05\" class=\"ds-note-img\" alt=\"图：规则四选BGP标识符最小的路由器\">\n<p><strong>规则④选 BGP 标识符（BGP ID）最小的路由器</strong>：每台 BGP 路由器有唯一 32bit 标识符（常取各接口中更大的 IP），建立会话时互相告知。仍打平（如 OSPF 代价都为 5）时，采信 BGP ID 更小的那台传来的路由——6.6.6.1 优于 6.6.6.2，理念“听老员工的”。ID 全局唯一，规则④一定能分出胜负。</p>\n<img data-img-id=\"fig-p69-06\" class=\"ds-note-img\" alt=\"图：BGP路由选择四条规则总结\">\n<p><span style=\"color:#7c3aed\">注意：目的网络在本 AS 内部时不走这套规则，直接用 RIP/OSPF 找最佳即可；四条规则针对“外部目的网络 + 多条候选路径”。</span></p>",
+      "images": [
+        {
+          "imgId": "fig-p69-01",
+          "file": "images/ch04/fig-p69-01.jpg"
+        },
+        {
+          "imgId": "fig-p69-02",
+          "file": "images/ch04/fig-p69-02.jpg"
+        },
+        {
+          "imgId": "fig-p69-03",
+          "file": "images/ch04/fig-p69-03.jpg"
+        },
+        {
+          "imgId": "fig-p69-04",
+          "file": "images/ch04/fig-p69-04.jpg"
+        },
+        {
+          "imgId": "fig-p69-05",
+          "file": "images/ch04/fig-p69-05.jpg"
+        },
+        {
+          "imgId": "fig-p69-06",
+          "file": "images/ch04/fig-p69-06.jpg"
+        }
+      ]
+    },
+    {
+      "tree": [
+        "第4章 网络层",
+        "4.4 路由算法与路由协议",
+        "4.4.5_4 BGP四种报文"
+      ],
+      "noteHtml": "<p><span style=\"font-size:20px;color:#7c3aed\"><strong>P70 4.4.5_4 BGP四种报文（王道 4.4）</strong></span></p>\n<p>BGP 定义四种报文，只需了解各自作用与使用时机：</p>\n<ul>\n<li><strong>OPEN 打开报文</strong>：与相邻 BGP 对等方<strong>建立 BGP 会话</strong>、通信初始化。流程：两路由器先建立 <strong>TCP 连接</strong> → 一方发 OPEN → 对方回 KEEPALIVE 充当确认（类似 ACK）→ eBGP/iBGP 会话建立完成。</li>\n<li><strong>KEEPALIVE 保活报文</strong>：除回复 OPEN 外，还要<strong>周期性发送</strong>（如每 60 秒一次）通知邻居“我还活着”；<span style=\"color:#dc2626\"><strong>超过 180 秒（3 倍周期）未收到对方保活报文，判定会话故障并结束 BGP 会话</strong></span>。</li>\n<li><strong>NOTIFICATION 通知报文</strong>：检测到错误（如对方报文首部参数有误）时报告错误，并<strong>立即关闭 BGP 会话</strong>。</li>\n<li><strong>UPDATE 更新报文</strong>（最重磅）：用于<strong>通告新增路由信息或撤销路由信息</strong>——此前“R1 给 R2 发送 BGP 路由信息”用的正是 UPDATE；网络 X 不可达时的撤销也由它完成。</li>\n</ul>\n<img data-img-id=\"fig-p70-01\" class=\"ds-note-img\" alt=\"图：BGP四种报文总览与TCP封装\">\n<p>结合拓扑：AS1 与 AS2 之间新增路由 [X, AS1, R1] 时，经 eBGP、iBGP 会话传播的就是 UPDATE 报文。</p>\n<img data-img-id=\"fig-p70-02\" class=\"ds-note-img\" alt=\"图：UPDATE报文在eBGP与iBGP间传播示例\">\n<p><mark><strong>一句话记忆：OPEN 建会话、KEEPALIVE 维持会话、NOTIFICATION 报错并关闭会话、UPDATE 传路由（新增/撤销）。</strong></mark></p>\n<img data-img-id=\"fig-p70-03\" class=\"ds-note-img\" alt=\"图：BGP报文功能总结\">",
+      "images": [
+        {
+          "imgId": "fig-p70-01",
+          "file": "images/ch04/fig-p70-01.jpg"
+        },
+        {
+          "imgId": "fig-p70-02",
+          "file": "images/ch04/fig-p70-02.jpg"
+        },
+        {
+          "imgId": "fig-p70-03",
+          "file": "images/ch04/fig-p70-03.jpg"
+        }
+      ]
+    },
+    {
+      "tree": [
+        "第4章 网络层",
+        "4.5 IP多播",
+        "4.5 IP多播"
+      ],
+      "noteHtml": "<p><span style=\"font-size:20px;color:#7c3aed\"><strong>P71 4.5 IP多播（王道 4.5）</strong></span></p>\n<p><strong>IP 多播（组播）用 D 类地址实现</strong>：前 4bit 为 1110，点分十进制范围 <mark><strong>224.0.0.0 ~ 239.255.255.255</strong></mark>。类比：<span style=\"color:#dc2626\"><strong>多播地址 ≈ QQ 群号，单播地址 ≈ 个人 QQ 号</strong></span>——一台主机可加入某个多播地址（进群），也可绑定多个（进多个群）；多播地址不能分配给某一台特定主机。</p>\n<img data-img-id=\"fig-p71-01\" class=\"ds-note-img\" alt=\"图：IP多播概念与最初分类方案\">\n<p><strong>多播的价值</strong>：90 台主机收看同一直播——单播要服务器重复发送 90 份；多播只发 1 份：90 台主机绑定同一多播地址（如 224.0.0.1），服务器构建目的地址为 224.0.0.1 的 IP 数据报，<strong>多播路由器检查该多播组的成员分布在哪些接口方向，各接口只转发一份</strong>，逐级复制送达——大幅节省带宽。适用于直播、视频会议、网络电视等一对多场景。</p>\n<img data-img-id=\"fig-p71-02\" class=\"ds-note-img\" alt=\"图：单播90次与多播1次的对比\">\n<p><strong>IP 多播三大考点</strong>（应对选择题）：</p>\n<ul>\n<li>多播数据报与单播一样<strong>尽最大努力交付、不提供可靠交付</strong>（收到不回 ACK）；</li>\n<li><span style=\"color:#dc2626\"><strong>多播地址只能作为目的地址，不能作为源地址</strong></span>（源地址仍是发送主机自己的单播地址）——高频选项；</li>\n<li><span style=\"color:#dc2626\"><strong>对多播数据报不产生 ICMP 差错报文</strong></span>（如 TTL 减为 0，路由器直接丢弃、不回 ICMP）。</li>\n</ul>\n<img data-img-id=\"fig-p71-04\" class=\"ds-note-img\" alt=\"图：IP多播知识回顾与重要考点\">\n<p><strong>两个支撑协议</strong>：</p>\n<ul>\n<li><strong>IGMP（网际组管理协议）</strong>：主机与路由器之间的多播管理协议——管理主机<strong>加入/离开多播组</strong>（加群、退群）。<span style=\"color:#dc2626\"><strong>IGMP 属于网络层，报文封装在 IP 分组中传送（IP 首部协议字段 = 2）</strong></span>。</li>\n<li><strong>多播路由协议</strong>：让多播路由器之间相互得知<strong>哪些接口处有多播组成员</strong>——R2 经 IGMP 知道本侧主机绑定了 224.0.0.1，再告诉邻居 R1，R1 才知道往这个方向复制转发。</li>\n</ul>\n<img data-img-id=\"fig-p71-03\" class=\"ds-note-img\" alt=\"图：IGMP与多播路由协议的作用\">\n<p><span style=\"color:#7c3aed\">拓展（不考，当故事听）：IPTV 的实现——运营商给 CCTV-1、CCTV-2、地方卫视各绑定一个多播地址；机顶盒调台的本质就是<strong>用 IGMP 退出一个多播组并加入另一个</strong>；各多播路由器间用多播路由协议互通成员分布，视频服务器只需向组地址发一份流。</span></p>\n<img data-img-id=\"fig-p71-05\" class=\"ds-note-img\" alt=\"图：IPTV多播实现原理示意\">",
+      "images": [
+        {
+          "imgId": "fig-p71-01",
+          "file": "images/ch04/fig-p71-01.jpg"
+        },
+        {
+          "imgId": "fig-p71-02",
+          "file": "images/ch04/fig-p71-02.jpg"
+        },
+        {
+          "imgId": "fig-p71-04",
+          "file": "images/ch04/fig-p71-04.jpg"
+        },
+        {
+          "imgId": "fig-p71-03",
+          "file": "images/ch04/fig-p71-03.jpg"
+        },
+        {
+          "imgId": "fig-p71-05",
+          "file": "images/ch04/fig-p71-05.jpg"
+        }
+      ]
+    },
+    {
+      "tree": [
+        "第4章 网络层",
+        "4.6 移动IP",
+        "4.6 移动IP"
+      ],
+      "noteHtml": "<p><span style=\"font-size:20px;color:#7c3aed\"><strong>P72 4.6 移动IP（王道 4.6）</strong></span></p>\n<p><strong>要解决的问题</strong>：手机移动可能切换基站/子网导致 IP 地址变化，而 TCP 连接、文件传输等应用会因地址变化而中断——移动 IP 要在 IP 动态变化时保证网络传输不受影响。</p>\n<img data-img-id=\"fig-p72-01\" class=\"ds-note-img\" alt=\"图：移动IP要解决的问题场景\">\n<p><strong>核心概念</strong>（借“北京联通卡带到武汉打工”理解）：移动节点（移动站）＝可移动的设备；它绑定的固定不变的 IP 为<strong>永久地址</strong>（如 131.8.6.7，“老家地址”）；归属网络中的路由器为<strong>归属代理（本地代理）</strong>；漫游到的外地网络中的路由器为<strong>外地代理</strong>，分配的临时地址为<strong>转交地址</strong>（如 15.5.6.7，“现住址”）；移动站到外地网络上网的过程即<strong>漫游</strong>。</p>\n<img data-img-id=\"fig-p72-02\" class=\"ds-note-img\" alt=\"图：移动IP核心概念与归属、被访网络拓扑\">\n<p><strong>通信过程分四种情况</strong>：</p>\n<ul>\n<li><strong>移动站在本地</strong>：与普通 TCP/IP 通信完全一样（源写永久地址、目的写对方地址，经归属代理转发）。</li>\n<li><strong>漫游到外地并登记（两步）</strong>：① 移动站向外地代理登记（报上永久地址、MAC 地址），获得临时转交地址，外地代理记录其归属地址、转交地址与 MAC；② 外地代理向归属代理登记，告知该移动站的转交地址。</li>\n<li><strong>在外地接收分组（要经归属代理中转）</strong>：通信对端 B 只知道永久地址 → 分组被路由到归属代理；归属代理知道移动站在外地及转交地址，于是用<strong>隧道技术（IP-in-IP 套娃封装）</strong>——外层 IP 首部源=归属代理、目的=转交地址，套着原始分组经互联网送抵外地代理；外地代理拆掉外层，按登记的 MAC 封装成 MAC 帧精准交付移动站。<mark><strong>原始分组的目的地址（永久地址）全程不变。</strong></mark></li>\n<li><strong>在外地发送分组（不经归属代理）</strong>：移动站构建的分组<strong>源地址写永久地址</strong>（不是转交地址），交给外地代理后直接在互联网上层层转发给目的主机。回到本地时向归属代理注销转交地址。</li>\n</ul>\n<img data-img-id=\"fig-p72-03\" class=\"ds-note-img\" alt=\"图：移动站在本地的传统通信\">\n<img data-img-id=\"fig-p72-04\" class=\"ds-note-img\" alt=\"图：漫游到外地的两步登记过程\">\n<img data-img-id=\"fig-p72-05\" class=\"ds-note-img\" alt=\"图：在外地发送IP分组直接经外地代理转发\">\n<img data-img-id=\"fig-p72-06\" class=\"ds-note-img\" alt=\"图：归属代理IP-in-IP隧道封装与外地代理拆封\">\n<p><span style=\"color:#dc2626\"><strong>必考方向：收发不对称——接收必须经归属代理隧道中转，发送由外地代理直接转发；主机间通信永远只用永久地址，转交地址对应用层通信完全透明。</strong></span>转交地址仅供移动站、归属代理、外地代理三方使用；一个转交地址可被多个移动站共用（外地代理按登记的永久地址查对应 MAC 区分交付）。</p>\n<img data-img-id=\"fig-p72-07\" class=\"ds-note-img\" alt=\"图：转交地址的透明性与多站共用说明\">\n<p><span style=\"color:#7c3aed\">MIP 兴衰（了解）：技术诞生于 1994 年前后，当时设想每台移动设备配一个全球唯一永久地址；后来 IPv4 地址迅速耗尽、NAT 普及，该方案无法大规模应用，现实中主要用于实验网络与理论教学——所以本考点历年考频极低，考前回顾即可。</span></p>\n<img data-img-id=\"fig-p72-08\" class=\"ds-note-img\" alt=\"图：移动IP知识回顾与重要考点\">",
+      "images": [
+        {
+          "imgId": "fig-p72-01",
+          "file": "images/ch04/fig-p72-01.jpg"
+        },
+        {
+          "imgId": "fig-p72-02",
+          "file": "images/ch04/fig-p72-02.jpg"
+        },
+        {
+          "imgId": "fig-p72-03",
+          "file": "images/ch04/fig-p72-03.jpg"
+        },
+        {
+          "imgId": "fig-p72-04",
+          "file": "images/ch04/fig-p72-04.jpg"
+        },
+        {
+          "imgId": "fig-p72-05",
+          "file": "images/ch04/fig-p72-05.jpg"
+        },
+        {
+          "imgId": "fig-p72-06",
+          "file": "images/ch04/fig-p72-06.jpg"
+        },
+        {
+          "imgId": "fig-p72-07",
+          "file": "images/ch04/fig-p72-07.jpg"
+        },
+        {
+          "imgId": "fig-p72-08",
+          "file": "images/ch04/fig-p72-08.jpg"
+        }
+      ]
+    },
+    {
+      "tree": [
+        "第4章 网络层",
+        "4.7 网络层设备",
+        "4.7 网络层设备"
+      ],
+      "noteHtml": "<p><span style=\"font-size:20px;color:#7c3aed\"><strong>P73 4.7 网络层设备（王道 4.7）</strong></span></p>\n<p>网络层设备只有一种——<strong>路由器</strong>。大纲要求了解路由器的组成和功能、路由表与路由转发；除“路由器的组成”外，其余内容前文都已深入学过。</p>\n<img data-img-id=\"fig-p73-01\" class=\"ds-note-img\" alt=\"图：本节总览：路由器组成与路由转发\">\n<p>看一眼<strong>商用路由器</strong>：思科 ASR-920 有 24 个 1Gbps 电口（插网线）+ 4 个 10Gbps 光口（插光纤），端口既可输入也可输出 IP 分组，支持 RIP/OSPF/BGP 等协议——比家用路由器功能更纯粹（不带 WiFi、交换机功能）。</p>\n<img data-img-id=\"fig-p73-02\" class=\"ds-note-img\" alt=\"图：思科商用路由器外观与端口\">\n<p><strong>路由器 = 两大层面</strong>：<mark><strong>控制层面实现路由选择功能，数据层面实现分组转发功能</strong></mark>。输入/输出端口的 1-2-3 分别对应物理层、链路层、网络层处理：物理层收比特流 → 链路层拆帧 → 网络层取出 IP 分组查转发表 → 经交换结构送到输出端口 → 再 3-2-1 逐层封回发出。</p>\n<img data-img-id=\"fig-p73-03\" class=\"ds-note-img\" alt=\"图：路由器控制层面与数据层面结构图\">\n<p><strong>控制层面细节</strong>：核心是<strong>路由选择处理机</strong>（相当于路由器这台“专用小电脑”的 CPU，内存中存路由表），运行 RIP/OSPF/BGP 进程生成路由表。不同协议生成的表项字段不同：RIP 多“跳数”、OSPF 多“Cost 与区域”、BGP 多“AS_PATH 与本地偏好值”；但所有表项<strong>至少包含三要素：网络前缀、下一跳 IP、输出接口</strong>。</p>\n<img data-img-id=\"fig-p73-04\" class=\"ds-note-img\" alt=\"图：控制层面与不同协议的路由表字段\">\n<p>408 典型路由表（表 4.7）：目的网络 IP+子网掩码（等价于 CIDR 记法）、下一跳 IP、接口。下一跳为“-”（或 direct）表示<strong>直接交付</strong>；填写具体路由器 IP（如 202.114.2.2）为<strong>间接交付</strong>；另配默认路由 0.0.0.0/0 兜底。</p>\n<img data-img-id=\"fig-p73-05\" class=\"ds-note-img\" alt=\"图：408真题典型路由表结构\">\n<p><span style=\"color:#7c3aed\"><strong>【例题】</strong></span>（路由表转发流程）R1 的路由表：202.114.1.0/24 → 直接交付（E1）；202.114.2.0/24 → 下一跳 202.114.2.2（E0）；0.0.0.0/0 → 下一跳 202.114.3.1（E2）。分别转发目的 IP 为 202.114.1.68 与 202.114.3.20 的分组。</p>\n$$202.114.1.68 \\wedge 255.255.255.0 = 202.114.1.0 \\Rightarrow \\text{匹配第一条}$$\n$$202.114.3.20 \\wedge 255.255.255.0 = 202.114.3.0 \\Rightarrow \\text{两条都不匹配} \\Rightarrow \\text{走默认路由}$$\n<p><span style=\"color:#dc2626\"><strong>答案：202.114.1.68 从 E1 直接交付（ARP 目的主机 MAC）；202.114.3.20 按默认路由从 E2 交给 202.114.3.1。转发时还要 TTL 减 1、重算首部校验和、重新封装成帧。</strong></span></p>\n<p><strong>数据层面细节</strong>：网络层处理模块设<strong>输入缓冲区</strong>暂存交换结构来不及处理的分组——<span style=\"color:#dc2626\"><strong>缓冲区满仍来分组则丢弃，这正是网络拥塞的表现</strong></span>；输出端口设<strong>输出缓冲区</strong>暂存因链路带宽限制发不出去的分组。</p>\n<img data-img-id=\"fig-p73-06\" class=\"ds-note-img\" alt=\"图：数据层面输入输出缓冲区与交换结构\">\n<p><strong>路由表 vs 转发表</strong>：路由表由路由协议生成，字段大而全（含协议私有信息）；<strong>转发表从路由表精简而来</strong>，只留网络前缀、下一跳 IP、输出接口，常用<strong>硬件实现</strong>查表极快。<span style=\"color:#dc2626\"><strong>考试 Tips：除非题目特意考察区别，否则认为二者相同。</strong></span></p>\n<img data-img-id=\"fig-p73-07\" class=\"ds-note-img\" alt=\"图：路由表与转发表对比\">\n<p>总图回顾：控制层面（路由选择处理机 → 路由表）+ 数据层面（输入/输出端口 + 缓冲区 + 交换结构 + 转发表）。</p>\n<img data-img-id=\"fig-p73-08\" class=\"ds-note-img\" alt=\"图：网络层设备要点回顾总图\">",
+      "images": [
+        {
+          "imgId": "fig-p73-01",
+          "file": "images/ch04/fig-p73-01.jpg"
+        },
+        {
+          "imgId": "fig-p73-02",
+          "file": "images/ch04/fig-p73-02.jpg"
+        },
+        {
+          "imgId": "fig-p73-03",
+          "file": "images/ch04/fig-p73-03.jpg"
+        },
+        {
+          "imgId": "fig-p73-04",
+          "file": "images/ch04/fig-p73-04.jpg"
+        },
+        {
+          "imgId": "fig-p73-05",
+          "file": "images/ch04/fig-p73-05.jpg"
+        },
+        {
+          "imgId": "fig-p73-06",
+          "file": "images/ch04/fig-p73-06.jpg"
+        },
+        {
+          "imgId": "fig-p73-07",
+          "file": "images/ch04/fig-p73-07.jpg"
+        },
+        {
+          "imgId": "fig-p73-08",
+          "file": "images/ch04/fig-p73-08.jpg"
+        }
+      ]
     }
-   ]
-  },
-  {
-   "tree": [
-    "第4章 网络层",
-    "4.2 IPv4与配套协议",
-    "4.2.1 IPv4分组"
-   ],
-   "noteHtml": "<p><span style=\"font-size:20px;color:#7c3aed\"><strong>P46 4.2.1 IPv4分组（王道 4.2）</strong></span></p>\n<img data-img-id=\"fig-p46-01\" class=\"ds-note-img\" alt=\"图：408考研大纲网络层八大考点清单\">\n<p>从协议关系图看 IP 的核心地位：应用层协议（HTTP、DNS、DHCP 等）经 TCP/UDP 到网络层 IP，ARP、ICMP、IGMP 与 IP 并列配合，<strong>IP 是整个互联网的核心</strong>。</p>\n<img data-img-id=\"fig-p46-02\" class=\"ds-note-img\" alt=\"图：各种协议之间的服务关系\">\n<p><strong>IPv4 分组首部</strong>：固定部分 20B，加选项最多 60B（且为 4B 的整数倍）。逐字段过一遍：</p>\n<img data-img-id=\"fig-p46-03\" class=\"ds-note-img\" alt=\"图：IP数据报首部格式\">\n<ul>\n<li><strong>版本</strong>（4bit）：IPv4 填 4。</li>\n<li><strong>首部长度</strong>（4bit）：<span style=\"color:#dc2626\"><strong>单位 4B</strong></span>，取值 5~15。</li>\n<li><strong>总长度</strong>（16bit）：首部+数据，单位 1B，最大 65535B。</li>\n<li><strong>标识</strong>（16bit）：同一数据报的各分片标识相同（是“属于同一原数据报”的记号，不是序号）。</li>\n<li><strong>标志</strong>：MF=1 表示后面还有分片（最后一片 MF=0）；DF=1 不允许分片。</li>\n<li><strong>片偏移</strong>（13bit）：<span style=\"color:#dc2626\"><strong>单位 8B</strong></span>，指出本片数据在原数据部分中的相对起点。</li>\n<li><strong>TTL</strong>（8bit）：每过一个路由器减 1，减到 0 丢弃并回 ICMP 时间超过报文。</li>\n<li><strong>协议</strong>（8bit）：数据部分是哪个协议的 PDU——<strong>TCP=6、UDP=17</strong>（另 ICMP=1、IGMP=2、OSPF=89）。</li>\n<li><strong>首部校验和</strong>（16bit）：只校验首部；每过一跳 TTL 变了就要重算。</li>\n<li><strong>源地址、目的地址</strong>各 32bit。</li>\n</ul>\n<p><span style=\"color:#7c3aed\"><strong>【例题】</strong></span>（2012 真题 47 改编）抓到某 IP 分组的前 40 字节，首部第一个字节为 45H，总长度字段为 0030H。求首部长度、总长度与数据部分长度。</p>\n$$45\\text{H} = 0100\\ 0101\\text{B} \\Rightarrow \\text{版本}=4,\\ \\text{首部长度字段}=5$$\n$$\\text{首部} = 5 \\times 4\\text{B} = 20\\text{B},\\quad \\text{总长度} = 0030\\text{H} = 48\\text{B}$$\n$$\\text{数据部分} = 48 - 20 = 28\\text{B}$$\n<p><span style=\"color:#dc2626\"><strong>答案：首部 20B、总长度 48B、数据 28B。</strong></span></p>\n<img data-img-id=\"fig-p46-04\" class=\"ds-note-img\" alt=\"图：2012年真题47例题讲解\">\n<p>数据链路层帧的数据字段有上限（MTU，以太网 1500B），超长就得<strong>分片</strong>。</p>\n<p><span style=\"color:#7c3aed\"><strong>【例题】</strong></span>某 IP 数据报总长 4000B（首部 20B、数据 3980B），标识 777，经过 MTU=1500B 的链路。求分片情况。</p>\n$$L_{\\text{max}} = 1500 - 20 = 1480\\text{B} = 8 \\times 185\\ (\\text{是 8 的倍数})$$\n$$3980 = 1480 \\times 2 + 1020 \\Rightarrow \\text{共 } 3 \\text{ 片}$$\n$$\\text{片1：偏移} = 0/8 = 0,\\ MF=1;\\quad \\text{片2：偏移} = 1480/8 = 185,\\ MF=1$$\n$$\\text{片3：偏移} = 2960/8 = 370,\\ MF=0$$\n<p><span style=\"color:#dc2626\"><strong>答案：3 片——片偏移分别为 0、185、370，MF 为 1、1、0，标识均为 777；数据长度 1480B、1480B、1020B。</strong></span></p>\n<img data-img-id=\"fig-p46-05\" class=\"ds-note-img\" alt=\"图：4000B数据报过MTU1500链路的分片计算\">\n<p><strong>分片注意事项</strong>：分片可发生在源主机或任一中间路由器；<span style=\"color:#dc2626\"><strong>重组只在目的主机进行</strong></span>（各分片独立路由，中间路由器不重组）；片偏移以 8B 为单位，所以每片数据长度必须是 8B 的整数倍。</p>\n<img data-img-id=\"fig-p46-06\" class=\"ds-note-img\" alt=\"图：IP数据报分片注意事项与路径示意\">\n<p><strong>TTL 不可达示例</strong>：TTL=4 的分组每过一个路由器减 1，4→3→2→1→0，减到 0 的路由器丢弃该分组并向源主机发 ICMP 报文——这就是“生存时间”防环的体现。</p>\n<img data-img-id=\"fig-p46-07\" class=\"ds-note-img\" alt=\"图：TTL逐跳递减示意图\">\n<p>本节回顾：首部结构（固定 20B + 可变 0~40B）、三个长度字段（首部长度 4B 单位、总长度 1B 单位、片偏移 8B 单位）、MTU 与分片、MF/DF 标志、TTL 字段——命题重点集中在字段单位与分片计算。</p>\n<img data-img-id=\"fig-p46-08\" class=\"ds-note-img\" alt=\"图：IPv4分组整节回顾思维导图\">\n<p><span style=\"color:#6a737d\">（本节B站未生成AI字幕，笔记依据课件与教材整理）</span></p>",
-   "images": [
-    {
-     "imgId": "fig-p46-01",
-     "file": "images/ch04/fig-p46-01.jpg"
-    },
-    {
-     "imgId": "fig-p46-02",
-     "file": "images/ch04/fig-p46-02.jpg"
-    },
-    {
-     "imgId": "fig-p46-03",
-     "file": "images/ch04/fig-p46-03.jpg"
-    },
-    {
-     "imgId": "fig-p46-04",
-     "file": "images/ch04/fig-p46-04.jpg"
-    },
-    {
-     "imgId": "fig-p46-05",
-     "file": "images/ch04/fig-p46-05.jpg"
-    },
-    {
-     "imgId": "fig-p46-06",
-     "file": "images/ch04/fig-p46-06.jpg"
-    },
-    {
-     "imgId": "fig-p46-07",
-     "file": "images/ch04/fig-p46-07.jpg"
-    },
-    {
-     "imgId": "fig-p46-08",
-     "file": "images/ch04/fig-p46-08.jpg"
-    }
-   ]
-  },
-  {
-   "tree": [
-    "第4章 网络层",
-    "4.2 IPv4与配套协议",
-    "4.2.2 IP地址+ 整章串讲"
-   ],
-   "noteHtml": "<p><span style=\"font-size:20px;color:#7c3aed\"><strong>P47 4.2.2 IP地址+整章串讲（王道 4.2）</strong></span></p>\n<p>先理清 IP 地址的技术演进脉络：<strong>分类编址（ABCDE）→ 1985 子网划分 → 1993 CIDR → 1994 NAT</strong>。大纲按考点罗列，但学习必须按这个时代顺序来理解，因此老师并未严格按书本顺序讲。</p>\n<p>IPv4 地址 32bit，共 $2^{32}\\approx 42$ 亿个。把视角拉回 1981 年——那时互联网只有政府、学校、军队在用，32bit 看似绝对够用；由 ICANN 统一管理，把地址分为五类：</p>\n<img data-img-id=\"fig-p47-01\" class=\"ds-note-img\" alt=\"图：最初IP地址分类方案A~E类划分\">\n<ul>\n<li><strong>A 类</strong>：首 bit 为 0，网络号 8bit、主机号 24bit；首字节 1~126。</li>\n<li><strong>B 类</strong>：前两 bit 为 10，网络号 16bit、主机号 16bit；首字节 128~191。</li>\n<li><strong>C 类</strong>：前三 bit 为 110，网络号 24bit、主机号 8bit；首字节 192~223。</li>\n<li><strong>D 类</strong>：前四 bit 1110，<strong>多播地址</strong>（224~239）。</li>\n<li><strong>E 类</strong>：1111 开头，保留。</li>\n</ul>\n<p>A、B、C 三类是<strong>单播地址</strong>（个人 QQ 号，可分配给一台主机）；D 类是多播地址（QQ 群号，一组主机绑定同一个群号）。网络号位数不定长，所以看前几个 bit 就能判断类别。</p>\n<p><strong>地址分配规则</strong>（上世纪 80 年代场景）：单位向管理机构租用号段——网络号由管理机构定死，主机号由单位自己分配。学校申请 B 类 166.1.x.x：校园内所有结点的网络号必须一致；公司申请 C 类 200.1.1.x 同理。<span style=\"color:#dc2626\"><strong>若把 H7 配成 200.1.2.2（网络号与其他结点不一致），它在该网络中就无法正常工作——常考小题。</strong></span>路由器与路由器直连的接口可以不配 IP；与其他结点相连的接口必须配全球唯一的 IP。新主机接入网络要配两样：IP 地址与<strong>默认网关</strong>（早期文献“网关”即路由器，默认网关就是帮主机把分组送出本网络的那台路由器接口的 IP）。</p>\n<img data-img-id=\"fig-p47-02\" class=\"ds-note-img\" alt=\"图：学校B类与公司C类接入ISP的综合拓扑及转发表\">\n<p><strong>H1 给 H7 发送数据报（跨网转发主线）</strong>：H1 构造 IP 数据报（源 166.1.0.1，目的 200.1.1.2）；判断目的不在本网络 → 先交给默认网关 166.1.0.5（经 ARP 查到网关 MAC，帧目的 MAC 写网关）；学校路由器查转发表（目的网络号+转发接口两列），匹配 200.1.1 后从 B0 口发给公司路由器；公司路由器再查表从 C2 口发出，经 ARP 得到 H7 的 MAC 精准交付。<mark><strong>整个逐跳转发过程中，IP 数据报的源/目的 IP 地址始终不变，而 MAC 帧的地址每过一跳就变一次。</strong></mark></p>\n<p><strong>H1 给 H6 发送数据报（同网直接交付）</strong>：H1 用 B 类规则对比双方前 16bit，相同 → 同一网络，无需网关；ARP 查到 H6 的 MAC 直接封装发送，经交换机、集线器（集线器无脑向所有端口转发），H5 收到帧发现目的 MAC 不是自己便丢弃，H6 收下并拆封。这就是“内网流量不过路由器”。</p>\n<p><strong>特殊用途 IP 地址</strong>（选择题常考，均不可指派给主机私用）：</p>\n<img data-img-id=\"fig-p47-03\" class=\"ds-note-img\" alt=\"图：特殊用途IP地址表格\">\n<ul>\n<li>网络号 Y + 主机号全 0：表示“网络本身”，只用于路由表/转发表，不能作分组的源或目的地址。</li>\n<li>网络号 Y + 主机号全 1：<strong>直接广播地址</strong>，向 Y 网络所有主机广播，只能作目的地址（如 H1 给公司全网广播写 200.1.1.255）。</li>\n<li><span style=\"color:#dc2626\"><strong>全 1（255.255.255.255）：受限广播，只在本网络广播，只能作目的地址；全 0（0.0.0.0）：本网络的本主机，只能作源地址</strong></span>——主机刚接入网络还没有 IP 时（DHCP 申请阶段）源地址就只能写全 0，目的写全 1 广播 DHCP 报文，老师原话“i am nobody，我暂时还没有名字”。</li>\n<li>127.x.x.x：<strong>环回自检地址</strong>（A 类跳过了 127），本机客户端进程与服务器进程通信可用 127.0.0.1，这种数据报不会发到网络上，常用于本地软件开发；可作源地址也可作目的地址。</li>\n</ul>\n<p>由前两条得重要结论：主机号占 N bit 的网络，最大可分配主机/路由器数 = $2^{N}-2$（全 0、全 1 两个不能分）。<span style=\"color:#7c3aed\">老师强调：本节把第四章最重要的几条大流程（默认网关、转发表查表、ARP 预告、IP 不变 MAC 变）都提前捋了一遍，是整章的“任督二脉”。</span></p>",
-   "images": [
-    {
-     "imgId": "fig-p47-01",
-     "file": "images/ch04/fig-p47-01.jpg"
-    },
-    {
-     "imgId": "fig-p47-02",
-     "file": "images/ch04/fig-p47-02.jpg"
-    },
-    {
-     "imgId": "fig-p47-03",
-     "file": "images/ch04/fig-p47-03.jpg"
-    }
-   ]
-  },
-  {
-   "tree": [
-    "第4章 网络层",
-    "4.2 IPv4与配套协议",
-    "4.2.3 子网划分与和子网掩码"
-   ],
-   "noteHtml": "<p><span style=\"font-size:20px;color:#7c3aed\"><strong>P48 4.2.3 子网划分与和子网掩码（王道 4.2）</strong></span></p>\n<p><strong>为什么提出子网划分</strong>：学校申请 B 类地址后一个局域网可容纳 $2^{16}-2$ 台主机，但小局域网根本用不了这么多主机号。于是从主机号最高位抠出 k bit 作<strong>子网号</strong>：IP 地址从两级变为<strong>网络号+子网号+主机号</strong>三级结构，可划分出 $2^{k}$ 个大小相等的子网（扣 1 bit 得两个子网、扣 2 bit 得四个），每个子网就是一个独立的网络，分别接路由器的不同接口——现实意义如一个号段拆给两个校区，提高 IP 地址利用率。</p>\n<img data-img-id=\"fig-p48-01\" class=\"ds-note-img\" alt=\"图：五条画图训练任务页\">\n<p><strong>子网掩码</strong>：划分子网后，判断两个 IP 是否同网不能再只看类别前缀，必须把网络号+子网号（合称<strong>网络前缀</strong>）整体比出来。子网掩码是与网络前缀对齐的 32bit 全 1、主机位全 0 的串：<span style=\"color:#dc2626\"><strong>IP 地址 AND 子网掩码 = 网络地址</strong></span>。本例学校取 1 bit 子网号，掩码即 17 个 1 加 15 个 0（255.255.128.0）。主机与路由器接口都要配置“IP 地址 + 默认网关 + 子网掩码”三件套；支持子网划分的路由器，转发表每项要增加<strong>子网掩码</strong>一列。</p>\n<img data-img-id=\"fig-p48-02\" class=\"ds-note-img\" alt=\"图：学校166.1.x.x划分两个子网的主拓扑\">\n<p><span style=\"color:#7c3aed\"><strong>【例题】</strong></span>（按位与求网络地址）主机 IP 为 166.1.66.5，子网掩码 255.255.128.0，求其所在子网的网络地址，并判断它与 166.1.130.1 是否同网。</p>\n$$66 = 01000010\\text{B},\\quad 128 = 10000000\\text{B}$$\n$$01000010 \\wedge 10000000 = 00000000 \\Rightarrow \\text{网络地址} = 166.1.0.0$$\n$$130 = 10000010 \\wedge 10000000 = 10000000 \\Rightarrow 166.1.128.0$$\n<p><span style=\"color:#dc2626\"><strong>答案：该主机属子网 166.1.0.0（子网 0）；166.1.130.1 属 166.1.128.0（子网 1），两者不同网。</strong></span></p>\n<p><strong>主机发送 IP 数据报的两步逻辑</strong>：先用本机掩码分别与“自己的 IP、目的 IP”相与比对——网络前缀相同则同网，ARP 目的主机 MAC 直接封装送达；不同则跨网，ARP <span style=\"color:#dc2626\"><strong>默认网关</strong></span>的 MAC，把帧发给网关转发。</p>\n<img data-img-id=\"fig-p48-03\" class=\"ds-note-img\" alt=\"图：主拓扑与学校、公司路由器转发表\">\n<p><strong>路由器查表</strong>：目的 IP 依次与每项的子网掩码相与，结果与该项目的网络比对，匹配即从对应接口转发；全部不匹配则走<strong>默认路由</strong>（目的网络与掩码全 0，与任何地址相与必为全 0，一定能兜底匹配）。若查表发现出接口与入接口相同（如 H1 出 bug 把发给 H2 的分组封装成广播帧送到路由器），则直接丢弃、不再转发回去。</p>\n<p>传统路由器没有掩码列，按类别取前缀即可——本质同一套逻辑，这保证了<strong>子网划分网络与未划分子网的传统网络互相兼容</strong>，新技术不必要求全球设备同时升级。相应引入<strong>默认子网掩码</strong>：A 类 255.0.0.0、B 类 255.255.0.0、C 类 255.255.255.0；掩码也常用斜线记法（166.1.0.1/17 即前 17bit 为网络前缀），转发表里同样可用“目的网络/17”这种写法。</p>\n<img data-img-id=\"fig-p48-04\" class=\"ds-note-img\" alt=\"图：公司主机配置默认网关标注\">\n<p><strong>训练串讲（结合拓扑）</strong>：训练一 H3→H6 同子网：掩码相与同前缀，ARP 直取 H6 的 MAC，帧经交换机、集线器送达，局域网内部完成，不经路由器。训练二 H1→H3 跨子网：前缀不同 → 发默认网关，路由器查表第二项匹配从 B2 口转出。训练三 H1→H7（子网划分网络 → 传统 C 类网络）：学校路由器第三项 200.1.1.0/24 匹配，公司路由器按 C 类取前 24bit 比对、C2 口交付。训练四 H7→H1 反向：公司路由器按 B 类取 16bit、166.1.0.0 匹配；学校路由器逐项相与，第一项 166.1.0.0/17 匹配从 B3 口出——出接口 IP 与目的 IP 同网，ARP 直取 H1 的 MAC 精准投递。</p>\n<img data-img-id=\"fig-p48-05\" class=\"ds-note-img\" alt=\"图：训练三H1到H7的转发过程讲解\">\n<img data-img-id=\"fig-p48-06\" class=\"ds-note-img\" alt=\"图：训练四H7到H1回程传输\">\n<p><span style=\"color:#7c3aed\">逐跳转发中的帧地址变化：公司路由器发出的帧源 MAC 换成自己出接口、目的 MAC 是下一跳接口；IP 数据报首部源目地址不动。老师手写标注了每段链路上帧的源/目的地址，务必对照理解。</span></p>\n<img data-img-id=\"fig-p48-07\" class=\"ds-note-img\" alt=\"图：公司路由器转发表与逐跳帧地址标注\">\n<img data-img-id=\"fig-p48-08\" class=\"ds-note-img\" alt=\"图：学校路由器转发表含默认路由\">\n<p>训练五 H1→Internet（目的 111.2.3.4）：H1 判不同网 → 交网关；学校路由器三行都对不上 → 默认路由 0.0.0.0/0 兜底从 B1 出；ISP 老式路由器按 A 类取前 8bit 也对不上 → 从 A1 送往互联网逐跳转发。<span style=\"color:#dc2626\"><strong>默认路由的价值：所有表项都不匹配时它必然匹配，保证路由器正常工作。</strong></span></p>\n<img data-img-id=\"fig-p48-09\" class=\"ds-note-img\" alt=\"图：训练五H1发往Internet与默认网关配置\">\n<p>知识框架回顾：子网掩码（A/B/C 默认值）、子网地址、默认路由 0.0.0.0；主机发数据报判断同网/跨网的完整流程；路由器查表流程（掩码相与→比对→转发）。</p>\n<img data-img-id=\"fig-p48-10\" class=\"ds-note-img\" alt=\"图：子网划分技术思维导图总结\">\n<img data-img-id=\"fig-p48-11\" class=\"ds-note-img\" alt=\"图：主机发送IP数据报过程思维导图\">\n<p><span style=\"color:#7c3aed\">课后拓展：把学校划成 4 个子网、加多台内部路由器分担总路由器压力（跨子网通信不再都麻烦总路由器）——圈内这些路由器、主机、交换机构成一个<strong>自治系统（AS）</strong>，此概念 4.4 节会正式遇到。</span></p>\n<img data-img-id=\"fig-p48-12\" class=\"ds-note-img\" alt=\"图：目的IP与子网掩码逐位与运算判断所属子网\">\n<img data-img-id=\"fig-p48-13\" class=\"ds-note-img\" alt=\"图：子网划分综合终态总图\">",
-   "images": [
-    {
-     "imgId": "fig-p48-01",
-     "file": "images/ch04/fig-p48-01.jpg"
-    },
-    {
-     "imgId": "fig-p48-02",
-     "file": "images/ch04/fig-p48-02.jpg"
-    },
-    {
-     "imgId": "fig-p48-03",
-     "file": "images/ch04/fig-p48-03.jpg"
-    },
-    {
-     "imgId": "fig-p48-04",
-     "file": "images/ch04/fig-p48-04.jpg"
-    },
-    {
-     "imgId": "fig-p48-05",
-     "file": "images/ch04/fig-p48-05.jpg"
-    },
-    {
-     "imgId": "fig-p48-06",
-     "file": "images/ch04/fig-p48-06.jpg"
-    },
-    {
-     "imgId": "fig-p48-07",
-     "file": "images/ch04/fig-p48-07.jpg"
-    },
-    {
-     "imgId": "fig-p48-08",
-     "file": "images/ch04/fig-p48-08.jpg"
-    },
-    {
-     "imgId": "fig-p48-09",
-     "file": "images/ch04/fig-p48-09.jpg"
-    },
-    {
-     "imgId": "fig-p48-10",
-     "file": "images/ch04/fig-p48-10.jpg"
-    },
-    {
-     "imgId": "fig-p48-11",
-     "file": "images/ch04/fig-p48-11.jpg"
-    },
-    {
-     "imgId": "fig-p48-12",
-     "file": "images/ch04/fig-p48-12.jpg"
-    },
-    {
-     "imgId": "fig-p48-13",
-     "file": "images/ch04/fig-p48-13.jpg"
-    }
-   ]
-  },
-  {
-   "tree": [
-    "第4章 网络层",
-    "4.2 IPv4与配套协议",
-    "4.2.4 无分类编址 CIDR"
-   ],
-   "noteHtml": "<p><span style=\"font-size:20px;color:#7c3aed\"><strong>P49 4.2.4 无分类编址 CIDR（王道 4.2）</strong></span></p>\n<p><strong>时代背景</strong>：1993 年互联网民用大放异彩，每台入网主机都要消耗一个全球唯一 IP，地址资源告急，于是提出 CIDR（无分类编址）。</p>\n<img data-img-id=\"fig-p49-01\" class=\"ds-note-img\" alt=\"图：CIDR知识总览思维导图\">\n<p><strong>传统分类方案的缺陷</strong>：某单位 2000 台主机要入网——C 类块只有 256 个地址不够用，只能给 B 类（6 万多个），实际只用 2000 多个，浪费巨大、加速耗尽。</p>\n<img data-img-id=\"fig-p49-02\" class=\"ds-note-img\" alt=\"图：传统IP地址分配方案的缺陷\">\n<p><strong>CIDR 基本原理</strong>：取消 A~E 分类，IP 地址 = {网络前缀, 主机号}，前缀长度不定。2000 台主机的单位分配 /21 前缀的地址块即可：$2^{11} = 2048$ 个地址刚刚好。<strong>CIDR 记法（斜线记法）</strong>：IP/n 表示前 n bit 为网络前缀，相当于掩码前 n 个 1；地址块范围即主机号全 0 到全 1。</p>\n<img data-img-id=\"fig-p49-03\" class=\"ds-note-img\" alt=\"图：CIDR原理与斜线记法\">\n<p>拿到地址块后内部还要划子网，两种策略：<strong>定长子网划分</strong>——抠出 k bit 作定长子网号，得 $2^{k}$ 个等大子网；<strong>变长子网划分</strong>——各子网大小可不同、更灵活。</p>\n<img data-img-id=\"fig-p49-04\" class=\"ds-note-img\" alt=\"图：定长与变长子网划分概念\">\n<p>定长的缺陷：166.1.x.x 均分 4 份每份 $2^{12}$ 个，但四个校区需求差异大——第四校区只要 $2^{10}$ 浪费严重，第一校区要 $2^{15}$ 又不够用。</p>\n<img data-img-id=\"fig-p49-05\" class=\"ds-note-img\" alt=\"图：定长子网划分浪费示例\">\n<p><strong>例 1（逐级分配）</strong>：ICANN 给中国电信 /6 块（$2^{26}$，约 6700 多万个地址）；电信再按各地需求分：北京、上海人口多各给 /9（约 838 万），青海给 /11（约 209 万）……每往下分一级，就是把自己的地址块按需求做变长子网划分，实现分层管理。</p>\n<img data-img-id=\"fig-p49-06\" class=\"ds-note-img\" alt=\"图：ICANN到一级ISP逐级分配示例\">\n<p><strong>例 2（咸鱼电信大题）</strong>：咸鱼电信租到 128.14.32.128/27，主机号 5bit、共 32 个 IP。网吧（12 台电脑）取 /28（16 个地址，第 28bit=0）；旺财家（5 台）从剩余地址再对半分取 /29（8 个地址，可用 $2^{3}-2=6$ 个）；狗剩家路由器—主机点对点直连，最小的子网也要保留 2bit 主机号（00 与 11 不可用，01、10 分给两端）取 /30（4 个地址）。剩余 4 个无法再分（再抠 1bit 主机号只剩 1bit，全 0 全 1 都不可分配）。路由器转发表按 /28、/29、/30 分别指向 F1、F2、F3。</p>\n<img data-img-id=\"fig-p49-07\" class=\"ds-note-img\" alt=\"图：咸鱼电信128.14.32.128/27变长划分综合大题\">\n<p><span style=\"color:#7c3aed\"><strong>解题技巧：从根到叶构造二叉“哈夫曼树”</strong></span>——原始地址块作根（可自由分配的主机号 H bit），每次对半拆分左 0 右 1，每个叶子对应一个子网，叶子深度即追加的子网号位数；任何一个子网的网络前缀都不会是其他子网前缀的前缀。<span style=\"color:#dc2626\"><strong>树高不能超过 H-1（最小的子网也要留 2bit 主机号）。</strong></span></p>\n<p><span style=\"color:#7c3aed\"><strong>【例题】</strong></span>（2017 真题 38）将 21.3.0.0/16 划分为 128 个规模相同的子网，每个子网可分配的最大 IP 地址数是多少？</p>\n$$2^{7} = 128 \\Rightarrow \\text{定长子网号占 7bit}$$\n$$\\text{每子网主机号} = 16 - 7 = 9\\text{bit} \\Rightarrow 2^{9} - 2 = 510$$\n<p><span style=\"color:#dc2626\"><strong>答案：510 个（选 C）。减 2 是因为主机号全 0、全 1 不可分配。</strong></span></p>\n<img data-img-id=\"fig-p49-08\" class=\"ds-note-img\" alt=\"图：2017真题38定长子网划分逐位图解\">\n<p><span style=\"color:#7c3aed\"><strong>【例题】</strong></span>（2019 真题 37）将 101.200.16.0/20 划分为 5 个子网，求可能的最小子网可分配 IP 数。解题无需展开前 20bit——能自由分配的只有低 12bit。构造 5 个叶子的树并尽量长深：12bit 中拿出 4bit 网络前缀给最深的子网，剩 8bit 主机号。</p>\n$$2^{8} - 2 = 254$$\n<p><span style=\"color:#dc2626\"><strong>答案：254 个（选 B）。</strong></span></p>\n<img data-img-id=\"fig-p49-09\" class=\"ds-note-img\" alt=\"图：2019真题37二叉前缀树构造\">\n<p>回顾要点：取消分类、{网络前缀,主机号}、CIDR 记法、路由聚合（下节）、定长/变长划分；再次强调<span style=\"color:#dc2626\"><strong\">每个子网中主机号全 0 与全 1 的地址永远不能分配给特定结点</strong></span>。</p>\n<img data-img-id=\"fig-p49-10\" class=\"ds-note-img\" alt=\"图：CIDR知识点回顾思维导图\">",
-   "images": [
-    {
-     "imgId": "fig-p49-01",
-     "file": "images/ch04/fig-p49-01.jpg"
-    },
-    {
-     "imgId": "fig-p49-02",
-     "file": "images/ch04/fig-p49-02.jpg"
-    },
-    {
-     "imgId": "fig-p49-03",
-     "file": "images/ch04/fig-p49-03.jpg"
-    },
-    {
-     "imgId": "fig-p49-04",
-     "file": "images/ch04/fig-p49-04.jpg"
-    },
-    {
-     "imgId": "fig-p49-05",
-     "file": "images/ch04/fig-p49-05.jpg"
-    },
-    {
-     "imgId": "fig-p49-06",
-     "file": "images/ch04/fig-p49-06.jpg"
-    },
-    {
-     "imgId": "fig-p49-07",
-     "file": "images/ch04/fig-p49-07.jpg"
-    },
-    {
-     "imgId": "fig-p49-08",
-     "file": "images/ch04/fig-p49-08.jpg"
-    },
-    {
-     "imgId": "fig-p49-09",
-     "file": "images/ch04/fig-p49-09.jpg"
-    },
-    {
-     "imgId": "fig-p49-10",
-     "file": "images/ch04/fig-p49-10.jpg"
-    }
-   ]
-  },
-  {
-   "tree": [
-    "第4章 网络层",
-    "4.2 IPv4与配套协议",
-    "4.2.5 路由聚合"
-   ],
-   "noteHtml": "<p><span style=\"font-size:20px;color:#7c3aed\"><strong>P50 4.2.5 路由聚合（王道 4.2）</strong></span></p>\n<p><strong>路由聚合（构成超网）</strong>：转发表中若有几条表项的<strong>转发接口相同</strong>、且网络前缀有公共部分，可聚合为一条更短前缀的表项，缩减路由表规模。注意前提：咸鱼电信转发表中前三个表项虽然前缀相近，但转发接口各不相同（F1/F2/F3），<span style=\"color:#dc2626\"><strong>接口不同则不能聚合</strong></span>。</p>\n<img data-img-id=\"fig-p50-01\" class=\"ds-note-img\" alt=\"图：咸鱼电信路由器转发表与聚合条件\">\n<p><span style=\"color:#7c3aed\"><strong>【例题】</strong></span>（路由聚合）某路由器转发表含四条表项：128.14.32.128/28、128.14.32.144/29、128.14.32.152/30、128.14.32.156/30，转发接口均为 F1。求聚合后的表项。</p>\n$$/28:\\ .128 \\sim .143;\\quad /29:\\ .144 \\sim .151$$\n$$/30:\\ .152 \\sim .155;\\quad /30:\\ .156 \\sim .159$$\n$$\\text{四块连续覆盖 } .128 \\sim .159 \\Rightarrow 128.14.32.128/27$$\n<p><span style=\"color:#dc2626\"><strong>答案：聚合为 128.14.32.128/27（32 个地址），下一跳接口 F1。</strong></span></p>\n<p><strong>最长前缀匹配原则</strong>：一个目的 IP 可能同时匹配多条表项（前缀长短不同），此时<span style=\"color:#dc2626\"><strong>选网络前缀最长的那条</strong></span>——前缀越长越具体、指向越精确。</p>\n<img data-img-id=\"fig-p50-02\" class=\"ds-note-img\" alt=\"图：县里电信路由器最长前缀匹配示例\">\n<p><span style=\"color:#7c3aed\"><strong>【例题】</strong></span>（最长前缀匹配）县里电信路由器转发表：128.14.32.128/28 → 铁柱网吧；128.14.32.128/25 → 咸鱼电信其余子网；0.0.0.0/0 → 默认路由。收到目的 IP 为 128.14.32.131 的数据报应如何转发？</p>\n$$131 \\in .128 \\sim .143\\ (\\text{匹配}/28),\\quad 131 \\in .128 \\sim .255\\ (\\text{匹配}/25)$$\n$$28 \\gt 25 \\Rightarrow \\text{按最长前缀选 } /28 \\text{ 表项}$$\n<p><span style=\"color:#dc2626\"><strong>答案：两条都能匹配，按最长前缀匹配选 128.14.32.128/28，发往铁柱网吧方向。</strong></span></p>\n<p><strong>路由转发专题总结</strong>（理解了就能分析大题）：第一步，主机判断目的与本机是否同网——用子网掩码逐位与后比较网络前缀；第二步，路由器转发流程——接收分组 → 首部校验 → 取目的 IP → 查转发表（目的网络、子网掩码、转发接口三项，逐项相与比对、最长前缀匹配）→ 从匹配接口转发。</p>\n<img data-img-id=\"fig-p50-03\" class=\"ds-note-img\" alt=\"图：路由转发专题总结\">\n<p>综合大题终态拓扑：咸鱼电信/县里电信、学校、公司、铁柱网咖多路由器全联网，128.14.32.128/28、/29、/30 子网划分与聚合、默认路由 0.0.0.0/0、各主机标注——建议对照此图把训练一至训练五完整推演一遍。</p>\n<img data-img-id=\"fig-p50-04\" class=\"ds-note-img\" alt=\"图：路由聚合综合大题完整拓扑终态\">\n<p><span style=\"color:#6a737d\">（本节B站未生成AI字幕，笔记依据课件与教材整理）</span></p>",
-   "images": [
-    {
-     "imgId": "fig-p50-01",
-     "file": "images/ch04/fig-p50-01.jpg"
-    },
-    {
-     "imgId": "fig-p50-02",
-     "file": "images/ch04/fig-p50-02.jpg"
-    },
-    {
-     "imgId": "fig-p50-03",
-     "file": "images/ch04/fig-p50-03.jpg"
-    },
-    {
-     "imgId": "fig-p50-04",
-     "file": "images/ch04/fig-p50-04.jpg"
-    }
-   ]
-  },
-  {
-   "tree": [
-    "第4章 网络层",
-    "4.2 IPv4与配套协议",
-    "4.2.6 网络地址转换 NAT"
-   ],
-   "noteHtml": "<p><span style=\"font-size:20px;color:#7c3aed\"><strong>P51 4.2.6 网络地址转换 NAT（王道 4.2）</strong></span></p>\n<p>技术演进线：1981 IPv4 分类 → 1985 子网划分 → 1993 CIDR → <strong>1994 NAT</strong>。互联网发展太快，每个主机都要消耗全球唯一 IP，42 亿不够用，NAT 让<strong>一个局域网内的多台主机共享一个全球唯一的公网 IP</strong>。</p>\n<img data-img-id=\"fig-p51-01\" class=\"ds-note-img\" alt=\"图：本节内容目录页\">\n<p><strong>端口号铺垫</strong>（传输层概念）：通信的真正主体是进程。IP 地址定位主机，<strong>端口号</strong>（软件概念，16bit，每台主机约 6.5 万个）定位主机上的进程，IP+端口即可精准定位全网某个进程。各主机独立分配端口，<span style=\"color:#dc2626\"><strong>不同主机上端口号可以重复</strong></span>。</p>\n<img data-img-id=\"fig-p51-02\" class=\"ds-note-img\" alt=\"图：主机199.1.1.5上进程与端口号对应关系\">\n<p>既然如此——共享的公网 IP + 不同端口号，就能映射到局域网内不同主机的不同进程，这正是 NAT 的核心思想。</p>\n<img data-img-id=\"fig-p51-03\" class=\"ds-note-img\" alt=\"图：IP地址不够用引出NAT\">\n<p><strong>外网 IP（公网 IP）</strong>：全球唯一，由 ISP 分配；<strong>内网 IP（私有 IP）</strong>：只允许分配给局域网内部结点，每个局域网都可复用。实测验证：百度搜“IP地址”查到的是公网 IP（如 59.175.49.153，ISP 分配）；系统设置里看到的是内网 IP（如 192.168.3.74，家用路由器分配），同网手机的公网 IP 与电脑相同——两设备共享一个公网 IP。</p>\n<img data-img-id=\"fig-p51-04\" class=\"ds-note-img\" alt=\"图：百度查公网IP与内网IP区别\">\n<img data-img-id=\"fig-p51-05\" class=\"ds-note-img\" alt=\"图：局域网多设备共享公网IP访问Internet\">\n<p>家用路由器集路由、交换、无线 AP、NAT 功能于一身。<strong>NAT 路由器</strong>内部除路由转发表外还有一个关键数据结构——<strong>NAT 表</strong>，记录“外网 IP:端口 ↔ 内网 IP:端口”的映射。例如电脑浏览器进程 192.168.3.74:2111 映射为 59.175.49.153:某端口，手机微信 192.168.3.48:9855 映射为另一端口。</p>\n<img data-img-id=\"fig-p51-06\" class=\"ds-note-img\" alt=\"图：NAT工作演示初始态与NAT表\">\n<p><strong>训练一（手机1微信 → 手机2微信）</strong>完整走一遍：手机1封装 TCP（源端口 9855）+ IP（源 192.168.3.48 内网；目的必须写对方<strong>外网</strong> IP——跨局域网通信只能用外网地址，目的端口也写对方对外暴露的外网端口 4096 而非内网 6666，这些信息可经服务器查询）→ 发默认网关 → NAT 路由器查表<strong>改写源 IP+源端口</strong>为外网映射 → 互联网层层转发 → 对端 NAT 路由器查表<strong>改写目的 IP+目的端口</strong>为内网映射 → 精准送达手机2微信进程。<span style=\"color:#dc2626\"><strong>出向改“源”、入向改“目的”；普通路由器转发绝不改 IP 地址，而 NAT 路由器两样都改。</strong></span></p>\n<img data-img-id=\"fig-p51-07\" class=\"ds-note-img\" alt=\"图：另一个局域网接入后NAT表演进\">\n<img data-img-id=\"fig-p51-08\" class=\"ds-note-img\" alt=\"图：两个局域网经各自NAT路由器访问服务器的完整拓扑\">\n<p><span style=\"color:#7c3aed\"><strong>【例题】</strong></span>（NAT 转换表）NAT 路由器公网 IP 为 59.175.40.125，NAT 表中有表项 59.175.40.125:5250 ↔ 192.168.3.7:4016。内网主机 192.168.3.7:4016 向外网服务器发送分组，以及外网回程分组到达时，NAT 各做什么改写？</p>\n$$\\text{出向：源 } 192.168.3.7{:}4016 \\Rightarrow 59.175.40.125{:}5250$$\n$$\\text{回程：目的 } 59.175.40.125{:}5250 \\Rightarrow 192.168.3.7{:}4016$$\n<p><span style=\"color:#dc2626\"><strong>答案：出向改写源 IP 和源端口；回程按表把目的 IP、目的端口改写为 192.168.3.7:4016 后转发内网主机。</strong></span></p>\n<img data-img-id=\"fig-p51-09\" class=\"ds-note-img\" alt=\"图：NAT回程数据按表转换示例\">\n<p>训练三（电脑浏览器 → DiliDili web 服务器 80 端口）同法：出向查表改源，对端服务器无 NAT 则按目的 IP 直接交付。NAT 路由器要修改传输层首部（端口号），<span style=\"color:#dc2626\"><strong>所以 NAT 路由器功能包含传输层；普通路由器只包含网络层及以下</strong></span>。</p>\n<img data-img-id=\"fig-p51-10\" class=\"ds-note-img\" alt=\"图：NAT要点总结思维导图\">\n<p><span style=\"color:#7c3aed\">私有地址三段要记牢：10/8、172.16~31（/12）、192.168/16，仅局域网内有效可重复；理解 NAT 最好的办法是把训练自己“让数据流动起来”跑一遍。</span></p>",
-   "images": [
-    {
-     "imgId": "fig-p51-01",
-     "file": "images/ch04/fig-p51-01.jpg"
-    },
-    {
-     "imgId": "fig-p51-02",
-     "file": "images/ch04/fig-p51-02.jpg"
-    },
-    {
-     "imgId": "fig-p51-03",
-     "file": "images/ch04/fig-p51-03.jpg"
-    },
-    {
-     "imgId": "fig-p51-04",
-     "file": "images/ch04/fig-p51-04.jpg"
-    },
-    {
-     "imgId": "fig-p51-05",
-     "file": "images/ch04/fig-p51-05.jpg"
-    },
-    {
-     "imgId": "fig-p51-06",
-     "file": "images/ch04/fig-p51-06.jpg"
-    },
-    {
-     "imgId": "fig-p51-07",
-     "file": "images/ch04/fig-p51-07.jpg"
-    },
-    {
-     "imgId": "fig-p51-08",
-     "file": "images/ch04/fig-p51-08.jpg"
-    },
-    {
-     "imgId": "fig-p51-09",
-     "file": "images/ch04/fig-p51-09.jpg"
-    },
-    {
-     "imgId": "fig-p51-10",
-     "file": "images/ch04/fig-p51-10.jpg"
-    }
-   ]
-  },
-  {
-   "tree": [
-    "第4章 网络层",
-    "4.2 IPv4与配套协议",
-    "4.2.7 地址解析协议ARP"
-   ],
-   "noteHtml": "<p><span style=\"font-size:20px;color:#7c3aed\"><strong>P52 4.2.7 地址解析协议ARP（王道 4.2）</strong></span></p>\n<p><strong>两个地址</strong>：<strong>MAC 地址</strong>（物理地址）48bit，出厂固化、全球唯一——主机至少一块网卡即至少一个 MAC，路由器多接口多 MAC；<strong>IP 地址</strong>是逻辑地址。数据报封装成 MAC 帧时必须写目的 MAC，而网络层只认识 IP，于是需要 <strong>ARP（地址解析协议）完成 IP 地址 → MAC 地址的映射</strong>。</p>\n<img data-img-id=\"fig-p52-01\" class=\"ds-note-img\" alt=\"图：ARP概念页：MAC地址与IP到MAC映射\">\n<p><strong>工作过程</strong>：每台主机维护<strong>ARP 高速缓存</strong>（本局域网内各主机/路由器接口的 IP→MAC 映射，有时效）。查不到就发 <strong>ARP 请求</strong>——封装成<strong>广播帧</strong>（目的 MAC 全 1：FF-FF-FF-FF-FF-FF）在本网络内广播，目标主机以<strong>单播 ARP 响应</strong>回填缓存，其余主机收到不响应。</p>\n<img data-img-id=\"fig-p52-02\" class=\"ds-note-img\" alt=\"图：H3与H4间ARP请求广播与响应单播全过程\">\n<p><span style=\"color:#dc2626\"><strong>跨网通信的易错点：ARP 查的不是目的主机的 MAC，而是“下一跳”的 MAC——同网查目的主机，跨网查默认网关。</strong></span>主机 H3 给外网发数据报：帧的源 MAC 是 H3、目的 MAC 是网关接口；IP 首部源目 IP 不变。数据报到目的网络后，最后一跳路由器与目的主机同网，才 ARP 目的主机的 MAC 直接交付。</p>\n<p><strong>对照训练三问</strong>（H3 视角）：① H3 给本网 H4 发数据——ARP 查 H4 的 MAC；② H3 给外网某主机发数据——ARP 查默认网关的 MAC；③ Internet 某主机给 H3 发数据——途中每跳路由器都按下一跳逐段解析 MAC，最后一跳路由器 ARP 查 H3 的 MAC。</p>\n<p><span style=\"color:#7c3aed\">拓展（不会考这么深）：ARP 分组共 28B，字段含硬件类型、协议类型、硬件/协议地址长度、操作码（1 请求 2 响应）、发送方/目标以太网地址与 IP 地址等。</span></p>\n<img data-img-id=\"fig-p52-03\" class=\"ds-note-img\" alt=\"图：ARP分组格式28字节字段\">\n<p>回顾：ARP 分组封装进 MAC 帧发送，帧<strong>类型字段</strong>指明上层协议（ARP/IPv4 等），广播帧目的地址全 1。ARP 解决“同网内 IP→MAC”，是逐跳转发得以落地的一环。</p>\n<img data-img-id=\"fig-p52-04\" class=\"ds-note-img\" alt=\"图：ARP分组封装进以太网MAC帧\">\n<p><span style=\"color:#6a737d\">（本节B站未生成AI字幕，笔记依据课件与教材整理）</span></p>",
-   "images": [
-    {
-     "imgId": "fig-p52-01",
-     "file": "images/ch04/fig-p52-01.jpg"
-    },
-    {
-     "imgId": "fig-p52-02",
-     "file": "images/ch04/fig-p52-02.jpg"
-    },
-    {
-     "imgId": "fig-p52-03",
-     "file": "images/ch04/fig-p52-03.jpg"
-    },
-    {
-     "imgId": "fig-p52-04",
-     "file": "images/ch04/fig-p52-04.jpg"
-    }
-   ]
-  },
-  {
-   "tree": [
-    "第4章 网络层",
-    "4.2 IPv4与配套协议",
-    "4.2.8 动态主机配置协议DHCP"
-   ],
-   "noteHtml": "<p><span style=\"font-size:20px;color:#7c3aed\"><strong>P53 4.2.8 动态主机配置协议DHCP（王道 4.2）</strong></span></p>\n<p><strong>DHCP 的作用</strong>：主机刚接入网络时还没有 IP 地址，需给它动态分配 IP 并配置子网掩码、默认网关等参数——这些全由 DHCP 协议自动完成（即插即用）。<span style=\"color:#dc2626\"><strong>DHCP 属于应用层协议，基于 UDP（服务器端口 67、客户机端口 68），采用客户/服务器（C/S）模型</strong></span>；大纲把它放在网络层章节，是因为它主要为网络层参数做初始化。</p>\n<img data-img-id=\"fig-p53-01\" class=\"ds-note-img\" alt=\"图：DHCP协议知识树思维导图\">\n<p>每个（子）网络通常配一台 DHCP 服务器，管理本网地址池；不同服务器管辖的地址池不同。例中学校划两个子网（前缀 17bit），左侧服务器管理 166.1.0.x 池、右侧管理 166.1.128.x 池。</p>\n<img data-img-id=\"fig-p53-02\" class=\"ds-note-img\" alt=\"图：DHCP实例拓扑与时序图\">\n<p><strong>四步工作过程</strong>（新主机 H3 接入网络）：① <strong>DHCP 发现报文（DISCOVER）</strong>——H3 广播寻找服务器：应用层自报 MAC 地址（AA:BB:CC:DD:EE:33）；UDP 源端口 68 → 目的端口 67；IP 层源 0.0.0.0（本网络的本主机，i am nobody）、目的 255.255.255.255 广播；链路层源 MAC 自己、目的 MAC 全 F 广播帧。普通主机没有绑定 67 端口的进程，收到后在传输层即丢弃——只有 DHCP 服务器进程响应（67 是服务器专用的熟知端口）。</p>\n<img data-img-id=\"fig-p53-03\" class=\"ds-note-img\" alt=\"图：校园拓扑与DHCP发现报文流向\">\n<img data-img-id=\"fig-p53-04\" class=\"ds-note-img\" alt=\"图：DHCP DISCOVER报文各层封装字段\">\n<p>② <strong>DHCP 提供报文（OFFER）</strong>——服务器从地址池挑一个空闲 IP（如 166.1.128.2）“提供”给 H3，报文中含分配的 IP、<strong>租用期</strong>（可续租）、子网掩码（255.255.128.0）、默认网关（166.1.128.1）；UDP 67→68；IP 层源=服务器 IP、目的=255.255.255.255（H3 还没有 IP，只能广播）；链路层却可<strong>单播</strong>——服务器已从发现报文得知 H3 的 MAC。</p>\n<img data-img-id=\"fig-p53-05\" class=\"ds-note-img\" alt=\"图：DHCP OFFER提供报文字段详解\">\n<p>③ <strong>DHCP 请求报文（REQUEST）</strong>——H3 广播“我最终选用的是谁分配的 IP”。<span style=\"color:#dc2626\"><strong>为何仍用广播：一个网络可能有多台 DHCP 服务器，它们都会回 OFFER，H3 只能接受一个，必须广而告之让落选的服务器也知道，避免地址管理混乱——高频考点。</strong></span>此时 IP 层源仍为 0.0.0.0（流程未完成，地址尚未真正属于 H3）。</p>\n<img data-img-id=\"fig-p53-06\" class=\"ds-note-img\" alt=\"图：DHCP报文传输路径拓扑\">\n<img data-img-id=\"fig-p53-07\" class=\"ds-note-img\" alt=\"图：DHCP REQUEST请求报文封装\">\n<p>④ <strong>DHCP 确认报文（ACK）</strong>——服务器再次确认分配信息，源=服务器 IP、目的=广播 IP，链路层单播送达；H3 收到后才真正拥有 IP、掩码、默认网关。</p>\n<img data-img-id=\"fig-p53-08\" class=\"ds-note-img\" alt=\"图：DHCP ACK确认报文\">\n<p>四步时序总览：DISCOVER → OFFER → REQUEST → ACK，各主机 IP 与服务器 IP 对应关系一目了然。</p>\n<img data-img-id=\"fig-p53-09\" class=\"ds-note-img\" alt=\"图：DHCP四步交互时序图\">\n<p><span style=\"color:#dc2626\"><strong>考点浓缩：四个报文的名称与作用；各报文在 IP 层/链路层的源、目的地址如何填（发现/请求广播、提供/确认 IP 层广播但帧层可单播）；端口 67/68。</strong></span>家庭网络中通常由家用路由器兼职 DHCP 服务器。</p>\n<img data-img-id=\"fig-p53-10\" class=\"ds-note-img\" alt=\"图：DHCP四步交互总结思维导图\">",
-   "images": [
-    {
-     "imgId": "fig-p53-01",
-     "file": "images/ch04/fig-p53-01.jpg"
-    },
-    {
-     "imgId": "fig-p53-02",
-     "file": "images/ch04/fig-p53-02.jpg"
-    },
-    {
-     "imgId": "fig-p53-03",
-     "file": "images/ch04/fig-p53-03.jpg"
-    },
-    {
-     "imgId": "fig-p53-04",
-     "file": "images/ch04/fig-p53-04.jpg"
-    },
-    {
-     "imgId": "fig-p53-05",
-     "file": "images/ch04/fig-p53-05.jpg"
-    },
-    {
-     "imgId": "fig-p53-06",
-     "file": "images/ch04/fig-p53-06.jpg"
-    },
-    {
-     "imgId": "fig-p53-07",
-     "file": "images/ch04/fig-p53-07.jpg"
-    },
-    {
-     "imgId": "fig-p53-08",
-     "file": "images/ch04/fig-p53-08.jpg"
-    },
-    {
-     "imgId": "fig-p53-09",
-     "file": "images/ch04/fig-p53-09.jpg"
-    },
-    {
-     "imgId": "fig-p53-10",
-     "file": "images/ch04/fig-p53-10.jpg"
-    }
-   ]
-  },
-  {
-   "tree": [
-    "第4章 网络层",
-    "4.2 IPv4与配套协议",
-    "4.2.9_1 ICMP网际控制报文协议"
-   ],
-   "noteHtml": "<p><span style=\"font-size:20px;color:#7c3aed\"><strong>P54 4.2.9_1 ICMP网际控制报文协议（王道 4.2）</strong></span></p>\n<p><strong>ICMP（网际控制报文协议）</strong>让主机或路由器报告传输中的差错与异常。它属于<strong>网络层</strong>，ICMP 报文作为数据部分<strong>封装在 IP 数据报中传输</strong>（IP 为 ICMP 提供服务）。</p>\n<img data-img-id=\"fig-p54-01\" class=\"ds-note-img\" alt=\"图：ICMP章节封面\">\n<p>ICMP 报文分两大类：<strong>差错报告报文</strong>与<strong>询问报文</strong>。类比寄快递：包裹在中途破损、地址有误，快递小哥（路由器）要反馈给你——这是差错报告；寄件前先问一句“在吗，方便收快递吗”——这是询问报文。</p>\n<img data-img-id=\"fig-p54-02\" class=\"ds-note-img\" alt=\"图：ICMP知识框架思维导图\">\n<p>报文最前 1 字节是<strong>类型</strong>字段，标明具体分类。</p>\n<img data-img-id=\"fig-p54-03\" class=\"ds-note-img\" alt=\"图：ICMP在网络层为IP协议服务的关系图\">\n<ul>\n<li><strong>终点不可达</strong>：路由器发现目的网络不存在该主机，或目的主机交付传输层时端口 6666 无对应进程——都向源点反馈不可达。</li>\n<li><strong>时间超过</strong>：路由器转发时 TTL 减到 0，丢弃分组并告知发送方；或目的主机分片重组超时（部分分片未到齐，收到的全部丢弃并报告）。</li>\n<li><strong>参数问题</strong>：路由器检测出 IP 首部校验错误或参数不合法，丢弃并反馈。</li>\n<li><strong>改变路由（重定向）</strong>：路由器发现“发我这是绕路，下次这个网络直接发给 32.129 那台更近”，据此主机更新路由选择。</li>\n<li><strong>源点抑制</strong>：网络拥塞丢包时“求求你发慢点”——2012 年后已从标准废弃，了解即可。</li>\n</ul>\n<img data-img-id=\"fig-p54-04\" class=\"ds-note-img\" alt=\"图：时间超过差错报文场景\">\n<img data-img-id=\"fig-p54-05\" class=\"ds-note-img\" alt=\"图：源点抑制已废弃的批注\">\n<img data-img-id=\"fig-p54-06\" class=\"ds-note-img\" alt=\"图：终点不可达等其他差错情形\">\n<p><strong>询问报文</strong>（成对出现）：<strong>回送请求/回送回答</strong>（Echo Request/Reply，“在吗？回答我！”）探测连通性；<strong>时间戳请求/回答</strong>询问时间，可对表（用于系统时间自动校准）。</p>\n<img data-img-id=\"fig-p54-07\" class=\"ds-note-img\" alt=\"图：回送请求与回送回答询问报文\">\n<p><strong>典型应用 ping</strong>：底层就是回送请求/回答。终端 ping www.sina.com 的输出里：64 bytes from 38.2.127.173 是服务器回复；TTL=52 结合初始 64 可推算中间经过了 64-52=12 台路由器；time 值是往返时延 RTT（发出请求时启动计时器，收到回答时停止）。</p>\n<img data-img-id=\"fig-p54-08\" class=\"ds-note-img\" alt=\"图：ping命令测试连通性截图\">\n<img data-img-id=\"fig-p54-09\" class=\"ds-note-img\" alt=\"图：时间戳请求与回答报文\">\n<p><span style=\"color:#dc2626\"><strong>四种不应发送 ICMP 差错报告报文的情况（选择题高频）：</strong></span>① 对 ICMP 差错报文本身出错不再发（避免无限反馈）；② 对分片的所有分片，后续分片出错不再发（一个数据报只反馈一次）；③ 对具有多播地址的数据报不发（群发不针对个人）；④ 对特殊地址（如 127.0.0.1、0.0.0.0）不发——“冤有头债有主”，可源头无法追溯。</p>\n<img data-img-id=\"fig-p54-10\" class=\"ds-note-img\" alt=\"图：ICMP思维导图全貌\">\n<img data-img-id=\"fig-p54-11\" class=\"ds-note-img\" alt=\"图：不应发送ICMP差错报告的四种情况\">\n<p><span style=\"color:#7c3aed\">本协议重在记忆：差错报告与询问报文的分类考前要回顾，靠短时记忆就能拿下选择题。另一个典型应用 traceroute 见下一节。</span></p>",
-   "images": [
-    {
-     "imgId": "fig-p54-01",
-     "file": "images/ch04/fig-p54-01.jpg"
-    },
-    {
-     "imgId": "fig-p54-02",
-     "file": "images/ch04/fig-p54-02.jpg"
-    },
-    {
-     "imgId": "fig-p54-03",
-     "file": "images/ch04/fig-p54-03.jpg"
-    },
-    {
-     "imgId": "fig-p54-04",
-     "file": "images/ch04/fig-p54-04.jpg"
-    },
-    {
-     "imgId": "fig-p54-05",
-     "file": "images/ch04/fig-p54-05.jpg"
-    },
-    {
-     "imgId": "fig-p54-06",
-     "file": "images/ch04/fig-p54-06.jpg"
-    },
-    {
-     "imgId": "fig-p54-07",
-     "file": "images/ch04/fig-p54-07.jpg"
-    },
-    {
-     "imgId": "fig-p54-08",
-     "file": "images/ch04/fig-p54-08.jpg"
-    },
-    {
-     "imgId": "fig-p54-09",
-     "file": "images/ch04/fig-p54-09.jpg"
-    },
-    {
-     "imgId": "fig-p54-10",
-     "file": "images/ch04/fig-p54-10.jpg"
-    },
-    {
-     "imgId": "fig-p54-11",
-     "file": "images/ch04/fig-p54-11.jpg"
-    }
-   ]
-  },
-  {
-   "tree": [
-    "第4章 网络层",
-    "4.2 IPv4与配套协议",
-    "4.2.9_2 （选学）traceroute的实现原理"
-   ],
-   "noteHtml": "<p><span style=\"font-size:20px;color:#7c3aed\"><strong>P55 4.2.9_2 traceroute的实现原理（选学）（王道 4.2）</strong></span></p>\n<p><strong>traceroute（Windows 下为 tracert）</strong>：追踪从本机到目的主机逐跳经过的路由器。Mac/Linux 用 traceroute -I www.baidu.com（-I 指定用 ICMP 实现，不加则默认用 UDP）；Windows 直接 tracert www.baidu.com（默认 ICMP）。</p>\n<img data-img-id=\"fig-p55-01\" class=\"ds-note-img\" alt=\"图：traceroute逐跳显示13行路由器IP与延迟\">\n<p>输出共 13 行：从家用路由器内网 IP 开始，经光猫、运营商路由器，直到百度服务器——中间几跳因防火墙不回应而显示星号。细看会发现两次查询百度解析到的服务器 IP 不同：网址是逻辑地址，背后绑定多台物理服务器，按负载分配。</p>\n<img data-img-id=\"fig-p55-02\" class=\"ds-note-img\" alt=\"图：traceroute批注：同一路由器多IP与多主机\">\n<p><strong>实现原理</strong>——巧妙利用 <strong>ICMP 时间超过报文</strong>：路由器收到 TTL 减为 0 的数据报会丢弃并回送时间超过报文。于是源主机故意构造 <strong>TTL=1</strong> 的数据报：第一台路由器把 TTL 减到 0 丢弃并回报告，源主机由此得知第一跳的 IP 与往返时延；再发 <strong>TTL=2</strong> 的数据报探测第二跳……逐跳递增 TTL，即可把整条路径一跳一跳摸出来。每跳默认发 3 个探测包，所以每行有 3 个时延值。</p>\n<img data-img-id=\"fig-p55-03\" class=\"ds-note-img\" alt=\"图：TTL逐跳递增探测与时间超过报文返回原理\">\n<p><mark><strong>核心结论：ping 用回送请求/回答测试连通性；traceroute 用 TTL 递增 + ICMP 时间超过报文追踪转发路径。</strong></mark><span style=\"color:#7c3aed\">选学内容，考试记住结论即可，动手跑一遍 traceroute 印象更深。</span></p>",
-   "images": [
-    {
-     "imgId": "fig-p55-01",
-     "file": "images/ch04/fig-p55-01.jpg"
-    },
-    {
-     "imgId": "fig-p55-02",
-     "file": "images/ch04/fig-p55-02.jpg"
-    },
-    {
-     "imgId": "fig-p55-03",
-     "file": "images/ch04/fig-p55-03.jpg"
-    }
-   ]
-  },
-  {
-   "tree": [
-    "第4章 网络层",
-    "4.3 IPv6",
-    "4.3_1 IPv6地址"
-   ],
-   "noteHtml": "<p><span style=\"font-size:20px;color:#7c3aed\"><strong>P56 4.3_1 IPv6地址（王道 4.3）</strong></span></p>\n<img data-img-id=\"fig-p56-01\" class=\"ds-note-img\" alt=\"图：408大纲IPv6主要特点与IPv6地址考点\">\n<p><strong>从 IPv4 到 IPv6</strong>：IPv4（1981）32bit 共约 42 亿地址，全球 80 多亿人一人一个都不够；NAT（1994）只能缓解不能根治。IPv6（1998）地址 <strong>128bit</strong>，$2^{128} \\approx 3.4 \\times 10^{38}$ 个，平均每人可分 $4.3 \\times 10^{28}$ 个，足够万物互联时代长期使用。<span style=\"color:#7c3aed\">IPv5 曾存在过，是实验性协议，不具备推广条件。</span></p>\n<img data-img-id=\"fig-p56-02\" class=\"ds-note-img\" alt=\"图：IPv4与IPv6对比页\">\n<p><strong>冒号十六进制记法</strong>：128bit 每 16bit 一段、共 8 段，段间用冒号分隔，每段写成 4 位十六进制数，如 2001:0db8:85a3:0000:0000:8a2e:0370:7334。</p>\n<img data-img-id=\"fig-p56-03\" class=\"ds-note-img\" alt=\"图：冒号十六进制记法与点分十进制对比\">\n<p><strong>压缩规则 1</strong>：每段<strong>前导零</strong>可省（0db8 → db8、0370 → 370），段内不到 4 位即知前面省略了零。</p>\n<img data-img-id=\"fig-p56-04\" class=\"ds-note-img\" alt=\"图：去前导零压缩规则图解\">\n<p><strong>压缩规则 2</strong>：连续多段全 0 可用<strong>双冒号 ::</strong> 代替（0000:0000 → ::）。恢复时先补齐各段前导零，数出已有 32 位十六进制数中的个数，缺多少补多少段 0。</p>\n<p><span style=\"color:#dc2626\"><strong>一个地址中双冒号只能出现一次，否则无法确定每处各代表几段 0——非法。</strong></span></p>\n<img data-img-id=\"fig-p56-05\" class=\"ds-note-img\" alt=\"图：双冒号代替连续零规则\">\n<p><span style=\"color:#7c3aed\"><strong>【例题】</strong></span>（最简压缩形式）2001:0db8:0000:0000:0000:0000:0000:0001 的最简写法是？0db8 去前导零得 db8，其后直到末尾 1 之间全是 0 段，用一个 :: 代替。</p>\n$$2001{:}0db8{:}0000{:}0000{:}0000{:}0000{:}0000{:}0001 \\Rightarrow 2001{:}db8{::}1$$\n<p><span style=\"color:#dc2626\"><strong>答案：2001:db8::1（:: 只能用一次；已补前导零后其余 7 段中 5 段全 0 均并入 ::）。</strong></span>常见干扰项：出现两次 ::（语法错误）、::1 后还留 0 段（非最简）、三个冒号连写（非法）。</p>\n<img data-img-id=\"fig-p56-06\" class=\"ds-note-img\" alt=\"图：IPv6最简压缩选择题\">\n<p><strong>地址分配</strong>：与 IPv4 同思路——ICANN 逐级分配。结构 = <strong>前缀 n bit + 子网标识 + 接口标识（128-n bit）</strong>，接口标识相当于 IPv4 的主机号；IPv6 同样支持 CIDR 灵活划分子网，地址空间大还可支持更多层级。</p>\n<img data-img-id=\"fig-p56-07\" class=\"ds-note-img\" alt=\"图：IPv4地址资源分配层级回顾\">\n<img data-img-id=\"fig-p56-08\" class=\"ds-note-img\" alt=\"图：IPv6地址结构：前缀与接口标识\">\n<p><strong>即插即用（地址自动配置）</strong>：某学校获 /64 前缀块，主机接入后只需向本网任一路由器询问网络前缀，即可<strong>用自己的 MAC 地址作接口标识</strong>自行拼出全球唯一的 IPv6 地址——“出门在外，身份是自己给的”；而 DHCP 方式则是“身份是别人给的”。IPv6 大多数场景不再需要 DHCP 服务器，但安全要求高的场合仍支持 DHCP 统一管理。</p>\n<img data-img-id=\"fig-p56-09\" class=\"ds-note-img\" alt=\"图：IPv6地址分配板书：前缀64bit+接口标识64bit\">\n<p><strong>IPv6 地址分类</strong>（按二进制前缀判断，选择题考记忆）：</p>\n<ul>\n<li><strong>未指定地址</strong>：128bit 全 0（::/128），类似 IPv4 的 0.0.0.0；</li>\n<li><strong>环回地址</strong>：前 127bit 全 0 末位 1（::1/128），类似 127.0.0.1；</li>\n<li><strong>多播地址</strong>：FF00::/8（前 8bit 全 1），QQ 群号式一对多；</li>\n<li><strong>本地链路单播地址</strong>：FE80::/10，仅本局域网内部通信、不会被路由器转到其他网络；</li>\n<li><strong>全球单播地址</strong>：不属上述特殊形态的地址（如 2000::/3 起始），可全球分配。</li>\n</ul>\n<img data-img-id=\"fig-p56-10\" class=\"ds-note-img\" alt=\"图：IPv6地址分类表\">\n<p><span style=\"color:#7c3aed\"><strong>【例题】</strong></span>下列哪个是未指定地址？A. ::　B. ::1　C. 0:0:0:0:0:0:0:1 的等价压缩　D. FE80:: 开头　E. FF02:: 开头——全零即未指定。</p>\n<p><span style=\"color:#dc2626\"><strong>答案：A（:: 即 128bit 全 0）；B/C 是环回，D 是本地链路单播，E 是多播。</strong></span></p>\n<img data-img-id=\"fig-p56-11\" class=\"ds-note-img\" alt=\"图：IPv6地址分类选择题\">\n<p><strong>任播（IPv6 特有）</strong>：任播地址终点是一组计算机，但数据报<strong>只交付其中最近的一台</strong>——像在饭店喊一声“服务员”，离你最近的先应答；常用于 DNS 根服务器，主机向统一任播地址查询，自动由最近的 DNS 服务器响应。</p>\n<p>回顾：128bit、冒号十六进制、两条压缩规则（前导零、:: 仅一次）、分配与即插即用、地址分类、单播/多播/任播。</p>\n<img data-img-id=\"fig-p56-12\" class=\"ds-note-img\" alt=\"图：IPv6知识回顾思维导图\">",
-   "images": [
-    {
-     "imgId": "fig-p56-01",
-     "file": "images/ch04/fig-p56-01.jpg"
-    },
-    {
-     "imgId": "fig-p56-02",
-     "file": "images/ch04/fig-p56-02.jpg"
-    },
-    {
-     "imgId": "fig-p56-03",
-     "file": "images/ch04/fig-p56-03.jpg"
-    },
-    {
-     "imgId": "fig-p56-04",
-     "file": "images/ch04/fig-p56-04.jpg"
-    },
-    {
-     "imgId": "fig-p56-05",
-     "file": "images/ch04/fig-p56-05.jpg"
-    },
-    {
-     "imgId": "fig-p56-06",
-     "file": "images/ch04/fig-p56-06.jpg"
-    },
-    {
-     "imgId": "fig-p56-07",
-     "file": "images/ch04/fig-p56-07.jpg"
-    },
-    {
-     "imgId": "fig-p56-08",
-     "file": "images/ch04/fig-p56-08.jpg"
-    },
-    {
-     "imgId": "fig-p56-09",
-     "file": "images/ch04/fig-p56-09.jpg"
-    },
-    {
-     "imgId": "fig-p56-10",
-     "file": "images/ch04/fig-p56-10.jpg"
-    },
-    {
-     "imgId": "fig-p56-11",
-     "file": "images/ch04/fig-p56-11.jpg"
-    },
-    {
-     "imgId": "fig-p56-12",
-     "file": "images/ch04/fig-p56-12.jpg"
-    }
-   ]
-  },
-  {
-   "tree": [
-    "第4章 网络层",
-    "4.4 路由算法与路由协议",
-    "4.4.1 路由算法"
-   ],
-   "noteHtml": "<p><span style=\"font-size:20px;color:#7c3aed\"><strong>P57 4.4.1 路由算法（王道 4.4）</strong></span></p>\n<img data-img-id=\"fig-p57-01\" class=\"ds-note-img\" alt=\"图：408大纲路由算法与路由协议考点\">\n<p><strong>路由协议与路由算法的关系</strong>：路由器运行至少一种路由协议（RIP/OSPF/BGP），协议规定路由器之间<strong>如何交换必要的信息</strong>；交换来的网络实际情况作为<strong>路由算法</strong>的输入，算出最佳转发路径，最终生成<strong>路由表</strong>（此前课里都是我们手工配表，实际由算法自动得到）。</p>\n<img data-img-id=\"fig-p57-02\" class=\"ds-note-img\" alt=\"图：路由算法知识总览思维导图\">\n<img data-img-id=\"fig-p57-03\" class=\"ds-note-img\" alt=\"图：路由协议与路由算法关系流程图\">\n<p><span style=\"color:#dc2626\"><strong>路由算法的本质 = 图的最短路径问题</strong></span>：把路由器和网络视为顶点、链路视为带权边，路由协议用某种规则度量边权（如 RIP 用跳数、也可用 RTT 等）。R1~R8 连接网1~网8 的拓扑中找最短路即是一例。</p>\n<img data-img-id=\"fig-p57-04\" class=\"ds-note-img\" alt=\"图：R1~R8加权拓扑图与最短路径\">\n<p><strong>分类</strong>：<strong>静态路由算法</strong>——管理员手工配置每一条路由（此前画图训练就是充当管理员），简单但不自适应、拓扑一变就得重配，只适用小网络；<strong>动态路由算法</strong>——按流量与拓扑变化动态调整路由表，自适应。大纲要求掌握两种动态算法：<strong>距离向量路由算法</strong>（RIP 的基础）与<strong>链路状态路由算法</strong>（OSPF 的基础）；BGP 内部用的是路径向量算法（暂不深究）。</p>\n<img data-img-id=\"fig-p57-05\" class=\"ds-note-img\" alt=\"图：路由算法分类静态与动态\">\n<p><strong>距离向量路由算法</strong>——先讲故事：你想给苹果 CEO 递纸条但不认识他，于是问遍身边的 k 个熟人“你和 CEO 隔几层关系？”舍友一说隔两层、舍友二说隔六层……比较后把纸条托给“隔层最少”的舍友一。<span style=\"color:#dc2626\"><strong>你不需要知道全网拓扑，只需知道到各邻居的距离 + 各邻居到终点的距离</strong></span>——这就是距离向量思想。数学化即 Bellman-Ford 方程：</p>\n<img data-img-id=\"fig-p57-06\" class=\"ds-note-img\" alt=\"图：距离向量算法打听消息类比图\">\n$$d_{x}(\\text{net}) = \\min\\{\\, c(x,v) + d_{v}(\\text{net}) \\,\\},\\quad v \\in \\text{邻居}$$\n<p>其中 $c(x,v)$ 是 x 到邻居 v 的链路代价（RIP 规定直连为 1），$d_{v}$ 是 v 到目的网络的最短距离。多个目的网络的最短距离排成向量即为<strong>距离向量</strong>。</p>\n<img data-img-id=\"fig-p57-07\" class=\"ds-note-img\" alt=\"图：距离向量算法的Bellman-Ford描述\">\n<img data-img-id=\"fig-p57-08\" class=\"ds-note-img\" alt=\"图：各邻居距离向量计算图解\">\n<p><span style=\"color:#7c3aed\"><strong>【例题】</strong></span>（2021 真题 37）路由器 E 与邻居 A、B、C、D 的链路距离分别为 8、10、12、6；收到的距离向量：A 为（1,10,22,4,36 中的 Net1~Net4 部分）……以各邻居向量逐分量加链路距离再逐列取最小，求 E 更新后到 Net1~Net4 的距离。</p>\n$$\\text{经A：}(1{+}8,\\ 20{+}8,\\ 32{+}8,\\ 36{+}8) \\Rightarrow (9, 28, 40, 44)$$\n$$\\text{经B/C/D 逐列取最小} \\Rightarrow (9,\\ 20,\\ 28,\\ 20)$$\n<p><span style=\"color:#dc2626\"><strong>答案：E 到 Net1~Net4 的距离为 9、20、28、20（选 D）；Net1 走 A，Net2 走 A，Net3 经 B 或 C 等价，Net4 走 C。</strong></span>此题是理解距离向量算法的核心复习资料。</p>\n<img data-img-id=\"fig-p57-09\" class=\"ds-note-img\" alt=\"图：2021真题37距离向量表逐格计算\">\n<p><strong>链路状态路由算法</strong>——另一个故事：把身边所有人的人际关系网摸通摸透（谁和谁直接认识、每条关系的“代价”），掌握<strong>全部网络拓扑</strong>后自己跑<strong>迪杰斯特拉算法</strong>算最短路。难点不在算法（数据结构已学），而在<strong>怎么让每台路由器都知道全网拓扑</strong>——这正是 OSPF 要解决的问题。</p>\n<img data-img-id=\"fig-p57-10\" class=\"ds-note-img\" alt=\"图：链路状态算法人际关系类比\">\n<p><span style=\"color:#dc2626\"><strong>对比必背：距离向量 = Bellman-Ford，只知邻居、问路式；链路状态 = Dijkstra，全知拓扑、自算式。</strong></span></p>\n<img data-img-id=\"fig-p57-11\" class=\"ds-note-img\" alt=\"图：路由算法知识回顾思维导图\">",
-   "images": [
-    {
-     "imgId": "fig-p57-01",
-     "file": "images/ch04/fig-p57-01.jpg"
-    },
-    {
-     "imgId": "fig-p57-02",
-     "file": "images/ch04/fig-p57-02.jpg"
-    },
-    {
-     "imgId": "fig-p57-03",
-     "file": "images/ch04/fig-p57-03.jpg"
-    },
-    {
-     "imgId": "fig-p57-04",
-     "file": "images/ch04/fig-p57-04.jpg"
-    },
-    {
-     "imgId": "fig-p57-05",
-     "file": "images/ch04/fig-p57-05.jpg"
-    },
-    {
-     "imgId": "fig-p57-06",
-     "file": "images/ch04/fig-p57-06.jpg"
-    },
-    {
-     "imgId": "fig-p57-07",
-     "file": "images/ch04/fig-p57-07.jpg"
-    },
-    {
-     "imgId": "fig-p57-08",
-     "file": "images/ch04/fig-p57-08.jpg"
-    },
-    {
-     "imgId": "fig-p57-09",
-     "file": "images/ch04/fig-p57-09.jpg"
-    },
-    {
-     "imgId": "fig-p57-10",
-     "file": "images/ch04/fig-p57-10.jpg"
-    },
-    {
-     "imgId": "fig-p57-11",
-     "file": "images/ch04/fig-p57-11.jpg"
-    }
-   ]
-  },
-  {
-   "tree": [
-    "第4章 网络层",
-    "4.4 路由算法与路由协议",
-    "4.4.2 分层次的路由协议"
-   ],
-   "noteHtml": "<p><span style=\"font-size:20px;color:#7c3aed\"><strong>P58 4.4.2 分层次的路由协议（王道 4.4）</strong></span></p>\n<p><strong>思考题：能否让全世界路由器统一运行 RIP 或 OSPF？</strong>——不能。RIP 的距离向量维度 = 网络数，全球数以亿计的网络会让向量大到无法交换；OSPF 要求每台路由器建立全网拓扑图，数亿节点的图复杂度也无法承受。于是需要<strong>分层次的路由协议</strong>。</p>\n<img data-img-id=\"fig-p58-01\" class=\"ds-note-img\" alt=\"图：R1~R8全网运行单一协议的思考题\">\n<p><strong>自治系统（AS）</strong>：把互联网划分为多个相互独立的自治系统，如咸鱼电信、某大型企业、各大 ISP 都可构建自己的 AS。<span style=\"color:#dc2626\"><strong>AS 内部用哪种内部路由协议由该 AS 管理单位自行决定</strong></span>（咸鱼电信选 OSPF、某企业选 RIP 都行）；每个 AS 至少一台<strong>自治系统边界路由器</strong>（如 R6）与其他 AS 相连——现实中的边界路由器性能强悍、价格昂贵。</p>\n<img data-img-id=\"fig-p58-02\" class=\"ds-note-img\" alt=\"图：划分为多个自治系统与边界路由器\">\n<p>AS 之间统一使用外部路由协议 <strong>BGP-4</strong>。术语：AS 内部选路叫<strong>域内路由选择</strong>，AS 之间选路叫<strong>域间路由选择</strong>。</p>\n<img data-img-id=\"fig-p58-03\" class=\"ds-note-img\" alt=\"图：分层次路由协议与AS边界路由器批注\">\n<p><strong>AS 的几个要点</strong>：全球目前约 8 万个 AS，每个 AS 拥有向管理机构申请的<strong>全球唯一 ASN 编号</strong>（32bit）；<span style=\"color:#dc2626\"><strong>AS 之间是平级关系，不存在嵌套</strong></span>（分层只有两层）；一个 AS 通常包含一个或多个 CIDR 地址块，对外可聚合呈现——边界路由器不必关心别的 AS 内部怎么划分子网，只需按其对外暴露的地址块转发。</p>\n<p><strong>两大类协议</strong>：<strong>内部网关协议 IGP</strong>——AS 内部使用，如 RIP、OSPF（“各说各话的方言”）；<strong>外部网关协议 EGP</strong>——AS 之间使用，即 BGP（“普通话”）。早期文献“网关”即路由器。</p>\n<img data-img-id=\"fig-p58-04\" class=\"ds-note-img\" alt=\"图：IGP与EGP分类图\">\n<img data-img-id=\"fig-p58-05\" class=\"ds-note-img\" alt=\"图：分层次路由协议知识回顾思维导图\">",
-   "images": [
-    {
-     "imgId": "fig-p58-01",
-     "file": "images/ch04/fig-p58-01.jpg"
-    },
-    {
-     "imgId": "fig-p58-02",
-     "file": "images/ch04/fig-p58-02.jpg"
-    },
-    {
-     "imgId": "fig-p58-03",
-     "file": "images/ch04/fig-p58-03.jpg"
-    },
-    {
-     "imgId": "fig-p58-04",
-     "file": "images/ch04/fig-p58-04.jpg"
-    },
-    {
-     "imgId": "fig-p58-05",
-     "file": "images/ch04/fig-p58-05.jpg"
-    }
-   ]
-  },
-  {
-   "tree": [
-    "第4章 网络层",
-    "4.4 路由算法与路由协议",
-    "4.4.3_1 RIP的基本概念"
-   ],
-   "noteHtml": "<p><span style=\"font-size:20px;color:#7c3aed\"><strong>P59 4.4.3_1 RIP的基本概念（王道 4.4）</strong></span></p>\n<p><strong>RIP（路由信息协议）</strong>是应用最广泛的 IGP 之一。先回顾关系：路由器运行路由协议 → 交换信息 → 路由算法 → 路由表。</p>\n<img data-img-id=\"fig-p59-01\" class=\"ds-note-img\" alt=\"图：本节内容页RIP引出\">\n<img data-img-id=\"fig-p59-02\" class=\"ds-note-img\" alt=\"图：路由协议与路由算法关系图\">\n<p><strong>RIP 在协议栈中的位置（选择题考点）</strong>：<span style=\"color:#dc2626\"><strong>RIP 属于应用层协议，使用 UDP 传送（端口 520）</strong></span>。定义 Request 请求、Response 响应两种报文（教材少讲，作拓展了解）。</p>\n<img data-img-id=\"fig-p59-03\" class=\"ds-note-img\" alt=\"图：RIP知识总览思维导图\">\n<p><strong>RIP 的三条规定</strong>：</p>\n<ul>\n<li><strong>用跳数衡量距离</strong>：路由器到直连网络距离为 1，每经过一个路由器距离加 1（把路由器视为顶点、点与点距离为 1）；好的路由 = 跳数最少的路由。</li>\n<li><span style=\"color:#dc2626\"><strong>一条合法路径距离不超过 15，16 表示不可达</strong></span>——因此 RIP 只适用于小型 AS（若 A 到 B 隔 20 台路由器，R1 判定不可达直接丢包；大型 AS 请用 OSPF）。</li>\n<li><strong>路由表条目</strong>至少含三个字段：&lt;目的网络 N, 距离 d, 下一跳 X>。示例表中 Net1 距离 1 即直连；<span style=\"color:#dc2626\"><strong>“Net2, 16, NULL”表示不可达，收到发往 Net2 的数据报直接丢弃——16 是 RIP 的死规定，易掉坑</strong></span>；Net3 距离 2 经 R6（说明 R8 与 R6 是邻居且 R6 直连 Net3）。目的网络实际用 CIDR 前缀表示，下一跳用路由器 IP 表示。</li>\n</ul>\n<img data-img-id=\"fig-p59-04\" class=\"ds-note-img\" alt=\"图：RIP路由表示例表\">\n<p>路由表中的距离列就是该路由器的<strong>距离向量</strong>（RIP 底层即距离向量路由算法）。</p>\n<img data-img-id=\"fig-p59-05\" class=\"ds-note-img\" alt=\"图：RIP报文经UDP再经IP的封装\">\n<p><strong>路由器间如何交换信息（Who/What/When）</strong>：Who——<strong>仅和相邻路由器</strong>交换；What——交换<strong>自己的完整路由表</strong>（一个 Response 报文最多携带 25 个表项，超了拆多个）；When——<strong>每隔 30 秒</strong>周期性发送（更新报文）。可选<strong>触发更新</strong>机制：拓扑一变立即通告，加速收敛——老师比喻：定期交换像闺蜜每 30 天同步一次八卦，同步很慢；触发更新像憋不住话的闺蜜，一有消息立即广而告之。</p>\n<img data-img-id=\"fig-p59-06\" class=\"ds-note-img\" alt=\"图：路由器间交换信息Who/What/When\">\n<img data-img-id=\"fig-p59-07\" class=\"ds-note-img\" alt=\"图：RIP规定完整版\">",
-   "images": [
-    {
-     "imgId": "fig-p59-01",
-     "file": "images/ch04/fig-p59-01.jpg"
-    },
-    {
-     "imgId": "fig-p59-02",
-     "file": "images/ch04/fig-p59-02.jpg"
-    },
-    {
-     "imgId": "fig-p59-03",
-     "file": "images/ch04/fig-p59-03.jpg"
-    },
-    {
-     "imgId": "fig-p59-04",
-     "file": "images/ch04/fig-p59-04.jpg"
-    },
-    {
-     "imgId": "fig-p59-05",
-     "file": "images/ch04/fig-p59-05.jpg"
-    },
-    {
-     "imgId": "fig-p59-06",
-     "file": "images/ch04/fig-p59-06.jpg"
-    },
-    {
-     "imgId": "fig-p59-07",
-     "file": "images/ch04/fig-p59-07.jpg"
-    }
-   ]
-  },
-  {
-   "tree": [
-    "第4章 网络层",
-    "4.4 路由算法与路由协议",
-    "4.4.3_2 RIP的工作示例（从路由器启动到收敛）"
-   ],
-   "noteHtml": "<p><span style=\"font-size:20px;color:#7c3aed\"><strong>P60 4.4.3_2 RIP的工作示例：从路由器启动到收敛（王道 4.4）</strong></span></p>\n<p><strong>处理邻居 RIP 报文的规则</strong>（王道书总结）：① 先修改报文的所有项目——下一跳字段改为邻居 X，距离全部加 1；② 若原表<strong>没有</strong>目的网络 N，则添加（发现新网络）；③ 若原表<strong>有</strong> N 且下一跳就是 X，则用收到的项目替换（以最新消息为准）；④ 若原表有 N、下一跳不是 X，仅当收到的距离更小时才更新；⑤ 超过 180 秒未收到邻居 X 的更新，把经 X 的距离置 16（不可达）。</p>\n<img data-img-id=\"fig-p60-01\" class=\"ds-note-img\" alt=\"图：RIP工作过程规定页四步骤\">\n<p><strong>故事背景</strong>：咸鱼电信 AS，R1~R4 连接 Net1~Net4，R1 是边界路由器（外部互联网记为 Net0，默认路由 0.0.0.0/0 表示），AS 内使用 RIP。假设所有设备 0 时刻同时开机。</p>\n<img data-img-id=\"fig-p60-02\" class=\"ds-note-img\" alt=\"图：咸鱼电信AS拓扑与初始路由表\">\n<p><strong>0 时刻</strong>：刚开机的路由器只能探测直连网络，初始路由表只有直连项（距离 1、直接交付）；R1 额外知道 Net0（下一跳记“外部路由”）。随后各路由器立即给邻居发完整路由表；收到后先修改（距离+1、下一跳改为来信邻居）。</p>\n<p><span style=\"color:#7c3aed\"><strong>【例题】</strong></span>（报文修改与更新判断）0 时刻 R1 收到 R2 的路由表 [Net2, 1, 直接交付]、R3 的 [Net3, 1, 直接交付]。R1 如何处理？</p>\n$$\\text{R2 表项} \\Rightarrow [\\text{Net2},\\ 1{+}1,\\ \\text{R2}] = [\\text{Net2}, 2, \\text{R2}]$$\n$$\\text{R3 表项} \\Rightarrow [\\text{Net3},\\ 1{+}1,\\ \\text{R3}] = [\\text{Net3}, 2, \\text{R3}]$$\n<p>R1 检查本表：Net2、Net3 均为新网络（规则②），两条都加入路由表。</p>\n<p><span style=\"color:#dc2626\"><strong>答案：R1 新增 [Net2,2,R2] 与 [Net3,2,R3]；同理 R2 学到 Net0/Net1（经 R1 距离 2），R3 学到 Net0/1/4，R4 学到 Net3。</strong></span></p>\n<img data-img-id=\"fig-p60-03\" class=\"ds-note-img\" alt=\"图：0时刻修改邻居报文的过程\">\n<img data-img-id=\"fig-p60-04\" class=\"ds-note-img\" alt=\"图：0时刻更新完成后四台路由器路由表\">\n<p><strong>30 时刻</strong>：第二轮交换。R1 逐项对比 R2、R3 的新报文：Net0/1/2/3 各候选路径都更长或持平——不更新；唯独 R3 报文里的 Net4 是新网络 → 添加 [Net4,3,R3]。R2 新增 [Net3,2,R1]，R4 新增 [Net0,3]、[Net1,3] 等。</p>\n<img data-img-id=\"fig-p60-05\" class=\"ds-note-img\" alt=\"图：30时刻第二轮RIP报文交换\">\n<img data-img-id=\"fig-p60-06\" class=\"ds-note-img\" alt=\"图：30时刻收到报文后的更新结果\">\n<p><strong>60 时刻</strong>：第三轮交换，距离信息继续扩散——R2 从 R1 处新学到 [Net4,3,R1]，R4 从 R3 处新学到 [Net2,3,R3]；R1、R3 无变化。</p>\n<img data-img-id=\"fig-p60-07\" class=\"ds-note-img\" alt=\"图：60时刻第三轮报文交换\">\n<p><strong>90 时刻</strong>：本轮交换后<strong>没有任何路由器需要更新</strong>——因为 60 时刻 RIP 已收敛。</p>\n<img data-img-id=\"fig-p60-08\" class=\"ds-note-img\" alt=\"图：90时刻收敛判定\">\n<p><mark><strong>RIP 收敛 = 每台路由器都已知道到达本 AS 内任一网络的最短距离和下一跳；此后虽仍每 30 秒交换，但路由表不再变化。</strong></mark></p>",
-   "images": [
-    {
-     "imgId": "fig-p60-01",
-     "file": "images/ch04/fig-p60-01.jpg"
-    },
-    {
-     "imgId": "fig-p60-02",
-     "file": "images/ch04/fig-p60-02.jpg"
-    },
-    {
-     "imgId": "fig-p60-03",
-     "file": "images/ch04/fig-p60-03.jpg"
-    },
-    {
-     "imgId": "fig-p60-04",
-     "file": "images/ch04/fig-p60-04.jpg"
-    },
-    {
-     "imgId": "fig-p60-05",
-     "file": "images/ch04/fig-p60-05.jpg"
-    },
-    {
-     "imgId": "fig-p60-06",
-     "file": "images/ch04/fig-p60-06.jpg"
-    },
-    {
-     "imgId": "fig-p60-07",
-     "file": "images/ch04/fig-p60-07.jpg"
-    },
-    {
-     "imgId": "fig-p60-08",
-     "file": "images/ch04/fig-p60-08.jpg"
-    }
-   ]
-  },
-  {
-   "tree": [
-    "第4章 网络层",
-    "4.4 路由算法与路由协议",
-    "4.4.3_3 RIP的工作示例（动态适应网络拓扑变化）"
-   ],
-   "noteHtml": "<p><span style=\"font-size:20px;color:#7c3aed\"><strong>P61 4.4.3_3 RIP的工作示例：动态适应网络拓扑变化（王道 4.4）</strong></span></p>\n<p>书接上回：90 时刻收敛后，假设 <strong>100 时刻 R1 与 R4 之间新增一条链路</strong>——网络拓扑变化场景开始。</p>\n<img data-img-id=\"fig-p61-01\" class=\"ds-note-img\" alt=\"图：90时刻收敛后的路由表回顾\">\n<p><strong>120 时刻</strong>：下一轮更新，R1 与 R4 成为新邻居、互发完整路由表（其余邻居关系照旧）。收到报文照例先修改（距离+1、下一跳改来信方），再逐项判断。</p>\n<img data-img-id=\"fig-p61-02\" class=\"ds-note-img\" alt=\"图：100时刻R1与R4新增链路设定\">\n<p><span style=\"color:#7c3aed\"><strong>【例题】</strong></span>（找到更短路径的更新）120 时刻 R1 收到 R4 的报文，其中 Net4 表项修改后为 [Net4, 2, R4]；而 R1 原表为 [Net4, 3, R3]。是否更新？</p>\n$$[\\text{Net4}, 2, \\text{R4}]\\ \\text{与}\\ [\\text{Net4}, 3, \\text{R3}]：\\text{下一跳不同}$$\n$$2 \\lt 3 \\Rightarrow \\text{按规则④用更短的替换}$$\n<p><span style=\"color:#dc2626\"><strong>答案：R1 的 Net4 更新为 [Net4,2,R4]——旧网络发现了更短路径（“找到一条新路径距离更近”分支）。</strong></span>同理 R4 收 R1 报文后，Net0/1/2 更新为 [2,R1]、[2,R1]、[3,R1]，替换原经 R3 的 3/3/4。</p>\n<img data-img-id=\"fig-p61-03\" class=\"ds-note-img\" alt=\"图：120与150时刻新链路信息扩散过程\">\n<img data-img-id=\"fig-p61-04\" class=\"ds-note-img\" alt=\"图：120时刻更新判断的两种分支\">\n<p><strong>150 时刻</strong>：R2 收到 R1 的新报文，Net4 候选 [Net4,3,R1]，原表也是 [Net4,4→? 经 R1]——<strong>下一跳相同（都是 R1）而距离变了（4→3），按规则③以更新的为准替换</strong>（“继续走老路但距离有变化”分支）。上帝视角验证：以前 R2→Net4 只能 R1→R3→R4→Net4 共 4 跳；现在 R1 直连 R4，缩短为 3 跳。本轮后 RIP 再次收敛。</p>\n<img data-img-id=\"fig-p61-05\" class=\"ds-note-img\" alt=\"图：100与120时刻路由表对比及触发更新说明\">\n<p><span style=\"color:#7c3aed\">补充：RIP 默认周期更新——新链路 100 时刻就连上，但要等 120 时刻下个周期才传播。若引入触发更新（检测到拓扑变化立即向邻居发 RIP 报文、不必等 30 秒），收敛更快；本例未引入，周期更新也更符合历年真题的常见考法。</span></p>\n<p><mark><strong>两条判断分支要背熟：下一跳相同 → 无条件以最新替换；下一跳不同 → 只有距离更短才替换。</strong></mark></p>",
-   "images": [
-    {
-     "imgId": "fig-p61-01",
-     "file": "images/ch04/fig-p61-01.jpg"
-    },
-    {
-     "imgId": "fig-p61-02",
-     "file": "images/ch04/fig-p61-02.jpg"
-    },
-    {
-     "imgId": "fig-p61-03",
-     "file": "images/ch04/fig-p61-03.jpg"
-    },
-    {
-     "imgId": "fig-p61-04",
-     "file": "images/ch04/fig-p61-04.jpg"
-    },
-    {
-     "imgId": "fig-p61-05",
-     "file": "images/ch04/fig-p61-05.jpg"
-    }
-   ]
-  },
-  {
-   "tree": [
-    "第4章 网络层",
-    "4.4 路由算法与路由协议",
-    "4.4.3_4 RIP的工作示例（反映RIP的缺点）"
-   ],
-   "noteHtml": "<p><span style=\"font-size:20px;color:#7c3aed\"><strong>P62 4.4.3_4 RIP的工作示例：坏消息传得慢（王道 4.4）</strong></span></p>\n<p>书接上回：150 时刻收敛后，假设 <strong>160 时刻路由器 R2 被老鼠咬坏</strong>（故障场景）。</p>\n<img data-img-id=\"fig-p62-01\" class=\"ds-note-img\" alt=\"图：160时刻R2损坏的故障设定\">\n<p><strong>330 时刻判定不可达</strong>：R2 最后一次与 R1 联系是 150 时刻，150+180=330 秒仍无 R2 的 RIP 报文，R1 才判定老邻居不可达，把相关距离置 16。<span style=\"color:#7c3aed\">330 之前 R1、R3、R4 间仍周期交换，但表已收敛故无任何变化。</span></p>\n<p>随后“神奇又恶心”的现象：R1 误以为经 R3 或 R4 还能到 Net2（距离 4）——因为过去 R3/R4 曾发来过 [Net2,3,…]，R1 修改后得 [Net2,4,R3/R4]；R1 只听邻居的、不掌握全网拓扑，无法知道 Net2 其实已不可达。</p>\n<img data-img-id=\"fig-p62-02\" class=\"ds-note-img\" alt=\"图：330时刻R1判定R2不可达并更新路由表\">\n<p>两条注记：① <span style=\"color:#dc2626\"><strong>RIP 支持多条等价路径共存（负载均衡）</strong></span>——R1 到 Net2 走 R3、R4 距离相同，两条都写进路由表，可轮询转发（第 1 个分组给 R3、第 2 个给 R4……）；② 这条错误路由信息使转发形成<strong>环路</strong>：R1 把发往 Net2 的分组给 R3，R3 查表又踢回 R1，像踢皮球一样来回弹，<strong>每弹一次 TTL 减 1，直到 TTL=0 被丢弃</strong>。</p>\n<img data-img-id=\"fig-p62-03\" class=\"ds-note-img\" alt=\"图：等价路径负载均衡与转发环路注记\">\n<p><strong>慢收敛过程</strong>：330 时刻（恰逢更新周期）R1/R3/R4 互发表——R3 收 R1 的 [Net2,5,R1]：下一跳是 R1 且距离变大 → 以新替旧（5）；又收 R4 的 [Net2,4,R4] 更短 → 改走 R4。R4 对称地改走 R3——互相以为对方能到 Net2，“左脚踩右脚上天”。360 时刻起，<strong>每轮交换到达 Net2 的距离整体 +1</strong>（4→5→6→…），直到增至 16 才恍然大悟：不可达。</p>\n<img data-img-id=\"fig-p62-04\" class=\"ds-note-img\" alt=\"图：330与360时刻坏消息逐轮扩散\">\n<p>算笔账：360 时刻距离为 5，距 16 还需 11 轮、每轮 30 秒，即再等 330 秒 → <strong>690 时刻</strong>全网收敛，Net2 全部置 16、下一跳 NULL（无意义）。R2 早在 160 时刻就坏了，却要 530 秒后全网才确认——这就是 <mark><strong>RIP 的缺点：坏消息传播得慢（慢收敛现象）</strong></mark>。</p>\n<img data-img-id=\"fig-p62-05\" class=\"ds-note-img\" alt=\"图：690时刻终于收敛为16不可达\">\n<p><strong>RIP 缺点总结</strong>（王道书三条）：① 最大 15 跳限制网络规模，只适用于小 AS；② 路由器间交换<strong>完整路由表</strong>，网络越大开销越大；③ 故障时慢收敛（坏消息传得慢）。<span style=\"color:#7c3aed\">注：16 跳上限正是“防转发环路”的简单粗暴手段——错误距离每轮 +1，到 16 自然终止迭代。</span></p>\n<img data-img-id=\"fig-p62-06\" class=\"ds-note-img\" alt=\"图：RIP优缺点总结页\">",
-   "images": [
-    {
-     "imgId": "fig-p62-01",
-     "file": "images/ch04/fig-p62-01.jpg"
-    },
-    {
-     "imgId": "fig-p62-02",
-     "file": "images/ch04/fig-p62-02.jpg"
-    },
-    {
-     "imgId": "fig-p62-03",
-     "file": "images/ch04/fig-p62-03.jpg"
-    },
-    {
-     "imgId": "fig-p62-04",
-     "file": "images/ch04/fig-p62-04.jpg"
-    },
-    {
-     "imgId": "fig-p62-05",
-     "file": "images/ch04/fig-p62-05.jpg"
-    },
-    {
-     "imgId": "fig-p62-06",
-     "file": "images/ch04/fig-p62-06.jpg"
-    }
-   ]
-  },
-  {
-   "tree": [
-    "第4章 网络层",
-    "4.4 路由算法与路由协议",
-    "4.4.3_5 RIP的工作示例（反映RIP的优点）"
-   ],
-   "noteHtml": "<p><span style=\"font-size:20px;color:#7c3aed\"><strong>P63 4.4.3_5 RIP的工作示例：好消息传得快（王道 4.4）</strong></span></p>\n<p>书接上回：690 时刻全网确认 Net2 不可达后，假设 <strong>700 时刻 R2 修好并重新开机</strong>。</p>\n<img data-img-id=\"fig-p63-01\" class=\"ds-note-img\" alt=\"图：700时刻R2归来的开场回顾\">\n<p><strong>好消息立即到来</strong>：刚开机的 R2“又回到最初的起点”，只能探测直连的 Net2（距离 1、直接交付），随即<strong>立即</strong>把初始路由表发给邻居 R1；同时主动向 R1 发 <strong>RIP 请求报文</strong>（Request）讨要情报——R1 立即回 Response 带上完整路由表。</p>\n<img data-img-id=\"fig-p63-02\" class=\"ds-note-img\" alt=\"图：R2归来R1迅速获得好消息\">\n<p>R1 收 R2 报文修改后得 [Net2,2,R2]：原表 Net2 为 16 不可达，新消息可达且更短 → 替换；R2 收 R1 报文一次性补齐 Net0、Net1、Net3、Net4（均加 1 后为新网络而添加）。<span style=\"color:#7c3aed\">细节：R1 发来的 Net2 表项距离已是 16，“16 到顶不再 +1”，直接以 16 记录。</span>于是“重返职场”的 R2 瞬间收敛。</p>\n<p><strong>720 时刻</strong>：R1、R3、R4 按各自周期发送 RIP 报文（R2 是 700 时刻开机，下一次要到 730 时刻——<span style=\"color:#dc2626\"><strong>RIP 在每台路由器上独立计时，互不同步也不影响协议正常运行</strong></span>）。R3、R4 从 R1 的新报文得知 Net2 可达 [Net2,3,R1]，替换原来的 16——全网迅速再次收敛。</p>\n<img data-img-id=\"fig-p63-03\" class=\"ds-note-img\" alt=\"图：720时刻R1R3R4定时发送RIP报文\">\n<img data-img-id=\"fig-p63-04\" class=\"ds-note-img\" alt=\"图：好消息迅速传遍所有路由器收敛\">\n<p><strong>RIP 优点总结</strong>：① <mark><strong>好消息传播得快——发现更短路由时，更新信息很快传遍全网</strong></mark>；② 实现简单、开销小（距离向量算法逻辑不复杂）；③ 收敛过程较快（对比故障场景，本例好消息两轮内传遍）。至此 RIP 的故事完结：从 0 时刻启动收敛 → 拓扑变化 → 故障慢收敛 → 修复快收敛，一条主线涵盖 RIP 全部要点。</p>",
-   "images": [
-    {
-     "imgId": "fig-p63-01",
-     "file": "images/ch04/fig-p63-01.jpg"
-    },
-    {
-     "imgId": "fig-p63-02",
-     "file": "images/ch04/fig-p63-02.jpg"
-    },
-    {
-     "imgId": "fig-p63-03",
-     "file": "images/ch04/fig-p63-03.jpg"
-    },
-    {
-     "imgId": "fig-p63-04",
-     "file": "images/ch04/fig-p63-04.jpg"
-    }
-   ]
-  },
-  {
-   "tree": [
-    "第4章 网络层",
-    "4.4 路由算法与路由协议",
-    "4.4.4_1 OSPF的特点"
-   ],
-   "noteHtml": "<p><span style=\"font-size:20px;color:#7c3aed\"><strong>P64 4.4.4_1 OSPF的特点（王道 4.4）</strong></span></p>\n<p><strong>OSPF（开放最短路径优先）</strong>：Open 指不被任何厂商私有（像开源软件），最短路径优先指底层用<strong>迪杰斯特拉算法</strong>求总代价最低的路径——即<strong>链路状态路由算法</strong>的协议实现。</p>\n<img data-img-id=\"fig-p64-01\" class=\"ds-note-img\" alt=\"图：OSPF章节开篇\">\n<p><strong>协议栈位置（考点）</strong>：<span style=\"color:#dc2626\"><strong>OSPF 属于网络层，直接使用 IP 协议提供服务——IP 首部协议字段 = 89</strong></span>。OSPF 的 PDU 称 OSPF 分组，首部 Type 字段区分五种分组类型（Hello 问候、DD 数据库描述、LSR 链路状态请求、LSU 链路状态更新、LSAck 链路状态确认，详见下下节）。</p>\n<img data-img-id=\"fig-p64-02\" class=\"ds-note-img\" alt=\"图：OSPF在协议栈中的位置与封装\">\n<p><strong>大致原理</strong>（咸鱼电信 AS：R1~R6 连 Net0~Net6）：每台路由器开机即可独立探测“我的邻居有谁、到各邻居的代价”——这串信息逻辑上就是一个单链表，OSPF 把它定义为 <strong>LSA（链路状态通告）</strong>；每台路由器探测自己直连的所有链路状态信息后，用<strong>洪泛法（flooding）</strong>发给 AS 内所有路由器。把所有路由器的 LSA 拼起来 = 带权有向图的<strong>邻接表</strong>，每台路由器据此建立全网拓扑，再各自跑 Dijkstra。</p>\n<img data-img-id=\"fig-p64-03\" class=\"ds-note-img\" alt=\"图：OSPF大致原理与邻接表构建\">\n<p><strong>What/How/When 三问</strong>：What——说与自己直连的<strong>所有链路状态</strong>；How——洪泛法一传十十传百，<span style=\"color:#dc2626\"><strong>收到洪泛信息的路由器从除入口外的所有出口转发（不可回流），且重复收到的信息不再二次转发</strong></span>（这两条防止洪泛无休无止）；When——<strong>只要探测到链路状态变化就立即洪泛</strong>，因此 OSPF 不存在 RIP“坏消息传得慢”的问题——好消息坏消息都第一时间广而告之。</p>\n<img data-img-id=\"fig-p64-04\" class=\"ds-note-img\" alt=\"图：OSPF主要特点What/How/When\">\n<p><strong>其他特点</strong>：</p>\n<ul>\n<li>链路代价由 AS 自定规则；默认 <strong>cost = 参考带宽 100Mbps ÷ 接口带宽</strong>（代价 1 即 100M 链路、代价 2 即 50M）。路由器→直连网络方向边有权值，<span style=\"color:#dc2626\"><strong>直连网络→路由器方向边权值视为 0</strong></span>（如 R1 到 Net2 总代价 3+1=4）；两路由器间无向边默认两方向同权。</li>\n<li>支持<strong>多条等价路径</strong>：R3 到 Net6 走上路 1+4+3=8、走下路 3+2+3=8，两条都保留，可轮流转发实现<strong>负载均衡</strong>。</li>\n<li>OSPF 分组具有<strong>鉴别功能</strong>：防黑客潜入机房接“黑路由”伪造链路信息洪泛、防感染病毒的路由器篡改洪泛分组，仅在可信赖的路由器间交换正确的链路状态信息。</li>\n<li>每条链路状态信息带 <strong>32bit 序号</strong>（版本号），<strong>序号越大越新</strong>——重复收到时据此决定取舍。</li>\n<li>支持<strong>可变长子网划分与 CIDR</strong>。</li>\n</ul>\n<img data-img-id=\"fig-p64-05\" class=\"ds-note-img\" alt=\"图：链路代价计算与示例\">\n<img data-img-id=\"fig-p64-06\" class=\"ds-note-img\" alt=\"图：OSPF分组鉴别功能防攻击\">\n<img data-img-id=\"fig-p64-07\" class=\"ds-note-img\" alt=\"图：链路状态32位序号示例\">\n<p>回顾要点：网络层协议字段 89、链路状态算法+Dijkstra、洪泛法、灵活代价、等价多路径、分组鉴别、32 位序号、支持 CIDR。</p>\n<img data-img-id=\"fig-p64-08\" class=\"ds-note-img\" alt=\"图：OSPF知识回顾思维导图\">",
-   "images": [
-    {
-     "imgId": "fig-p64-01",
-     "file": "images/ch04/fig-p64-01.jpg"
-    },
-    {
-     "imgId": "fig-p64-02",
-     "file": "images/ch04/fig-p64-02.jpg"
-    },
-    {
-     "imgId": "fig-p64-03",
-     "file": "images/ch04/fig-p64-03.jpg"
-    },
-    {
-     "imgId": "fig-p64-04",
-     "file": "images/ch04/fig-p64-04.jpg"
-    },
-    {
-     "imgId": "fig-p64-05",
-     "file": "images/ch04/fig-p64-05.jpg"
-    },
-    {
-     "imgId": "fig-p64-06",
-     "file": "images/ch04/fig-p64-06.jpg"
-    },
-    {
-     "imgId": "fig-p64-07",
-     "file": "images/ch04/fig-p64-07.jpg"
-    },
-    {
-     "imgId": "fig-p64-08",
-     "file": "images/ch04/fig-p64-08.jpg"
-    }
-   ]
-  },
-  {
-   "tree": [
-    "第4章 网络层",
-    "4.4 路由算法与路由协议",
-    "4.4.4_2 OSPF的基本工作原理"
-   ],
-   "noteHtml": "<p><span style=\"font-size:20px;color:#7c3aed\"><strong>P65 4.4.4_2 OSPF的基本工作原理（王道 4.4）</strong></span></p>\n<p>各路由器把自己的 LSA 洪泛出去，大家都能收集到所有 LSA——整合起来就是<strong>链路状态数据库 LSDB</strong>（本质上就是全网拓扑的邻接表存储）。</p>\n<img data-img-id=\"fig-p65-01\" class=\"ds-note-img\" alt=\"图：洪泛构建LSDB与R1运行Dijkstra结果\">\n<p><strong>三步工作流程</strong>：① 洪泛链路状态 → 各自构建统一 LSDB；② 每个<strong>独立</strong>运行 Dijkstra 算出最短路径（R1 到 Net0~Net6 的 cost 分别为 2、1、4、…）；③ 依结果构造<strong>路由表</strong>。</p>\n<p>OSPF 路由表三项：&lt;目的网络, 下一跳, 距离>。<span style=\"color:#dc2626\"><strong>虽然 Dijkstra 算出了完整路径，但路由表只存下一跳，不存完整路径</strong></span>——R1 到 Net6 有 R3→R5→R6 与 R3→R4→R6 两条等价路（各 cost 9），无论走哪条下一跳都是 R3，R1 只需把分组丢给 R3。</p>\n<img data-img-id=\"fig-p65-02\" class=\"ds-note-img\" alt=\"图：R1根据Dijkstra结果构造路由表\">\n<p>拓扑变化 → 相邻路由器探测到 → 立即再洪泛 → 全网 LSDB 更新 → <strong>重新运行 Dijkstra 刷新路由表</strong>。<span style=\"color:#7c3aed\">课程用的是改进版 Dijkstra：能找出多条等价最短路径（数据结构课的基础版只找一条）。</span></p>\n<p><strong>为什么要划分区域</strong>：公有云厂商的 AS 可能包含 5~10 万台路由器——统一 LSDB 太庞大、洪泛消息量爆炸、Dijkstra 开销也大。OSPF 支持把 AS 再划分为若干<strong>区域（Area，32bit 区域标识符）</strong>：<span style=\"color:#dc2626\"><strong>洪泛范围被限制在区域内部</strong></span>，区域内部路由器只需维护本区域的 LSDB——通信量减小、LSDB 变小、算法效率有保障。</p>\n<img data-img-id=\"fig-p65-03\" class=\"ds-note-img\" alt=\"图：OSPF区域划分示意\">\n<p><strong>区域规则</strong>：每个 AS 只有<strong>一个主干区域（Area 0，backbone 骨干区域）</strong>，负责连通其他所有非主干区域；每个非主干区域至少一台 ABR 与主干直接相连（非主干区域不许挂在非主干下面）。区域划分越多主干压力越大，现实大 AS 常划 30~50 个普通区域。</p>\n<img data-img-id=\"fig-p65-04\" class=\"ds-note-img\" alt=\"图：主干区域与非主干区域规则\">\n<p><strong>三类路由器</strong>：<strong>ASBR</strong>（自治系统边界路由器，如 R6）——与其他 AS 相连，可设多台；<strong>ABR</strong>（区域边界路由器，如 R3/R4/R7）——脚踏两只船，既要懂本区域又要懂主干区域，LSDB 更大；<strong>区域内部路由器</strong>（如 R1/R2/R5/R8/R9）——只管本区域，跨区域流量先交给本区域 ABR。</p>\n<img data-img-id=\"fig-p65-05\" class=\"ds-note-img\" alt=\"图：ASBR、ABR与区域内部路由器\">\n<p>回顾：① 洪泛构建 LSDB ② 运行 Dijkstra ③ 生成路由表；区域划分降低洪泛压力、让 LSDB 变小。</p>\n<img data-img-id=\"fig-p65-06\" class=\"ds-note-img\" alt=\"图：OSPF工作原理回顾思维导图\">\n<p><span style=\"color:#7c3aed\">易混术语辨析（2014 真题出现过 LSI）：<strong>LSDB</strong> 是整本书、<strong>LSA</strong> 是书中的某个章节（OSPF 定义的数据结构）、<strong>LSI</strong>（链路状态信息）泛指书的内容——某条边的信息、某段链表、整个 LSDB 都可叫 LSI。</span></p>\n<img data-img-id=\"fig-p65-07\" class=\"ds-note-img\" alt=\"图：LSA、LSI、LSDB易混术语辨析\">\n<p>拓展：更完整的 LSDB 还包含各网络结点出发的边——<strong>net→路由器方向的边权值记为 0</strong>（如 Net1→R1 权 0）；转发计算主要用到路由器出发的那部分邻接表。</p>\n<img data-img-id=\"fig-p65-08\" class=\"ds-note-img\" alt=\"图：LSDB更完整的样子与书的类比\">",
-   "images": [
-    {
-     "imgId": "fig-p65-01",
-     "file": "images/ch04/fig-p65-01.jpg"
-    },
-    {
-     "imgId": "fig-p65-02",
-     "file": "images/ch04/fig-p65-02.jpg"
-    },
-    {
-     "imgId": "fig-p65-03",
-     "file": "images/ch04/fig-p65-03.jpg"
-    },
-    {
-     "imgId": "fig-p65-04",
-     "file": "images/ch04/fig-p65-04.jpg"
-    },
-    {
-     "imgId": "fig-p65-05",
-     "file": "images/ch04/fig-p65-05.jpg"
-    },
-    {
-     "imgId": "fig-p65-06",
-     "file": "images/ch04/fig-p65-06.jpg"
-    },
-    {
-     "imgId": "fig-p65-07",
-     "file": "images/ch04/fig-p65-07.jpg"
-    },
-    {
-     "imgId": "fig-p65-08",
-     "file": "images/ch04/fig-p65-08.jpg"
-    }
-   ]
-  },
-  {
-   "tree": [
-    "第4章 网络层",
-    "4.4 路由算法与路由协议",
-    "4.4.4_3 OSPF的分组类型"
-   ],
-   "noteHtml": "<p><span style=\"font-size:20px;color:#7c3aed\"><strong>P66 4.4.4_3 OSPF的分组类型（王道 4.4）</strong></span></p>\n<p>OSPF 首部 Type 字段标明五种分组类型；先备好术语：LSA 是每台路由器描述自身直连链路的数据结构，头部（LSA Header）记录建立者与序号；LSDB 由所有 LSA 组成。</p>\n<img data-img-id=\"fig-p66-01\" class=\"ds-note-img\" alt=\"图：五种OSPF分组类型总览与封装\">\n<p>老师把邻居同步 LSDB 的过程比作<strong>新同桌互抄作业</strong>：</p>\n<ul>\n<li><strong>Type 1 Hello 问候分组</strong>：每隔 <strong>10 秒</strong>向直连邻居发一次，定期“签到打卡”维持邻居关系；<span style=\"color:#dc2626\"><strong>超过 40 秒未收到邻居 Hello 即判定其不可达</strong></span>，LSDB 随之更新并再次洪泛通告。新链路两端的 Hello 交互还能确认新邻居关系及链路代价。</li>\n<li><strong>Type 2 DD 数据库描述分组</strong>：邻居关系建立时，互相通报<strong>自己 LSDB 的摘要</strong>（即各 LSA 的头信息）——相当于告诉同桌“我会做第 1、3、4、5、6 题”。</li>\n<li><strong>Type 3 LSR 链路状态请求分组</strong>：对比对方的摘要后，把自己缺的那部分向对方请求（借答案）。</li>\n<li><strong>Type 4 LSU 链路状态更新分组</strong>：把对方请求的 LSA <strong>完整信息</strong>发过去（真正递上答案）——<strong>最核心的分组类型</strong>。</li>\n<li><strong>Type 5 LSAck 链路状态确认分组</strong>：收到 LSU 后回确认（“你给我的题都抄完了，谢谢你”）——只携带已收到的 LSA 头信息，保证 LSU 传输可靠（超时未确认可重发）。</li>\n</ul>\n<img data-img-id=\"fig-p66-02\" class=\"ds-note-img\" alt=\"图：Hello问候分组10秒与40秒机制\">\n<img data-img-id=\"fig-p66-03\" class=\"ds-note-img\" alt=\"图：DD数据库描述分组交换摘要\">\n<img data-img-id=\"fig-p66-04\" class=\"ds-note-img\" alt=\"图：LSR链路状态请求分组\">\n<img data-img-id=\"fig-p66-05\" class=\"ds-note-img\" alt=\"图：LSU链路状态更新分组携带完整LSA\">\n<img data-img-id=\"fig-p66-06\" class=\"ds-note-img\" alt=\"图：LSAck链路状态确认分组\">\n<p><strong>LSU 引发全网洪泛</strong>：路由器收到携带新链路状态的 LSU 时（如 R2 入网后 R1 转来 R2 的 LSA），要继续洪泛给其他邻居，全网 LSDB 迅速统一；<span style=\"color:#dc2626\"><strong>即便重复收到同一 LSU（从不同邻居），也要向发送方回 LSAck</strong></span>——既保证洪泛可靠，又使洪泛不会无休无止。</p>\n<img data-img-id=\"fig-p66-07\" class=\"ds-note-img\" alt=\"图：LSU全网洪泛与重复确认\">\n<p><span style=\"color:#7c3aed\">细节：示意图中 DD 分组画了两次，是因为 IP 分组长度有限，摘要太多时要拆成多个 DD 发送。</span></p>",
-   "images": [
-    {
-     "imgId": "fig-p66-01",
-     "file": "images/ch04/fig-p66-01.jpg"
-    },
-    {
-     "imgId": "fig-p66-02",
-     "file": "images/ch04/fig-p66-02.jpg"
-    },
-    {
-     "imgId": "fig-p66-03",
-     "file": "images/ch04/fig-p66-03.jpg"
-    },
-    {
-     "imgId": "fig-p66-04",
-     "file": "images/ch04/fig-p66-04.jpg"
-    },
-    {
-     "imgId": "fig-p66-05",
-     "file": "images/ch04/fig-p66-05.jpg"
-    },
-    {
-     "imgId": "fig-p66-06",
-     "file": "images/ch04/fig-p66-06.jpg"
-    },
-    {
-     "imgId": "fig-p66-07",
-     "file": "images/ch04/fig-p66-07.jpg"
-    }
-   ]
-  },
-  {
-   "tree": [
-    "第4章 网络层",
-    "4.4 路由算法与路由协议",
-    "4.4.5_1 BGP的特点、相关概念"
-   ],
-   "noteHtml": "<p><span style=\"font-size:20px;color:#7c3aed\"><strong>P67 4.4.5_1 BGP的特点、相关概念（王道 4.4）</strong></span></p>\n<p>回顾分类：<strong>内部网关协议 IGP</strong>（RIP、OSPF，AS 内部路由选择）与<strong>外部网关协议 EGP</strong>（本节的 <strong>BGP</strong>，AS 之间交换路由信息并实现路由选择）。全球约 8 万个 AS，AS 间靠边界路由器互连并运行 BGP。</p>\n<img data-img-id=\"fig-p67-01\" class=\"ds-note-img\" alt=\"图：BGP特点与相关概念要点页\">\n<p><strong>BGP 四大特点</strong>：</p>\n<ul>\n<li><span style=\"color:#dc2626\"><strong>力求找到“比较好的”路由而非最佳路由</strong></span>：AS 内几百上千节点跑 Dijkstra 找最佳可行；全球数亿节点算最佳开销巨大，BGP“做到 80 分就行”。</li>\n<li>AS 间路由选择须考虑<strong>政治、安全、经济因素</strong>：如途经国链路再短也不走（防窃听）、收费高的 AS 少走（省成本）。</li>\n<li>采用<strong>路径向量路由算法</strong>：通告路由信息时不仅告知目的地，还告知<strong>到达目的网络的完整路径</strong>（如到网络 X 要经过 [AS2, AS3, AS5]）——每个 AS 有全球唯一 32bit 的 ASN，路径向量即 ASN 序列。</li>\n<li><span style=\"color:#dc2626\"><strong>BGP 属于应用层协议，基于 TCP（端口 179）</strong></span>；运行 BGP 的路由器因此包含传输层与应用层功能（普通路由器只到网络层）。</li>\n</ul>\n<img data-img-id=\"fig-p67-02\" class=\"ds-note-img\" alt=\"图：BGP特点一与二：较好路由和政治安全经济\">\n<img data-img-id=\"fig-p67-03\" class=\"ds-note-img\" alt=\"图：路径向量路由算法与ASN\">\n<img data-img-id=\"fig-p67-04\" class=\"ds-note-img\" alt=\"图：BGP基于TCP的封装\">\n<p><strong>两个概念</strong>：两台运行 BGP 的路由器要先建立 TCP 连接，再建立 BGP 会话，然后才能传 BGP 报文——建立会话的两台路由器互称 <strong>BGP 对等方（BGP 邻居）</strong>。</p>\n<ul>\n<li><strong>eBGP 会话</strong>：两个 AS 的<strong>直连边界路由器</strong>之间长期保持的会话（物理直连）。</li>\n<li><strong>iBGP 会话</strong>：AS 内部 BGP 路由器两两保持的会话，<span style=\"color:#dc2626\"><strong>必须全连通（Full-Mesh，N 台路由器 N(N-1)/2 条）</strong></span>；基于 TCP 逻辑连接即可，<strong>不要求物理直连</strong>（R2 与 R5 无线路也可建立）。</li>\n</ul>\n<img data-img-id=\"fig-p67-05\" class=\"ds-note-img\" alt=\"图：AS边界路由器既运行IGP又运行BGP\">\n<img data-img-id=\"fig-p67-06\" class=\"ds-note-img\" alt=\"图：eBGP与iBGP两类会话全连通拓扑\">\n<p><span style=\"color:#7c3aed\">哪些路由器要跑 BGP：AS 边界路由器必须运行；AS 内部只有少部分核心路由器需要（现实中如此）。为便于理解，课程简化为图中所有路由器都同时运行内部网关协议与 BGP。</span>记忆梗：外向的“e 人”对陌生人也热络——eBGP 是跨 AS 会话；i 人只跟熟人说话——iBGP 是 AS 内部会话。</p>\n<img data-img-id=\"fig-p67-07\" class=\"ds-note-img\" alt=\"图：BGP要点总结完整版\">",
-   "images": [
-    {
-     "imgId": "fig-p67-01",
-     "file": "images/ch04/fig-p67-01.jpg"
-    },
-    {
-     "imgId": "fig-p67-02",
-     "file": "images/ch04/fig-p67-02.jpg"
-    },
-    {
-     "imgId": "fig-p67-03",
-     "file": "images/ch04/fig-p67-03.jpg"
-    },
-    {
-     "imgId": "fig-p67-04",
-     "file": "images/ch04/fig-p67-04.jpg"
-    },
-    {
-     "imgId": "fig-p67-05",
-     "file": "images/ch04/fig-p67-05.jpg"
-    },
-    {
-     "imgId": "fig-p67-06",
-     "file": "images/ch04/fig-p67-06.jpg"
-    },
-    {
-     "imgId": "fig-p67-07",
-     "file": "images/ch04/fig-p67-07.jpg"
-    }
-   ]
-  },
-  {
-   "tree": [
-    "第4章 网络层",
-    "4.4 路由算法与路由协议",
-    "4.4.5_2 BGP路由信息&工作原理"
-   ],
-   "noteHtml": "<p><span style=\"font-size:20px;color:#7c3aed\"><strong>P68 4.4.5_2 BGP路由信息与工作原理（王道 4.4）</strong></span></p>\n<p><strong>BGP 路由信息格式</strong>：<strong>CIDR 前缀 + BGP 属性</strong>。CIDR 前缀指向可达的目的网络 X；属性又分 <strong>AS-PATH</strong>（自治系统路径，ASN 序列）与 <strong>NEXT-HOP</strong>（下一跳）。一条路由信息即 [X, AS-PATH, NEXT-HOP]。</p>\n<img data-img-id=\"fig-p68-01\" class=\"ds-note-img\" alt=\"图：BGP路由信息格式要点总结\">\n<p><strong>逐层传播过程</strong>（AS1 含网络 X，边界路由器 R1）：R1 经 eBGP 会话告诉 AS2 的 R2：[X, AS1, R1]——<span style=\"color:#dc2626\"><strong>eBGP 发送前把下一跳修改为发送方路由器自身</strong></span>。</p>\n<img data-img-id=\"fig-p68-02\" class=\"ds-note-img\" alt=\"图：eBGP与iBGP传递路由信息拓扑\">\n<p>R2 经 iBGP 会话把该路由信息原样分发给 AS2 内的 R3、R4、R5——<strong>iBGP 默认不修改下一跳</strong>（谢希仁教材与 RFC 标准均如此；路由表里 R3/R4/R5 到 X 的“逻辑出口”就是告诉自己这条信息的 R2）。</p>\n<p><strong>R4 的三步处理</strong>（BGP 工作原理核心）：① 从 iBGP 得知 [X, AS1, R1]——到 X 要出本 AS 交给 R2 转发；② 运行<strong>内部网关协议</strong>（如 OSPF）计算从 R4 到出口 R2 的最佳路径，确定<span style=\"color:#dc2626\"><strong\">实际下一跳是 R3</strong></span>（R4 与 R2 不直连）；③ 在路由转发表中新增一行：网络前缀 X → 下一跳 R3。</p>\n<img data-img-id=\"fig-p68-03\" class=\"ds-note-img\" alt=\"图：R4处理BGP路由信息的三步\">\n<p>R4 再经 eBGP 告诉 AS3 的 R6：[X, [AS2, AS1], R4]——路径向量追加自己 AS，下一跳改为发送方 R4。R6 转发表加一行 X→R4。若 AS3 内还有 R7、R8，R6 会经 iBGP 同步给它们，原理相同。</p>\n<img data-img-id=\"fig-p68-04\" class=\"ds-note-img\" alt=\"图：R6视角的路径向量AS2AS1\">\n<p><strong>NEXT-HOP 细节</strong>：eBGP 发送的下一跳 = 发送方路由器 IP；iBGP 默认不修改（官方标准），但 <span style=\"color:#7c3aed\">2024 真题 47 第 5 小问（史上首考 BGP）中，厂商实现把 iBGP 下一跳改为了发送方 IP——两种标准现实中都有应用，做题留意题意，不影响协议工作（无论指向谁，路由器都要先找到去出口 R2 的路）。</span></p>\n<img data-img-id=\"fig-p68-05\" class=\"ds-note-img\" alt=\"图：AS-PATH与NEXT-HOP属性详解\">\n<p><strong>关键规则</strong>：<span style=\"color:#dc2626\"><strong>从 iBGP 学到的路由信息不能再通过 iBGP 传给其他 iBGP 邻居</strong></span>（防环路、防大体积路由信息在 AS 内兜圈浪费带宽）——正因如此，AS 内每台路由器都要直接从边界路由器获取信息，iBGP 才必须全连通。</p>\n<img data-img-id=\"fig-p68-06\" class=\"ds-note-img\" alt=\"图：BGP要点总结与关键规则\">",
-   "images": [
-    {
-     "imgId": "fig-p68-01",
-     "file": "images/ch04/fig-p68-01.jpg"
-    },
-    {
-     "imgId": "fig-p68-02",
-     "file": "images/ch04/fig-p68-02.jpg"
-    },
-    {
-     "imgId": "fig-p68-03",
-     "file": "images/ch04/fig-p68-03.jpg"
-    },
-    {
-     "imgId": "fig-p68-04",
-     "file": "images/ch04/fig-p68-04.jpg"
-    },
-    {
-     "imgId": "fig-p68-05",
-     "file": "images/ch04/fig-p68-05.jpg"
-    },
-    {
-     "imgId": "fig-p68-06",
-     "file": "images/ch04/fig-p68-06.jpg"
-    }
-   ]
-  },
-  {
-   "tree": [
-    "第4章 网络层",
-    "4.4 路由算法与路由协议",
-    "4.4.5_3 BGP路由选择"
-   ],
-   "noteHtml": "<p><span style=\"font-size:20px;color:#7c3aed\"><strong>P69 4.4.5_3 BGP路由选择（王道 4.4）</strong></span></p>\n<p><strong>BGP 路由选择</strong>：目的网络在外部 AS 且有多条路径可达时，选哪条走？四条规则<strong>依次递补</strong>——一不行用二、二不行用三、三不行用四。</p>\n<img data-img-id=\"fig-p69-01\" class=\"ds-note-img\" alt=\"图：规则一本地偏好值最高\">\n<p><strong>规则①本地偏好值最高</strong>：由本 AS 管理员手工设置（相当于优先级，综合考虑成本、安全）。AS1 到网络 X 有上路 [AS2,AS3,AS5] 与下路 [AS4,AS5]：若 AS2 收费更低，管理员就给上路更高本地偏好——除非上路故障才走下路。设置本地偏好能直接分出胜负时就不用看后面。</p>\n<img data-img-id=\"fig-p69-02\" class=\"ds-note-img\" alt=\"图：规则二AS跳数最少\">\n<p><strong>规则②AS 跳数最少</strong>（无本地偏好或都相同时）：[AS4,AS5]（2 跳）优于 [AS2,AS3,AS5]（3 跳），走上路。<span style=\"color:#dc2626\"><strong>AS 跳数最少 ≠ 路由器跳数最少</strong></span>——AS4 内部若串着很多路由器，总路由器跳数反而更多；这也印证了 BGP“只求较好不求最佳”。</p>\n<img data-img-id=\"fig-p69-03\" class=\"ds-note-img\" alt=\"图：规则三热土豆路由算法\">\n<p><strong>规则③热土豆路由算法</strong>（本地偏好与 AS 跳数都打平时）：理念“烫手的土豆尽快脱手”——借助内部网关协议，选让 IP 分组以<strong>最小代价离开本 AS</strong> 的那条路。RIP 度量跳数：上路 2 跳出界、下路 3 跳出界 → 走上路；OSPF 度量总代价：上路代价 6、下路代价 2+3=5 → 走下路（哪怕路由器跳数更多）。核心是“尽快把分组丢出去，出了本 AS 就不归我管”。</p>\n<img data-img-id=\"fig-p69-04\" class=\"ds-note-img\" alt=\"图：热土豆算法基于OSPF的示例\">\n<img data-img-id=\"fig-p69-05\" class=\"ds-note-img\" alt=\"图：规则四选BGP标识符最小的路由器\">\n<p><strong>规则④选 BGP 标识符（BGP ID）最小的路由器</strong>：每台 BGP 路由器有唯一 32bit 标识符（常取各接口中更大的 IP），建立会话时互相告知。仍打平（如 OSPF 代价都为 5）时，采信 BGP ID 更小的那台传来的路由——6.6.6.1 优于 6.6.6.2，理念“听老员工的”。ID 全局唯一，规则④一定能分出胜负。</p>\n<img data-img-id=\"fig-p69-06\" class=\"ds-note-img\" alt=\"图：BGP路由选择四条规则总结\">\n<p><span style=\"color:#7c3aed\">注意：目的网络在本 AS 内部时不走这套规则，直接用 RIP/OSPF 找最佳即可；四条规则针对“外部目的网络 + 多条候选路径”。</span></p>",
-   "images": [
-    {
-     "imgId": "fig-p69-01",
-     "file": "images/ch04/fig-p69-01.jpg"
-    },
-    {
-     "imgId": "fig-p69-02",
-     "file": "images/ch04/fig-p69-02.jpg"
-    },
-    {
-     "imgId": "fig-p69-03",
-     "file": "images/ch04/fig-p69-03.jpg"
-    },
-    {
-     "imgId": "fig-p69-04",
-     "file": "images/ch04/fig-p69-04.jpg"
-    },
-    {
-     "imgId": "fig-p69-05",
-     "file": "images/ch04/fig-p69-05.jpg"
-    },
-    {
-     "imgId": "fig-p69-06",
-     "file": "images/ch04/fig-p69-06.jpg"
-    }
-   ]
-  },
-  {
-   "tree": [
-    "第4章 网络层",
-    "4.4 路由算法与路由协议",
-    "4.4.5_4 BGP四种报文"
-   ],
-   "noteHtml": "<p><span style=\"font-size:20px;color:#7c3aed\"><strong>P70 4.4.5_4 BGP四种报文（王道 4.4）</strong></span></p>\n<p>BGP 定义四种报文，只需了解各自作用与使用时机：</p>\n<ul>\n<li><strong>OPEN 打开报文</strong>：与相邻 BGP 对等方<strong>建立 BGP 会话</strong>、通信初始化。流程：两路由器先建立 <strong>TCP 连接</strong> → 一方发 OPEN → 对方回 KEEPALIVE 充当确认（类似 ACK）→ eBGP/iBGP 会话建立完成。</li>\n<li><strong>KEEPALIVE 保活报文</strong>：除回复 OPEN 外，还要<strong>周期性发送</strong>（如每 60 秒一次）通知邻居“我还活着”；<span style=\"color:#dc2626\"><strong>超过 180 秒（3 倍周期）未收到对方保活报文，判定会话故障并结束 BGP 会话</strong></span>。</li>\n<li><strong>NOTIFICATION 通知报文</strong>：检测到错误（如对方报文首部参数有误）时报告错误，并<strong>立即关闭 BGP 会话</strong>。</li>\n<li><strong>UPDATE 更新报文</strong>（最重磅）：用于<strong>通告新增路由信息或撤销路由信息</strong>——此前“R1 给 R2 发送 BGP 路由信息”用的正是 UPDATE；网络 X 不可达时的撤销也由它完成。</li>\n</ul>\n<img data-img-id=\"fig-p70-01\" class=\"ds-note-img\" alt=\"图：BGP四种报文总览与TCP封装\">\n<p>结合拓扑：AS1 与 AS2 之间新增路由 [X, AS1, R1] 时，经 eBGP、iBGP 会话传播的就是 UPDATE 报文。</p>\n<img data-img-id=\"fig-p70-02\" class=\"ds-note-img\" alt=\"图：UPDATE报文在eBGP与iBGP间传播示例\">\n<p><mark><strong>一句话记忆：OPEN 建会话、KEEPALIVE 维持会话、NOTIFICATION 报错并关闭会话、UPDATE 传路由（新增/撤销）。</strong></mark></p>\n<img data-img-id=\"fig-p70-03\" class=\"ds-note-img\" alt=\"图：BGP报文功能总结\">",
-   "images": [
-    {
-     "imgId": "fig-p70-01",
-     "file": "images/ch04/fig-p70-01.jpg"
-    },
-    {
-     "imgId": "fig-p70-02",
-     "file": "images/ch04/fig-p70-02.jpg"
-    },
-    {
-     "imgId": "fig-p70-03",
-     "file": "images/ch04/fig-p70-03.jpg"
-    }
-   ]
-  },
-  {
-   "tree": [
-    "第4章 网络层",
-    "4.5 IP多播",
-    "4.5 IP多播"
-   ],
-   "noteHtml": "<p><span style=\"font-size:20px;color:#7c3aed\"><strong>P71 4.5 IP多播（王道 4.5）</strong></span></p>\n<p><strong>IP 多播（组播）用 D 类地址实现</strong>：前 4bit 为 1110，点分十进制范围 <strong>224.0.0.0 ~ 239.255.255.255</strong>。类比：<span style=\"color:#dc2626\"><strong>多播地址 ≈ QQ 群号，单播地址 ≈ 个人 QQ 号</strong></span>——一台主机可加入某个多播地址（进群），也可绑定多个（进多个群）；多播地址不能分配给某一台特定主机。</p>\n<img data-img-id=\"fig-p71-01\" class=\"ds-note-img\" alt=\"图：IP多播概念与最初分类方案\">\n<p><strong>多播的价值</strong>：90 台主机收看同一直播——单播要服务器重复发送 90 份；多播只发 1 份：90 台主机绑定同一多播地址（如 224.0.0.1），服务器构建目的地址为 224.0.0.1 的 IP 数据报，<strong>多播路由器检查该多播组的成员分布在哪些接口方向，各接口只转发一份</strong>，逐级复制送达——大幅节省带宽。适用于直播、视频会议、网络电视等一对多场景。</p>\n<img data-img-id=\"fig-p71-02\" class=\"ds-note-img\" alt=\"图：单播90次与多播1次的对比\">\n<p><strong>两个支撑协议</strong>：</p>\n<ul>\n<li><strong>IGMP（网际组管理协议）</strong>：主机与路由器之间的多播管理协议——管理主机<strong>加入/离开多播组</strong>（加群、退群）。<span style=\"color:#dc2626\"><strong>IGMP 属于网络层，报文封装在 IP 分组中传送（IP 首部协议字段 = 2）</strong></span>。</li>\n<li><strong>多播路由协议</strong>：让多播路由器之间相互得知<strong>哪些接口处有多播组成员</strong>——R2 经 IGMP 知道本侧主机绑定了 224.0.0.1，再告诉邻居 R1，R1 才知道往这个方向复制转发。</li>\n</ul>\n<img data-img-id=\"fig-p71-03\" class=\"ds-note-img\" alt=\"图：IGMP与多播路由协议的作用\">\n<p><strong>IP 多播三大考点</strong>（应对选择题）：</p>\n<ul>\n<li>多播数据报与单播一样<strong>尽最大努力交付、不提供可靠交付</strong>（收到不回 ACK）；</li>\n<li><span style=\"color:#dc2626\"><strong>多播地址只能作为目的地址，不能作为源地址</strong></span>（源地址仍是发送主机自己的单播地址）——高频选项；</li>\n<li><span style=\"color:#dc2626\"><strong>对多播数据报不产生 ICMP 差错报文</strong></span>（如 TTL 减为 0，路由器直接丢弃、不回 ICMP）。</li>\n</ul>\n<img data-img-id=\"fig-p71-04\" class=\"ds-note-img\" alt=\"图：IP多播知识回顾与重要考点\">\n<p><span style=\"color:#7c3aed\">拓展（不考，当故事听）：IPTV 的实现——运营商给 CCTV-1、CCTV-2、地方卫视各绑定一个多播地址；机顶盒调台的本质就是<strong>用 IGMP 退出一个多播组并加入另一个</strong>；各多播路由器间用多播路由协议互通成员分布，视频服务器只需向组地址发一份流。</span></p>\n<img data-img-id=\"fig-p71-05\" class=\"ds-note-img\" alt=\"图：IPTV多播实现原理示意\">",
-   "images": [
-    {
-     "imgId": "fig-p71-01",
-     "file": "images/ch04/fig-p71-01.jpg"
-    },
-    {
-     "imgId": "fig-p71-02",
-     "file": "images/ch04/fig-p71-02.jpg"
-    },
-    {
-     "imgId": "fig-p71-03",
-     "file": "images/ch04/fig-p71-03.jpg"
-    },
-    {
-     "imgId": "fig-p71-04",
-     "file": "images/ch04/fig-p71-04.jpg"
-    },
-    {
-     "imgId": "fig-p71-05",
-     "file": "images/ch04/fig-p71-05.jpg"
-    }
-   ]
-  },
-  {
-   "tree": [
-    "第4章 网络层",
-    "4.6 移动IP",
-    "4.6 移动IP"
-   ],
-   "noteHtml": "<p><span style=\"font-size:20px;color:#7c3aed\"><strong>P72 4.6 移动IP（王道 4.6）</strong></span></p>\n<p><strong>要解决的问题</strong>：手机移动可能切换基站/子网导致 IP 地址变化，而 TCP 连接、文件传输等应用会因地址变化而中断——移动 IP 要在 IP 动态变化时保证网络传输不受影响。</p>\n<img data-img-id=\"fig-p72-01\" class=\"ds-note-img\" alt=\"图：移动IP要解决的问题场景\">\n<p><strong>核心概念</strong>（借“北京联通卡带到武汉打工”理解）：移动节点（移动站）＝可移动的设备；它绑定的固定不变的 IP 为<strong>永久地址</strong>（如 131.8.6.7，“老家地址”）；归属网络中的路由器为<strong>归属代理（本地代理）</strong>；漫游到的外地网络中的路由器为<strong>外地代理</strong>，分配的临时地址为<strong>转交地址</strong>（如 15.5.6.7，“现住址”）；移动站到外地网络上网的过程即<strong>漫游</strong>。</p>\n<img data-img-id=\"fig-p72-02\" class=\"ds-note-img\" alt=\"图：移动IP核心概念与归属、被访网络拓扑\">\n<p><strong>通信过程分四种情况</strong>：</p>\n<ul>\n<li><strong>移动站在本地</strong>：与普通 TCP/IP 通信完全一样（源写永久地址、目的写对方地址，经归属代理转发）。</li>\n<li><strong>漫游到外地并登记（两步）</strong>：① 移动站向外地代理登记（报上永久地址、MAC 地址），获得临时转交地址，外地代理记录其归属地址、转交地址与 MAC；② 外地代理向归属代理登记，告知该移动站的转交地址。</li>\n<li><strong>在外地接收分组（要经归属代理中转）</strong>：通信对端 B 只知道永久地址 → 分组被路由到归属代理；归属代理知道移动站在外地及转交地址，于是用<strong>隧道技术（IP-in-IP 套娃封装）</strong>——外层 IP 首部源=归属代理、目的=转交地址，套着原始分组经互联网送抵外地代理；外地代理拆掉外层，按登记的 MAC 封装成 MAC 帧精准交付移动站。<strong>原始分组的目的地址（永久地址）全程不变。</strong></li>\n<li><strong>在外地发送分组（不经归属代理）</strong>：移动站构建的分组<strong>源地址写永久地址</strong>（不是转交地址），交给外地代理后直接在互联网上层层转发给目的主机。回到本地时向归属代理注销转交地址。</li>\n</ul>\n<img data-img-id=\"fig-p72-03\" class=\"ds-note-img\" alt=\"图：移动站在本地的传统通信\">\n<img data-img-id=\"fig-p72-04\" class=\"ds-note-img\" alt=\"图：漫游到外地的两步登记过程\">\n<img data-img-id=\"fig-p72-05\" class=\"ds-note-img\" alt=\"图：在外地发送IP分组直接经外地代理转发\">\n<img data-img-id=\"fig-p72-06\" class=\"ds-note-img\" alt=\"图：归属代理IP-in-IP隧道封装与外地代理拆封\">\n<p><span style=\"color:#dc2626\"><strong>必考方向：收发不对称——接收必须经归属代理隧道中转，发送由外地代理直接转发；主机间通信永远只用永久地址，转交地址对应用层通信完全透明。</strong></span>转交地址仅供移动站、归属代理、外地代理三方使用；一个转交地址可被多个移动站共用（外地代理按登记的永久地址查对应 MAC 区分交付）。</p>\n<img data-img-id=\"fig-p72-07\" class=\"ds-note-img\" alt=\"图：转交地址的透明性与多站共用说明\">\n<p><span style=\"color:#7c3aed\">MIP 兴衰（了解）：技术诞生于 1994 年前后，当时设想每台移动设备配一个全球唯一永久地址；后来 IPv4 地址迅速耗尽、NAT 普及，该方案无法大规模应用，现实中主要用于实验网络与理论教学——所以本考点历年考频极低，考前回顾即可。</span></p>\n<img data-img-id=\"fig-p72-08\" class=\"ds-note-img\" alt=\"图：移动IP知识回顾与重要考点\">",
-   "images": [
-    {
-     "imgId": "fig-p72-01",
-     "file": "images/ch04/fig-p72-01.jpg"
-    },
-    {
-     "imgId": "fig-p72-02",
-     "file": "images/ch04/fig-p72-02.jpg"
-    },
-    {
-     "imgId": "fig-p72-03",
-     "file": "images/ch04/fig-p72-03.jpg"
-    },
-    {
-     "imgId": "fig-p72-04",
-     "file": "images/ch04/fig-p72-04.jpg"
-    },
-    {
-     "imgId": "fig-p72-05",
-     "file": "images/ch04/fig-p72-05.jpg"
-    },
-    {
-     "imgId": "fig-p72-06",
-     "file": "images/ch04/fig-p72-06.jpg"
-    },
-    {
-     "imgId": "fig-p72-07",
-     "file": "images/ch04/fig-p72-07.jpg"
-    },
-    {
-     "imgId": "fig-p72-08",
-     "file": "images/ch04/fig-p72-08.jpg"
-    }
-   ]
-  },
-  {
-   "tree": [
-    "第4章 网络层",
-    "4.7 网络层设备",
-    "4.7 网络层设备"
-   ],
-   "noteHtml": "<p><span style=\"font-size:20px;color:#7c3aed\"><strong>P73 4.7 网络层设备（王道 4.7）</strong></span></p>\n<p>网络层设备只有一种——<strong>路由器</strong>。大纲要求了解路由器的组成和功能、路由表与路由转发；除“路由器的组成”外，其余内容前文都已深入学过。</p>\n<img data-img-id=\"fig-p73-01\" class=\"ds-note-img\" alt=\"图：本节总览：路由器组成与路由转发\">\n<p>看一眼<strong>商用路由器</strong>：思科 ASR-920 有 24 个 1Gbps 电口（插网线）+ 4 个 10Gbps 光口（插光纤），端口既可输入也可输出 IP 分组，支持 RIP/OSPF/BGP 等协议——比家用路由器功能更纯粹（不带 WiFi、交换机功能）。</p>\n<img data-img-id=\"fig-p73-02\" class=\"ds-note-img\" alt=\"图：思科商用路由器外观与端口\">\n<p><strong>路由器 = 两大层面</strong>：<strong>控制层面</strong>实现路由选择功能，<strong>数据层面</strong>实现分组转发功能。输入/输出端口的 1-2-3 分别对应物理层、链路层、网络层处理：物理层收比特流 → 链路层拆帧 → 网络层取出 IP 分组查转发表 → 经交换结构送到输出端口 → 再 3-2-1 逐层封回发出。</p>\n<img data-img-id=\"fig-p73-03\" class=\"ds-note-img\" alt=\"图：路由器控制层面与数据层面结构图\">\n<p><strong>控制层面细节</strong>：核心是<strong>路由选择处理机</strong>（相当于路由器这台“专用小电脑”的 CPU，内存中存路由表），运行 RIP/OSPF/BGP 进程生成路由表。不同协议生成的表项字段不同：RIP 多“跳数”、OSPF 多“Cost 与区域”、BGP 多“AS_PATH 与本地偏好值”；但所有表项<strong>至少包含三要素：网络前缀、下一跳 IP、输出接口</strong>。</p>\n<img data-img-id=\"fig-p73-04\" class=\"ds-note-img\" alt=\"图：控制层面与不同协议的路由表字段\">\n<p>408 典型路由表（表 4.7）：目的网络 IP+子网掩码（等价于 CIDR 记法）、下一跳 IP、接口。下一跳为“-”（或 direct）表示<strong>直接交付</strong>；填写具体路由器 IP（如 202.114.2.2）为<strong>间接交付</strong>；另配默认路由 0.0.0.0/0 兜底。</p>\n<img data-img-id=\"fig-p73-05\" class=\"ds-note-img\" alt=\"图：408真题典型路由表结构\">\n<p><span style=\"color:#7c3aed\"><strong>【例题】</strong></span>（路由表转发流程）R1 的路由表：202.114.1.0/24 → 直接交付（E1）；202.114.2.0/24 → 下一跳 202.114.2.2（E0）；0.0.0.0/0 → 下一跳 202.114.3.1（E2）。分别转发目的 IP 为 202.114.1.68 与 202.114.3.20 的分组。</p>\n$$202.114.1.68 \\wedge 255.255.255.0 = 202.114.1.0 \\Rightarrow \\text{匹配第一条}$$\n$$202.114.3.20 \\wedge 255.255.255.0 = 202.114.3.0 \\Rightarrow \\text{两条都不匹配} \\Rightarrow \\text{走默认路由}$$\n<p><span style=\"color:#dc2626\"><strong>答案：202.114.1.68 从 E1 直接交付（ARP 目的主机 MAC）；202.114.3.20 按默认路由从 E2 交给 202.114.3.1。转发时还要 TTL 减 1、重算首部校验和、重新封装成帧。</strong></span></p>\n<p><strong>数据层面细节</strong>：网络层处理模块设<strong>输入缓冲区</strong>暂存交换结构来不及处理的分组——<span style=\"color:#dc2626\"><strong>缓冲区满仍来分组则丢弃，这正是网络拥塞的表现</strong></span>；输出端口设<strong>输出缓冲区</strong>暂存因链路带宽限制发不出去的分组。</p>\n<img data-img-id=\"fig-p73-06\" class=\"ds-note-img\" alt=\"图：数据层面输入输出缓冲区与交换结构\">\n<p><strong>路由表 vs 转发表</strong>：路由表由路由协议生成，字段大而全（含协议私有信息）；<strong>转发表从路由表精简而来</strong>，只留网络前缀、下一跳 IP、输出接口，常用<strong>硬件实现</strong>查表极快。<span style=\"color:#dc2626\"><strong>考试 Tips：除非题目特意考察区别，否则认为二者相同。</strong></span></p>\n<img data-img-id=\"fig-p73-07\" class=\"ds-note-img\" alt=\"图：路由表与转发表对比\">\n<p>总图回顾：控制层面（路由选择处理机 → 路由表）+ 数据层面（输入/输出端口 + 缓冲区 + 交换结构 + 转发表）。</p>\n<img data-img-id=\"fig-p73-08\" class=\"ds-note-img\" alt=\"图：网络层设备要点回顾总图\">",
-   "images": [
-    {
-     "imgId": "fig-p73-01",
-     "file": "images/ch04/fig-p73-01.jpg"
-    },
-    {
-     "imgId": "fig-p73-02",
-     "file": "images/ch04/fig-p73-02.jpg"
-    },
-    {
-     "imgId": "fig-p73-03",
-     "file": "images/ch04/fig-p73-03.jpg"
-    },
-    {
-     "imgId": "fig-p73-04",
-     "file": "images/ch04/fig-p73-04.jpg"
-    },
-    {
-     "imgId": "fig-p73-05",
-     "file": "images/ch04/fig-p73-05.jpg"
-    },
-    {
-     "imgId": "fig-p73-06",
-     "file": "images/ch04/fig-p73-06.jpg"
-    },
-    {
-     "imgId": "fig-p73-07",
-     "file": "images/ch04/fig-p73-07.jpg"
-    },
-    {
-     "imgId": "fig-p73-08",
-     "file": "images/ch04/fig-p73-08.jpg"
-    }
-   ]
-  }
- ]
+  ]
 }

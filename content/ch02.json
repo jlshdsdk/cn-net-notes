@@ -1,329 +1,329 @@
 {
- "chapter": "第2章 物理层",
- "docs": [
-  {
-   "tree": [
-    "第2章 物理层",
-    "2.1 通信基础",
-    "2.1.1 通信基础的基本概念"
-   ],
-   "noteHtml": "<p><span style=\"font-size:20px;color:#7c3aed\"><strong>P13 2.1.1 通信基础的基本概念（王道 2.1）</strong></span></p>\n<img data-img-id=\"fig-p13-01\" class=\"ds-note-img\" alt=\"图：体系结构对比\">\n<p>OSI七层、TCP/IP四层，<strong>互联网采用TCP/IP模型，是事实上的标准</strong>；但其网络接口层定义不细，教学上取OSI下两层+TCP/IP上三层，按<strong>五层体系结构</strong>学习。</p>\n<img data-img-id=\"fig-p13-02\" class=\"ds-note-img\" alt=\"图：数据传输过程\">\n<p>物理层任务：<span style=\"color:#dc2626\"><strong>实现相邻节点之间比特0/1的传输</strong></span>——链路层以<strong>帧</strong>为单位交比特，物理层转成<strong>信号</strong>上传输媒体。</p>\n<img data-img-id=\"fig-p13-03\" class=\"ds-note-img\" alt=\"图：开篇页\">\n<img data-img-id=\"fig-p13-04\" class=\"ds-note-img\" alt=\"图：知识总览\">\n<p>为此补<strong>通信原理</strong>概念：信源信宿、信号信道、码元、速率波特、带宽（Hz）。<span style=\"color:#dc2626\"><strong>码元、速率与波特是标红考点</strong></span>。</p>\n<img data-img-id=\"fig-p13-05\" class=\"ds-note-img\" alt=\"图：信源信宿与信道\">\n<p><strong>信源</strong>=数据发送方、<strong>信宿</strong>=接收方、<strong>信道</strong>=信号的通道（一条物理线路通常含收发两条信道）。<mark><strong>信号是数据的载体</strong></mark>。</p>\n<img data-img-id=\"fig-p13-06\" class=\"ds-note-img\" alt=\"图：数字与模拟信号\">\n<p><strong>数字信号取值离散</strong>（如仅+1V、-1V对应0/1）；<strong>模拟信号取值连续</strong>（可取 $-1\\sim 1$ 任何值）。电压、电磁波振幅均可作信号值。</p>\n<img data-img-id=\"fig-p13-07\" class=\"ds-note-img\" alt=\"图：皮卡丘传电压\">\n<p>老师举\"皮卡丘当信源、右手当信宿、导线当信道\"：每秒放一个+1V（1）或-1V（0），8秒传完11010001，按 $y=f(t)$ 还原。<span style=\"color:#7c3aed\">跨考提醒：电压是电势差，可为负。</span></p>\n<img data-img-id=\"fig-p13-08\" class=\"ds-note-img\" alt=\"图：函数视角\">\n<p>模拟信号同理：一个周期内 $y=\\sin 2\\pi t$ 记为1、$y=\\sin(2\\pi t+\\pi)$ 记为0。</p>\n<img data-img-id=\"fig-p13-09\" class=\"ds-note-img\" alt=\"图：码元\">\n<p>一个周期仅两种信号值时1信号只带1比特；设计四种值（+2V=00、+1V=01、-1V=10、-2V=11）后传11010001只需4个周期，<strong>代价是信号功率增强、对信道要求更高</strong>。一个信号就是一个<strong>码元</strong>（周期长度=码元宽度）：4种状态=四进制码元、8种=八进制（3bit）。</p>\n<img data-img-id=\"fig-p13-10\" class=\"ds-note-img\" alt=\"图：模拟四进制码元\">\n<p>模拟信号也能设计K进制码元：一个周期内出现K种波形（如 $y=\\sin 4\\pi t$ 对应01）。</p>\n<img data-img-id=\"fig-p13-11\" class=\"ds-note-img\" alt=\"图：波特率与比特率\">\n<p><strong>波特率</strong>=每秒码元数（Baud）；<strong>比特率</strong>=每秒比特数。若1码元携 $N$ 比特，则 $M$ 波特=$M\\times N$ b/s。</p>\n<img data-img-id=\"fig-p13-12\" class=\"ds-note-img\" alt=\"图：码元与比特关系\">\n<p><mark><strong>周期内可能出现 $K$ 种信号，则1码元携带 $\\log_2 K$ 比特</strong></mark>：$\\log_2 8=3$bit、$\\log_2 4=2$bit、$\\log_2 32=5$bit。信道分数字信道与模拟信道。</p>\n<img data-img-id=\"fig-p13-13\" class=\"ds-note-img\" alt=\"图：知识回顾\">",
-   "images": [
+  "chapter": "第2章 物理层",
+  "docs": [
     {
-     "imgId": "fig-p13-01",
-     "file": "images/ch02/fig-p13-01.jpg"
+      "tree": [
+        "第2章 物理层",
+        "2.1 通信基础",
+        "2.1.1 通信基础的基本概念"
+      ],
+      "noteHtml": "<p><span style=\"font-size:20px;color:#7c3aed\"><strong>P13 2.1.1 通信基础的基本概念（王道 2.1）</strong></span></p>\n<img data-img-id=\"fig-p13-01\" class=\"ds-note-img\" alt=\"图：体系结构对比\">\n<p>OSI七层、TCP/IP四层，<strong>互联网采用TCP/IP模型，是事实上的标准</strong>；但其网络接口层定义不细，教学上取OSI下两层+TCP/IP上三层，按<strong>五层体系结构</strong>学习。</p>\n<img data-img-id=\"fig-p13-02\" class=\"ds-note-img\" alt=\"图：数据传输过程\">\n<p>物理层任务：<span style=\"color:#dc2626\"><strong>实现相邻节点之间比特0/1的传输</strong></span>——链路层以<strong>帧</strong>为单位交比特，物理层转成<strong>信号</strong>上传输媒体。</p>\n<img data-img-id=\"fig-p13-03\" class=\"ds-note-img\" alt=\"图：开篇页\">\n<img data-img-id=\"fig-p13-04\" class=\"ds-note-img\" alt=\"图：知识总览\">\n<p>为此补<strong>通信原理</strong>概念：信源信宿、信号信道、码元、速率波特、带宽（Hz）。<span style=\"color:#dc2626\"><strong>码元、速率与波特是标红考点</strong></span>。</p>\n<img data-img-id=\"fig-p13-05\" class=\"ds-note-img\" alt=\"图：信源信宿与信道\">\n<p><strong>信源</strong>=数据发送方、<strong>信宿</strong>=接收方、<strong>信道</strong>=信号的通道（一条物理线路通常含收发两条信道）。<mark><strong>信号是数据的载体</strong></mark>。</p>\n<img data-img-id=\"fig-p13-06\" class=\"ds-note-img\" alt=\"图：数字与模拟信号\">\n<p><strong>数字信号取值离散</strong>（如仅+1V、-1V对应0/1）；<strong>模拟信号取值连续</strong>（可取 $-1\\sim 1$ 任何值）。电压、电磁波振幅均可作信号值。</p>\n<img data-img-id=\"fig-p13-07\" class=\"ds-note-img\" alt=\"图：皮卡丘传电压\">\n<p>老师举“皮卡丘当信源、右手当信宿、导线当信道”：每秒放一个+1V（1）或-1V（0），8秒传完11010001，按 $y=f(t)$ 还原。<span style=\"color:#7c3aed\">跨考提醒：电压是电势差，可为负。</span></p>\n<img data-img-id=\"fig-p13-08\" class=\"ds-note-img\" alt=\"图：函数视角\">\n<p>模拟信号同理：一个周期内 $y=\\sin 2\\pi t$ 记为1、$y=\\sin(2\\pi t+\\pi)$ 记为0。</p>\n<img data-img-id=\"fig-p13-09\" class=\"ds-note-img\" alt=\"图：码元\">\n<p>一个周期仅两种信号值时1信号只带1比特；设计四种值（+2V=00、+1V=01、-1V=10、-2V=11）后传11010001只需4个周期，<strong>代价是信号功率增强、对信道要求更高</strong>。一个信号就是一个<strong>码元</strong>（周期长度=码元宽度）：4种状态=四进制码元、8种=八进制（3bit）。</p>\n<img data-img-id=\"fig-p13-10\" class=\"ds-note-img\" alt=\"图：模拟四进制码元\">\n<p>模拟信号也能设计K进制码元：一个周期内出现K种波形（如 $y=\\sin 4\\pi t$ 对应01）。</p>\n<img data-img-id=\"fig-p13-11\" class=\"ds-note-img\" alt=\"图：波特率与比特率\">\n<p><strong>波特率</strong>=每秒码元数（Baud）；<strong>比特率</strong>=每秒比特数。若1码元携 $N$ 比特，则 $M$ 波特=$M\\times N$ b/s。</p>\n<img data-img-id=\"fig-p13-12\" class=\"ds-note-img\" alt=\"图：码元与比特关系\">\n<p><mark><strong>周期内可能出现 $K$ 种信号，则1码元携带 $\\log_2 K$ 比特</strong></mark>：$\\log_2 8=3$bit、$\\log_2 4=2$bit、$\\log_2 32=5$bit。信道分数字信道与模拟信道。</p>\n<img data-img-id=\"fig-p13-13\" class=\"ds-note-img\" alt=\"图：知识回顾\">",
+      "images": [
+        {
+          "imgId": "fig-p13-01",
+          "file": "images/ch02/fig-p13-01.jpg"
+        },
+        {
+          "imgId": "fig-p13-02",
+          "file": "images/ch02/fig-p13-02.jpg"
+        },
+        {
+          "imgId": "fig-p13-03",
+          "file": "images/ch02/fig-p13-03.jpg"
+        },
+        {
+          "imgId": "fig-p13-04",
+          "file": "images/ch02/fig-p13-04.jpg"
+        },
+        {
+          "imgId": "fig-p13-05",
+          "file": "images/ch02/fig-p13-05.jpg"
+        },
+        {
+          "imgId": "fig-p13-06",
+          "file": "images/ch02/fig-p13-06.jpg"
+        },
+        {
+          "imgId": "fig-p13-07",
+          "file": "images/ch02/fig-p13-07.jpg"
+        },
+        {
+          "imgId": "fig-p13-08",
+          "file": "images/ch02/fig-p13-08.jpg"
+        },
+        {
+          "imgId": "fig-p13-09",
+          "file": "images/ch02/fig-p13-09.jpg"
+        },
+        {
+          "imgId": "fig-p13-10",
+          "file": "images/ch02/fig-p13-10.jpg"
+        },
+        {
+          "imgId": "fig-p13-11",
+          "file": "images/ch02/fig-p13-11.jpg"
+        },
+        {
+          "imgId": "fig-p13-12",
+          "file": "images/ch02/fig-p13-12.jpg"
+        },
+        {
+          "imgId": "fig-p13-13",
+          "file": "images/ch02/fig-p13-13.jpg"
+        }
+      ]
     },
     {
-     "imgId": "fig-p13-02",
-     "file": "images/ch02/fig-p13-02.jpg"
+      "tree": [
+        "第2章 物理层",
+        "2.1 通信基础",
+        "2.1.2 信道的极限容量"
+      ],
+      "noteHtml": "<p><span style=\"font-size:20px;color:#7c3aed\"><strong>P14 2.1.2 信道的极限容量（王道 2.1）</strong></span></p>\n<img data-img-id=\"fig-p14-01\" class=\"ds-note-img\" alt=\"图：知识总览\">\n<p><strong>信道极限容量</strong>=最高数据传输速率，取决于<strong>带宽（Hz）</strong>与<strong>噪声</strong>：<span style=\"color:#dc2626\"><strong>无噪声用奈奎斯特定理，有噪声用香农定理</strong></span>。</p>\n<img data-img-id=\"fig-p14-02\" class=\"ds-note-img\" alt=\"图：带宽两种含义\">\n<p>计网中带宽=最高数据率（b/s）；通信中=频带宽度（Hz），如电话线仅约4kHz。本质都是<strong>带宽越大传输能力越强</strong>。</p>\n<img data-img-id=\"fig-p14-03\" class=\"ds-note-img\" alt=\"图：噪声类比\">\n<p>你和舍友对话=听觉信道，人耳仅听20Hz~20kHz（低于为次声波、高于为超声波）；另一舍友大声背单词就是<strong>噪声</strong>，干扰传输。计网中强电场强磁场干扰即噪声。<span style=\"color:#7c3aed\">老师强调：信道能力由带宽与噪声共同决定。</span></p>\n<img data-img-id=\"fig-p14-04\" class=\"ds-note-img\" alt=\"图：奈奎斯特定理\">\n<p><strong>奈氏准则</strong>：<span style=\"color:#dc2626\"><strong>理想低通信道（无噪声）</strong></span>极限波特率 $=2W$，码元 $K$ 种状态时极限比特率：</p>\n$$2W\\log_2 K\\ \\text{b/s}$$\n<p><span style=\"color:#7c3aed\">“理想低通信道”即无噪声，是用奈氏准则的前提。</span></p>\n<img data-img-id=\"fig-p14-05\" class=\"ds-note-img\" alt=\"图：2022年34题\">\n<p><span style=\"color:#7c3aed\">【例题·2022年408真题34题】</span>带宽200kHz<strong>无噪声</strong>信道、4个幅值ASK，最大速率？</p>\n$$2W\\log_2 K=2\\times 200\\text{k}\\times\\log_2 4=800\\ \\text{kb/s}$$\n<p><span style=\"color:#dc2626\"><strong>答案800kb/s（C）：无噪声→奈氏；4幅值=每码元2bit。</strong></span></p>\n<img data-img-id=\"fig-p14-06\" class=\"ds-note-img\" alt=\"图：信噪比\">\n<p><strong>信噪比 $S/N$</strong>=信号功率/噪声功率，无单位。说话更大声或让“背单词舍友”闭嘴都能提高它。</p>\n<img data-img-id=\"fig-p14-07\" class=\"ds-note-img\" alt=\"图：dB换算\">\n<p>$S/N$ 常太大，用<strong>分贝记法</strong> $10\\lg(S/N)$（$10^{19}$ 对应190dB）。<span style=\"color:#dc2626\"><strong>香农公式必须代入无单位的 $S/N$，dB先换算回</strong></span>。</p>\n<img data-img-id=\"fig-p14-08\" class=\"ds-note-img\" alt=\"图：香农定理\">\n<p><strong>香农定理</strong>（有噪声）：极限比特率 $=W\\log_2(1+S/N)$ b/s；提高 $W$、信号功率↑或噪声功率↓均可提速率。</p>\n<img data-img-id=\"fig-p14-09\" class=\"ds-note-img\" alt=\"图：2016年34题\">\n<p><span style=\"color:#7c3aed\">【例题·2016年408真题34题】</span>链路带宽8kHz、信噪比30dB、实际速率为理论值的50%？$S/N=10^3=1000$，</p>\n$$8\\text{k}\\times\\log_2 1001\\approx 80\\ \\text{kb/s}\\Rightarrow 80\\times 50\\%=40\\ \\text{kb/s}$$\n<p><span style=\"color:#dc2626\"><strong>答案40kb/s（C）：有信噪比→有噪声→只能香农。</strong></span></p>\n<img data-img-id=\"fig-p14-10\" class=\"ds-note-img\" alt=\"图：两定理对比\">\n<p>奈氏管<strong>码元</strong>（超 $2W$ 会<strong>码间串扰</strong>）、香农管<strong>比特</strong>；结合知1码元比特数有上限。<span style=\"color:#7c3aed\">【例题·双限取min】带宽4kHz、16种码元、30dB：奈氏 $2\\times 4\\text{k}\\times 4=32$ kb/s、香农约40kb/s，</span><span style=\"color:#dc2626\"><strong>取较小值32kb/s</strong></span>。</p>\n<img data-img-id=\"fig-p14-11\" class=\"ds-note-img\" alt=\"图：知识回顾\">\n<p><mark><strong>无噪声奈氏（$2W$、$2W\\log_2 K$）；有噪声香农（$W\\log_2(1+S/N)$）</strong></mark>。最爱直接代入计算。</p>\n<img data-img-id=\"fig-p14-12\" class=\"ds-note-img\" alt=\"图：课后甜点\">\n<p><span style=\"color:#7c3aed\">甜点：太阳风暴扰动地磁场→短波通信噪声增大、信噪比降低，卫星通话与GPS受损，副产品是极光。</span></p>",
+      "images": [
+        {
+          "imgId": "fig-p14-01",
+          "file": "images/ch02/fig-p14-01.jpg"
+        },
+        {
+          "imgId": "fig-p14-02",
+          "file": "images/ch02/fig-p14-02.jpg"
+        },
+        {
+          "imgId": "fig-p14-03",
+          "file": "images/ch02/fig-p14-03.jpg"
+        },
+        {
+          "imgId": "fig-p14-04",
+          "file": "images/ch02/fig-p14-04.jpg"
+        },
+        {
+          "imgId": "fig-p14-05",
+          "file": "images/ch02/fig-p14-05.jpg"
+        },
+        {
+          "imgId": "fig-p14-06",
+          "file": "images/ch02/fig-p14-06.jpg"
+        },
+        {
+          "imgId": "fig-p14-07",
+          "file": "images/ch02/fig-p14-07.jpg"
+        },
+        {
+          "imgId": "fig-p14-08",
+          "file": "images/ch02/fig-p14-08.jpg"
+        },
+        {
+          "imgId": "fig-p14-09",
+          "file": "images/ch02/fig-p14-09.jpg"
+        },
+        {
+          "imgId": "fig-p14-10",
+          "file": "images/ch02/fig-p14-10.jpg"
+        },
+        {
+          "imgId": "fig-p14-11",
+          "file": "images/ch02/fig-p14-11.jpg"
+        },
+        {
+          "imgId": "fig-p14-12",
+          "file": "images/ch02/fig-p14-12.jpg"
+        }
+      ]
     },
     {
-     "imgId": "fig-p13-03",
-     "file": "images/ch02/fig-p13-03.jpg"
+      "tree": [
+        "第2章 物理层",
+        "2.1 通信基础",
+        "2.1.3_1 编码和调制（上）"
+      ],
+      "noteHtml": "<p><span style=\"font-size:20px;color:#7c3aed\"><strong>P15 2.1.3_1 编码和调制（上）（王道 2.1）</strong></span></p>\n<img data-img-id=\"fig-p15-01\" class=\"ds-note-img\" alt=\"图：编码与调制模型\">\n<p><mark><strong>数据→数字信号=编码（逆为解码）；数据→模拟信号=调制（逆为解调）</strong></mark>。有线网卡=编码器+解码器；“光猫”=调制解调器modem。五种编码（示例数据111100101）：</p>\n<ul>\n<li><strong>不归零NRZ</strong>：低0高1、中间不变。<span style=\"color:#dc2626\"><strong>无自同步</strong></span>（连续同电平分不清边界），需另加时钟线；</li>\n<li><strong>归零RZ</strong>：低0高1、<strong>中间归零</strong>，像每拍打节奏，有自同步但费带宽；</li>\n<li><strong>反向不归零NRZI</strong>：<span style=\"color:#dc2626\"><strong>跳0不跳1看起点、中间不变</strong></span>，可每8比特补1个冗余0实现自同步；</li>\n<li><strong>曼彻斯特</strong>：<span style=\"color:#dc2626\"><strong>跳0反跳1看中间、中必变</strong></span>；</li>\n<li><strong>差分曼彻斯特</strong>：跳0不跳1看起点、<strong>中必变</strong>（与NRZI同看起点，别在中间变不变）。</li>\n</ul>\n<p>中间必跳变：可作时钟自同步+<strong>抗干扰更强</strong>。RZ=return to zero、I=inverted。</p>\n<img data-img-id=\"fig-p15-02\" class=\"ds-note-img\" alt=\"图：曼彻斯特两标准\">\n<p><strong>传统标准</strong>（G.E. Thomas 1949）下跳0上跳1；<strong>IEEE 802.3</strong>上跳0下跳1。<span style=\"color:#dc2626\"><strong>408默认上0下1，但要防反向标准</strong></span>。</p>\n<img data-img-id=\"fig-p15-03\" class=\"ds-note-img\" alt=\"图：五种编码总表\">\n<p><strong>自同步</strong>：NRZ无、RZ有、NRZI靠冗余位、后两种有；<strong>带宽</strong>：NRZ不浪费、RZ约一半、曼彻斯特类更费；<strong>抗干扰</strong>：前三种弱、后两种强。<span style=\"color:#7c3aed\">“1比特耗1Hz/2Hz”不严谨，只为好记。</span></p>\n<img data-img-id=\"fig-p15-04\" class=\"ds-note-img\" alt=\"图：2015年34题\">\n<p><span style=\"color:#7c3aed\">【例题·2015年408真题34题】</span>数据01100111判断编码1、2：编码1电平与01一一对应→NRZ（按NRZI则第2周期起点跳变应译0，与第2比特1矛盾，排除含NRZI项）；编码2中间跳变“上下下上上下下下”按上0下1恰对应01100111→曼彻斯特。<span style=\"color:#dc2626\"><strong>答案A</strong></span>。<span style=\"color:#7c3aed\">技巧：中间跳变方向与比特一一对应=曼彻斯特，否则=差分曼彻斯特。</span></p>\n<img data-img-id=\"fig-p15-05\" class=\"ds-note-img\" alt=\"图：2021年34题\">\n<p><span style=\"color:#7c3aed\">【例题·2021年408真题34题】</span>差分曼彻斯特波形求比特串：逐周期看起点不跳=1、跳=0，得<span style=\"color:#dc2626\"><strong>10111001（A）</strong></span>。</p>\n<img data-img-id=\"fig-p15-06\" class=\"ds-note-img\" alt=\"图：改造与速率计算\">\n<p>老师改造：同段波形按曼彻斯特解读，中间跳变“下下上下上上下下”→上0下1得11010001、下0上1得00101110，<strong>盯住中间跳变方向即可分辨两种曼彻斯特</strong>。<span style=\"color:#7c3aed\">【例题·编码速率】</span>以太网10Mb/s用曼彻斯特编码求波特率（每比特中间必跳变、对应2个电平）：</p>\n$$10\\ \\text{Mb/s}\\times 2=20\\ \\text{MBaud}$$\n<p><span style=\"color:#dc2626\"><strong>波特率=2倍比特率。</strong></span></p>\n<img data-img-id=\"fig-p15-07\" class=\"ds-note-img\" alt=\"图：知识总览\">\n<p>编码部分完毕，四种调制方法见下一P。</p>",
+      "images": [
+        {
+          "imgId": "fig-p15-01",
+          "file": "images/ch02/fig-p15-01.jpg"
+        },
+        {
+          "imgId": "fig-p15-02",
+          "file": "images/ch02/fig-p15-02.jpg"
+        },
+        {
+          "imgId": "fig-p15-03",
+          "file": "images/ch02/fig-p15-03.jpg"
+        },
+        {
+          "imgId": "fig-p15-04",
+          "file": "images/ch02/fig-p15-04.jpg"
+        },
+        {
+          "imgId": "fig-p15-05",
+          "file": "images/ch02/fig-p15-05.jpg"
+        },
+        {
+          "imgId": "fig-p15-06",
+          "file": "images/ch02/fig-p15-06.jpg"
+        },
+        {
+          "imgId": "fig-p15-07",
+          "file": "images/ch02/fig-p15-07.jpg"
+        }
+      ]
     },
     {
-     "imgId": "fig-p13-04",
-     "file": "images/ch02/fig-p13-04.jpg"
+      "tree": [
+        "第2章 物理层",
+        "2.1 通信基础",
+        "2.1.3_2 编码和调制（下）"
+      ],
+      "noteHtml": "<p><span style=\"font-size:20px;color:#7c3aed\"><strong>P16 2.1.3_2 编码和调制（下）（王道 2.1）</strong></span></p>\n<img data-img-id=\"fig-p16-01\" class=\"ds-note-img\" alt=\"图：基带信号与调制\">\n<p>本节学<strong>调制</strong>：用模拟信号表示二进制数据。<strong>基带信号</strong>=来自信源的数字信号（低0高1）。双绞线数字/模拟都能传；真空（太空）只能传电磁波这种模拟信号；且模拟信号抗干扰更强，<strong>长距离传输常先调制</strong>。</p>\n<img data-img-id=\"fig-p16-02\" class=\"ds-note-img\" alt=\"图：调幅调频调相\">\n<p>以 $y=A\\sin(2\\pi f t+\\varphi)$ 为纲：<strong>调幅AM（幅移键控ASK）</strong>调振幅（0/1两种幅值）；<strong>调频FM（FSK）</strong>调频率（$\\sin x$=0、$\\sin 2x$=1）；<strong>调相PM（PSK）</strong>调相位（$\\sin x$=0、$\\sin(x+\\pi)$=1）。只设计2种信号时每码元仅1bit；设计K种→1码元 $\\log_2 K$ bit（如4种幅值表示00/01/10/11）。</p>\n<img data-img-id=\"fig-p16-03\" class=\"ds-note-img\" alt=\"图：QAM\">\n<p><strong>QAM=ASK+PSK结合</strong>：M种振幅×N种相位=$M\\times N$ 种信号，<mark><strong>1码元携 $\\log_2(MN)$ bit</strong></mark>（复合函数式两两叠加）。</p>\n<img data-img-id=\"fig-p16-04\" class=\"ds-note-img\" alt=\"图：QAM后缀\">\n<p><span style=\"color:#7c3aed\">【补充·结合2023年408真题34题选项】</span>QAM后缀=信号种数：<strong>QAM-16→4bit</strong>、QAM-32→5bit、QAM-64→6bit、QAM-128→7bit。</p>\n<img data-img-id=\"fig-p16-05\" class=\"ds-note-img\" alt=\"图：例题3\">\n<p><span style=\"color:#7c3aed\">【例题3·2022年408真题34题】</span>带宽200kHz<strong>无噪声</strong>信道、4个幅值ASK：无噪声→奈氏，$2W=400\\text{k}$ Baud、每码元 $\\log_2 4=2$ bit，</p>\n$$2\\times 200\\text{k}\\times 2=800\\ \\text{kb/s}$$\n<p><span style=\"color:#dc2626\"><strong>答案800kb/s（C）。</strong></span></p>\n<img data-img-id=\"fig-p16-06\" class=\"ds-note-img\" alt=\"图：例题4\">\n<p><span style=\"color:#7c3aed\">【例题4·2009年408真题34题】</span>带宽3kHz无噪声信道、QAM调制4相位×4振幅：$4\\times 4=16$ 种码元→每码元 $\\log_2 16=4$ bit，</p>\n$$2\\times 3\\text{k}\\times 4=24\\ \\text{kb/s}$$\n<p><span style=\"color:#dc2626\"><strong>答案24kb/s（B）。</strong></span></p>\n<img data-img-id=\"fig-p16-07\" class=\"ds-note-img\" alt=\"图：知识回顾\">\n<p><strong>ASK调幅、FSK调频、PSK调相、QAM调幅+相（$\\log_2(MN)$ bit）</strong>；调制考原理+每码元比特数，编码考得更细（要能认波形）。</p>\n<img data-img-id=\"fig-p16-08\" class=\"ds-note-img\" alt=\"图：编码对比表\">\n<p>对照表格回顾五种编码三维特点。<span style=\"color:#dc2626\"><strong>曼彻斯特编码是以太网默认编码——考以太网物理层时的隐含条件</strong></span>。</p>",
+      "images": [
+        {
+          "imgId": "fig-p16-01",
+          "file": "images/ch02/fig-p16-01.jpg"
+        },
+        {
+          "imgId": "fig-p16-02",
+          "file": "images/ch02/fig-p16-02.jpg"
+        },
+        {
+          "imgId": "fig-p16-03",
+          "file": "images/ch02/fig-p16-03.jpg"
+        },
+        {
+          "imgId": "fig-p16-04",
+          "file": "images/ch02/fig-p16-04.jpg"
+        },
+        {
+          "imgId": "fig-p16-05",
+          "file": "images/ch02/fig-p16-05.jpg"
+        },
+        {
+          "imgId": "fig-p16-06",
+          "file": "images/ch02/fig-p16-06.jpg"
+        },
+        {
+          "imgId": "fig-p16-07",
+          "file": "images/ch02/fig-p16-07.jpg"
+        },
+        {
+          "imgId": "fig-p16-08",
+          "file": "images/ch02/fig-p16-08.jpg"
+        }
+      ]
     },
     {
-     "imgId": "fig-p13-05",
-     "file": "images/ch02/fig-p13-05.jpg"
+      "tree": [
+        "第2章 物理层",
+        "2.2 传输介质",
+        "2.2 传输介质"
+      ],
+      "noteHtml": "<p><span style=\"font-size:20px;color:#7c3aed\"><strong>P17 2.2 传输介质（王道 2.2）</strong></span></p>\n<img data-img-id=\"fig-p17-01\" class=\"ds-note-img\" alt=\"图：知识总览\">\n<p>传输介质（transmission medium，也译传输媒体）分<strong>导向性</strong>（沿固定方向=有线）与<strong>非导向性</strong>（四面八方=无线，电磁波为信号），相当于“第0层”；还学物理层与介质<strong>接口的特性</strong>。</p>\n<img data-img-id=\"fig-p17-02\" class=\"ds-note-img\" alt=\"图：传输媒体位置\">\n<img data-img-id=\"fig-p17-03\" class=\"ds-note-img\" alt=\"图：双绞线实物\">\n<p><strong>双绞线</strong>=两根导线绞合，网线内即4组。<span style=\"color:#7c3aed\">绞合像拧麻花，增强抗电磁干扰能力。</span>无屏蔽层=UTP、有=STP。</p>\n<img data-img-id=\"fig-p17-04\" class=\"ds-note-img\" alt=\"图：UTP与STP\">\n<p>提速率两手段：<strong>提高绞合度、加屏蔽层</strong>→信噪比↑→香农极限速率↑，成本也↑。<span style=\"color:#dc2626\"><strong>TP=twisted pair；局域网网线、早期电话线都是双绞线</strong></span>。</p>\n<img data-img-id=\"fig-p17-05\" class=\"ds-note-img\" alt=\"图：同轴电缆剖面\">\n<p><strong>同轴电缆</strong>=铜芯内导体（传信号）+绝缘层+网状屏蔽层（抗干扰）+外护套；铜芯越粗衰减越小、传得越远越贵。用于早期局域网与有线电视。</p>\n<img data-img-id=\"fig-p17-06\" class=\"ds-note-img\" alt=\"图：同轴电缆实物\">\n<img data-img-id=\"fig-p17-07\" class=\"ds-note-img\" alt=\"图：光纤结构\">\n<p><strong>光纤</strong>=纤芯+低折射率包层，靠<strong>全反射</strong>传光。<span style=\"color:#dc2626\"><strong>抗干扰最强、损耗最小（中继器最少）、纤细省布线</strong></span>。</p>\n<img data-img-id=\"fig-p17-08\" class=\"ds-note-img\" alt=\"图：单模与多模\">\n<p><strong>多模</strong>：纤芯粗、多条入射角光线同传、按出射角区分，色散失真大→近距离；<strong>单模</strong>：纤芯细至接近波长（约9μm）、近似直线传播、损耗低→远距离。<span style=\"color:#7c3aed\">黄皮=单模、橙/青绿皮=多模。</span></p>\n<img data-img-id=\"fig-p17-09\" class=\"ds-note-img\" alt=\"图：以太网命名\">\n<p><span style=\"color:#dc2626\"><strong>命名=速度+Base+介质信息</strong></span>（Base=基带传输：数字信号+曼彻斯特编码）：10Base5=10Mbps同轴电缆500m、10Base2≈185m；F=光纤、T=双绞线（1000Base-T、2.5GBase-T等）。曾考真题。</p>\n<img data-img-id=\"fig-p17-10\" class=\"ds-note-img\" alt=\"图：卫星锅\">\n<p><strong>无线电波</strong>（手机、WiFi）：穿透强、距离远、<strong>指向性弱</strong>（四面发散）。</p>\n<img data-img-id=\"fig-p17-11\" class=\"ds-note-img\" alt=\"图：卫星与星链\">\n<p>卫星通信用<strong>微波</strong>：$c=\\lambda f$，波长短→频率高→带宽大，但<strong>指向性强、直线传播</strong>（锅须对准卫星）。卫星=中继站，<strong>3颗同步卫星（36000km）覆盖全球</strong>但时延大；星链用近地卫星群降到约20ms。</p>\n<img data-img-id=\"fig-p17-12\" class=\"ds-note-img\" alt=\"图：无线分类\">\n<p>短波/超短波可靠电离层反射；微波=地面接力+卫星；红外线、激光本质也是电磁波：<strong>长波绕射（穿墙）好、适合远距离非直线；短波频率高带宽大、需直线或中继</strong>。</p>\n<img data-img-id=\"fig-p17-13\" class=\"ds-note-img\" alt=\"图：水晶头\">\n<p><strong>接口四特性</strong>：①<strong>机械特性</strong>——形状尺寸、引脚数目排列、锁定装置（水晶头8引脚线序）。</p>\n<img data-img-id=\"fig-p17-14\" class=\"ds-note-img\" alt=\"图：四大特性\">\n<p>②<strong>电气特性</strong>——各线<strong>电压范围</strong>、速率、最大线长；③<strong>功能特性</strong>——某电平<strong>代表何意义</strong>；④<strong>过程特性（规程）</strong>——事件出现顺序（插/拔网线的反应）。</p>\n<img data-img-id=\"fig-p17-15\" class=\"ds-note-img\" alt=\"图：电气参数表\">\n<img data-img-id=\"fig-p17-16\" class=\"ds-note-img\" alt=\"图：知识回顾\">\n<p><span style=\"color:#dc2626\"><strong>易混：电气特性只定电压范围不赋义；功能特性才赋义</strong></span>。<mark><strong>双绞线→同轴→光纤：抗干扰依次增强、损耗依次降低。</strong></mark></p>",
+      "images": [
+        {
+          "imgId": "fig-p17-01",
+          "file": "images/ch02/fig-p17-01.jpg"
+        },
+        {
+          "imgId": "fig-p17-02",
+          "file": "images/ch02/fig-p17-02.jpg"
+        },
+        {
+          "imgId": "fig-p17-03",
+          "file": "images/ch02/fig-p17-03.jpg"
+        },
+        {
+          "imgId": "fig-p17-04",
+          "file": "images/ch02/fig-p17-04.jpg"
+        },
+        {
+          "imgId": "fig-p17-05",
+          "file": "images/ch02/fig-p17-05.jpg"
+        },
+        {
+          "imgId": "fig-p17-06",
+          "file": "images/ch02/fig-p17-06.jpg"
+        },
+        {
+          "imgId": "fig-p17-07",
+          "file": "images/ch02/fig-p17-07.jpg"
+        },
+        {
+          "imgId": "fig-p17-08",
+          "file": "images/ch02/fig-p17-08.jpg"
+        },
+        {
+          "imgId": "fig-p17-09",
+          "file": "images/ch02/fig-p17-09.jpg"
+        },
+        {
+          "imgId": "fig-p17-10",
+          "file": "images/ch02/fig-p17-10.jpg"
+        },
+        {
+          "imgId": "fig-p17-11",
+          "file": "images/ch02/fig-p17-11.jpg"
+        },
+        {
+          "imgId": "fig-p17-12",
+          "file": "images/ch02/fig-p17-12.jpg"
+        },
+        {
+          "imgId": "fig-p17-13",
+          "file": "images/ch02/fig-p17-13.jpg"
+        },
+        {
+          "imgId": "fig-p17-14",
+          "file": "images/ch02/fig-p17-14.jpg"
+        },
+        {
+          "imgId": "fig-p17-15",
+          "file": "images/ch02/fig-p17-15.jpg"
+        },
+        {
+          "imgId": "fig-p17-16",
+          "file": "images/ch02/fig-p17-16.jpg"
+        }
+      ]
     },
     {
-     "imgId": "fig-p13-06",
-     "file": "images/ch02/fig-p13-06.jpg"
-    },
-    {
-     "imgId": "fig-p13-07",
-     "file": "images/ch02/fig-p13-07.jpg"
-    },
-    {
-     "imgId": "fig-p13-08",
-     "file": "images/ch02/fig-p13-08.jpg"
-    },
-    {
-     "imgId": "fig-p13-09",
-     "file": "images/ch02/fig-p13-09.jpg"
-    },
-    {
-     "imgId": "fig-p13-10",
-     "file": "images/ch02/fig-p13-10.jpg"
-    },
-    {
-     "imgId": "fig-p13-11",
-     "file": "images/ch02/fig-p13-11.jpg"
-    },
-    {
-     "imgId": "fig-p13-12",
-     "file": "images/ch02/fig-p13-12.jpg"
-    },
-    {
-     "imgId": "fig-p13-13",
-     "file": "images/ch02/fig-p13-13.jpg"
+      "tree": [
+        "第2章 物理层",
+        "2.3 物理层设备",
+        "2.3 物理层设备"
+      ],
+      "noteHtml": "<p><span style=\"font-size:20px;color:#7c3aed\"><strong>P18 2.3 物理层设备（王道 2.3）</strong></span></p>\n<img data-img-id=\"fig-p18-01\" class=\"ds-note-img\" alt=\"图：中继器\">\n<p>信号传越远失真越重（介质有电阻），故以太网限长（10Base5=500m、10Base2≈185m）。<strong>中继器只有两端口</strong>：收到尚可识别的信号后<strong>整形再生</strong>转发到另一端口。<span style=\"color:#7c3aed\">例：规定0.5~1.5V为低电平，1V失真到0.8V仍算低，整形回标准值再发。</span>再生产生时延；双向可传不能同时→<strong>半双工</strong>；两端口分属两网段。</p>\n<img data-img-id=\"fig-p18-02\" class=\"ds-note-img\" alt=\"图：集线器\">\n<p><strong>集线器Hub=多端口中继器</strong>：一个端口收信号→整形再生→<strong>转发到其他所有端口</strong>（无寻址、逐口广播）；同时发送即冲突。</p>\n<img data-img-id=\"fig-p18-03\" class=\"ds-note-img\" alt=\"图：冲突域\">\n<p><span style=\"color:#dc2626\"><strong>两台主机同时发送导致冲突，即同一冲突域（碰撞域）</strong></span>。一个集线器连的所有主机同属一个冲突域，发前需信道征用（下章学）。</p>\n<img data-img-id=\"fig-p18-04\" class=\"ds-note-img\" alt=\"图：级联\">\n<p>三台集线器本是3个独立冲突域，再级联一台主干集线器后信号传到每条线路，<strong>合并为一个巨大冲突域</strong>→<mark><strong>集线器/中继器不能隔离冲突域</strong></mark>。</p>\n<img data-img-id=\"fig-p18-05\" class=\"ds-note-img\" alt=\"图：2020年35题\">\n<p><span style=\"color:#7c3aed\">【习题·2020年408真题35题】</span>树形网络（4集线器+2交换机）求冲突域/广播域数。图标：集线器=方框单箭头、交换机=方框双向箭头、路由器=圆柱多向箭头；100Base-T=100Mbps双绞线网段。<strong>交换机可隔离冲突域</strong>，两台隔开后<span style=\"color:#dc2626\"><strong>冲突域共4个</strong></span>（排除A、B）；广播域后续再定。<span style=\"color:#7c3aed\">冲突域是集线器最爱考的方向。</span></p>\n<img data-img-id=\"fig-p18-06\" class=\"ds-note-img\" alt=\"图：5-4-3原则\">\n<p><strong>不能无限串联</strong>：<strong>5-4-3原则</strong>——最多5个网段、4个中继器/集线器、仅3个网段可挂主机。一根同轴电缆分接多机=典型总线型网络。</p>\n<img data-img-id=\"fig-p18-07\" class=\"ds-note-img\" alt=\"图：星形与总线\">\n<p><span style=\"color:#dc2626\"><strong>集线器网络物理上星形、逻辑上总线型（广播式）</strong></span>，信号无差别送达各节点，存在信道争用。</p>\n<img data-img-id=\"fig-p18-08\" class=\"ds-note-img\" alt=\"图：共享带宽\">\n<p><strong>各网段共享总带宽</strong>：10Mbps集线器接8台主机，平均每台 $10\\div 8=1.25$ Mbps。</p>\n<img data-img-id=\"fig-p18-09\" class=\"ds-note-img\" alt=\"图：设备特性\">\n<p>两个与国内教材不同的点（<span style=\"color:#7c3aed\">老师：做题以教材为准，但需批判性了解现实</span>）：①现实中<strong>可连不同传输介质</strong>（某惠普集线器带同轴口+8个双绞线口）→也可连不同物理层协议（芯片可把归零编码转成等价曼彻斯特编码）；②现实中<strong>可连不同速率网段</strong>，速率向下兼容。教材口径：不能连不同协议或速率的网段。</p>\n<img data-img-id=\"fig-p18-10\" class=\"ds-note-img\" alt=\"图：知识回顾\">\n<p>小结：中继器两端口整形再生、集线器多口全转发；半双工、不隔离冲突域、5-4-3限串、物理星形逻辑总线、共享带宽。<strong>冲突域个数与隔离是核心考点</strong>。</p>",
+      "images": [
+        {
+          "imgId": "fig-p18-01",
+          "file": "images/ch02/fig-p18-01.jpg"
+        },
+        {
+          "imgId": "fig-p18-02",
+          "file": "images/ch02/fig-p18-02.jpg"
+        },
+        {
+          "imgId": "fig-p18-03",
+          "file": "images/ch02/fig-p18-03.jpg"
+        },
+        {
+          "imgId": "fig-p18-04",
+          "file": "images/ch02/fig-p18-04.jpg"
+        },
+        {
+          "imgId": "fig-p18-05",
+          "file": "images/ch02/fig-p18-05.jpg"
+        },
+        {
+          "imgId": "fig-p18-06",
+          "file": "images/ch02/fig-p18-06.jpg"
+        },
+        {
+          "imgId": "fig-p18-07",
+          "file": "images/ch02/fig-p18-07.jpg"
+        },
+        {
+          "imgId": "fig-p18-08",
+          "file": "images/ch02/fig-p18-08.jpg"
+        },
+        {
+          "imgId": "fig-p18-09",
+          "file": "images/ch02/fig-p18-09.jpg"
+        },
+        {
+          "imgId": "fig-p18-10",
+          "file": "images/ch02/fig-p18-10.jpg"
+        }
+      ]
     }
-   ]
-  },
-  {
-   "tree": [
-    "第2章 物理层",
-    "2.1 通信基础",
-    "2.1.2 信道的极限容量"
-   ],
-   "noteHtml": "<p><span style=\"font-size:20px;color:#7c3aed\"><strong>P14 2.1.2 信道的极限容量（王道 2.1）</strong></span></p>\n<img data-img-id=\"fig-p14-01\" class=\"ds-note-img\" alt=\"图：知识总览\">\n<p><strong>信道极限容量</strong>=最高数据传输速率，取决于<strong>带宽（Hz）</strong>与<strong>噪声</strong>：<span style=\"color:#dc2626\"><strong>无噪声用奈奎斯特定理，有噪声用香农定理</strong></span>。</p>\n<img data-img-id=\"fig-p14-02\" class=\"ds-note-img\" alt=\"图：带宽两种含义\">\n<p>计网中带宽=最高数据率（b/s）；通信中=频带宽度（Hz），如电话线仅约4kHz。本质都是<strong>带宽越大传输能力越强</strong>。</p>\n<img data-img-id=\"fig-p14-03\" class=\"ds-note-img\" alt=\"图：噪声类比\">\n<p>你和舍友对话=听觉信道，人耳仅听20Hz~20kHz（低于为次声波、高于为超声波）；另一舍友大声背单词就是<strong>噪声</strong>，干扰传输。计网中强电场强磁场干扰即噪声。<span style=\"color:#7c3aed\">老师强调：信道能力由带宽与噪声共同决定。</span></p>\n<img data-img-id=\"fig-p14-04\" class=\"ds-note-img\" alt=\"图：奈奎斯特定理\">\n<p><strong>奈氏准则</strong>：<span style=\"color:#dc2626\"><strong>理想低通信道（无噪声）</strong></span>极限波特率 $=2W$，码元 $K$ 种状态时极限比特率：</p>\n$$2W\\log_2 K\\ \\text{b/s}$$\n<p><span style=\"color:#7c3aed\">\"理想低通信道\"即无噪声，是用奈氏准则的前提。</span></p>\n<img data-img-id=\"fig-p14-05\" class=\"ds-note-img\" alt=\"图：2022年34题\">\n<p><span style=\"color:#7c3aed\">【例题·2022年408真题34题】</span>带宽200kHz<strong>无噪声</strong>信道、4个幅值ASK，最大速率？</p>\n$$2W\\log_2 K=2\\times 200\\text{k}\\times\\log_2 4=800\\ \\text{kb/s}$$\n<p><span style=\"color:#dc2626\"><strong>答案800kb/s（C）：无噪声→奈氏；4幅值=每码元2bit。</strong></span></p>\n<img data-img-id=\"fig-p14-06\" class=\"ds-note-img\" alt=\"图：信噪比\">\n<p><strong>信噪比 $S/N$</strong>=信号功率/噪声功率，无单位。说话更大声或让\"背单词舍友\"闭嘴都能提高它。</p>\n<img data-img-id=\"fig-p14-07\" class=\"ds-note-img\" alt=\"图：dB换算\">\n<p>$S/N$ 常太大，用<strong>分贝记法</strong> $10\\lg(S/N)$（$10^{19}$ 对应190dB）。<span style=\"color:#dc2626\"><strong>香农公式必须代入无单位的 $S/N$，dB先换算回</strong></span>。</p>\n<img data-img-id=\"fig-p14-08\" class=\"ds-note-img\" alt=\"图：香农定理\">\n<p><strong>香农定理</strong>（有噪声）：极限比特率 $=W\\log_2(1+S/N)$ b/s；提高 $W$、信号功率↑或噪声功率↓均可提速率。</p>\n<img data-img-id=\"fig-p14-09\" class=\"ds-note-img\" alt=\"图：2016年34题\">\n<p><span style=\"color:#7c3aed\">【例题·2016年408真题34题】</span>链路带宽8kHz、信噪比30dB、实际速率为理论值的50%？$S/N=10^3=1000$，</p>\n$$8\\text{k}\\times\\log_2 1001\\approx 80\\ \\text{kb/s}\\Rightarrow 80\\times 50\\%=40\\ \\text{kb/s}$$\n<p><span style=\"color:#dc2626\"><strong>答案40kb/s（C）：有信噪比→有噪声→只能香农。</strong></span></p>\n<img data-img-id=\"fig-p14-10\" class=\"ds-note-img\" alt=\"图：两定理对比\">\n<p>奈氏管<strong>码元</strong>（超 $2W$ 会<strong>码间串扰</strong>）、香农管<strong>比特</strong>；结合知1码元比特数有上限。<span style=\"color:#7c3aed\">【例题·双限取min】带宽4kHz、16种码元、30dB：奈氏 $2\\times 4\\text{k}\\times 4=32$ kb/s、香农约40kb/s，</span><span style=\"color:#dc2626\"><strong>取较小值32kb/s</strong></span>。</p>\n<img data-img-id=\"fig-p14-11\" class=\"ds-note-img\" alt=\"图：知识回顾\">\n<p>无噪声奈氏（$2W$、$2W\\log_2 K$）；有噪声香农（$W\\log_2(1+S/N)$）。最爱直接代入计算。</p>\n<img data-img-id=\"fig-p14-12\" class=\"ds-note-img\" alt=\"图：课后甜点\">\n<p><span style=\"color:#7c3aed\">甜点：太阳风暴扰动地磁场→短波通信噪声增大、信噪比降低，卫星通话与GPS受损，副产品是极光。</span></p>",
-   "images": [
-    {
-     "imgId": "fig-p14-01",
-     "file": "images/ch02/fig-p14-01.jpg"
-    },
-    {
-     "imgId": "fig-p14-02",
-     "file": "images/ch02/fig-p14-02.jpg"
-    },
-    {
-     "imgId": "fig-p14-03",
-     "file": "images/ch02/fig-p14-03.jpg"
-    },
-    {
-     "imgId": "fig-p14-04",
-     "file": "images/ch02/fig-p14-04.jpg"
-    },
-    {
-     "imgId": "fig-p14-05",
-     "file": "images/ch02/fig-p14-05.jpg"
-    },
-    {
-     "imgId": "fig-p14-06",
-     "file": "images/ch02/fig-p14-06.jpg"
-    },
-    {
-     "imgId": "fig-p14-07",
-     "file": "images/ch02/fig-p14-07.jpg"
-    },
-    {
-     "imgId": "fig-p14-08",
-     "file": "images/ch02/fig-p14-08.jpg"
-    },
-    {
-     "imgId": "fig-p14-09",
-     "file": "images/ch02/fig-p14-09.jpg"
-    },
-    {
-     "imgId": "fig-p14-10",
-     "file": "images/ch02/fig-p14-10.jpg"
-    },
-    {
-     "imgId": "fig-p14-11",
-     "file": "images/ch02/fig-p14-11.jpg"
-    },
-    {
-     "imgId": "fig-p14-12",
-     "file": "images/ch02/fig-p14-12.jpg"
-    }
-   ]
-  },
-  {
-   "tree": [
-    "第2章 物理层",
-    "2.1 通信基础",
-    "2.1.3_1 编码和调制（上）"
-   ],
-   "noteHtml": "<p><span style=\"font-size:20px;color:#7c3aed\"><strong>P15 2.1.3_1 编码和调制（上）（王道 2.1）</strong></span></p>\n<img data-img-id=\"fig-p15-01\" class=\"ds-note-img\" alt=\"图：编码与调制模型\">\n<p><mark><strong>数据→数字信号=编码（逆为解码）；数据→模拟信号=调制（逆为解调）</strong></mark>。有线网卡=编码器+解码器；\"光猫\"=调制解调器modem。五种编码（示例数据111100101）：</p>\n<ul>\n<li><strong>不归零NRZ</strong>：低0高1、中间不变。<span style=\"color:#dc2626\"><strong>无自同步</strong></span>（连续同电平分不清边界），需另加时钟线；</li>\n<li><strong>归零RZ</strong>：低0高1、<strong>中间归零</strong>，像每拍打节奏，有自同步但费带宽；</li>\n<li><strong>反向不归零NRZI</strong>：<span style=\"color:#dc2626\"><strong>跳0不跳1看起点、中间不变</strong></span>，可每8比特补1个冗余0实现自同步；</li>\n<li><strong>曼彻斯特</strong>：<span style=\"color:#dc2626\"><strong>跳0反跳1看中间、中必变</strong></span>；</li>\n<li><strong>差分曼彻斯特</strong>：跳0不跳1看起点、<strong>中必变</strong>（与NRZI同看起点，别在中间变不变）。</li>\n</ul>\n<p>中间必跳变：可作时钟自同步+<strong>抗干扰更强</strong>。RZ=return to zero、I=inverted。</p>\n<img data-img-id=\"fig-p15-02\" class=\"ds-note-img\" alt=\"图：曼彻斯特两标准\">\n<p><strong>传统标准</strong>（G.E. Thomas 1949）下跳0上跳1；<strong>IEEE 802.3</strong>上跳0下跳1。<span style=\"color:#dc2626\"><strong>408默认上0下1，但要防反向标准</strong></span>。</p>\n<img data-img-id=\"fig-p15-03\" class=\"ds-note-img\" alt=\"图：五种编码总表\">\n<p><strong>自同步</strong>：NRZ无、RZ有、NRZI靠冗余位、后两种有；<strong>带宽</strong>：NRZ不浪费、RZ约一半、曼彻斯特类更费；<strong>抗干扰</strong>：前三种弱、后两种强。<span style=\"color:#7c3aed\">\"1比特耗1Hz/2Hz\"不严谨，只为好记。</span></p>\n<img data-img-id=\"fig-p15-04\" class=\"ds-note-img\" alt=\"图：2015年34题\">\n<p><span style=\"color:#7c3aed\">【例题·2015年408真题34题】</span>数据01100111判断编码1、2：编码1电平与01一一对应→NRZ（按NRZI则第2周期起点跳变应译0，与第2比特1矛盾，排除含NRZI项）；编码2中间跳变\"上下下上上下下下\"按上0下1恰对应01100111→曼彻斯特。<span style=\"color:#dc2626\"><strong>答案A</strong></span>。<span style=\"color:#7c3aed\">技巧：中间跳变方向与比特一一对应=曼彻斯特，否则=差分曼彻斯特。</span></p>\n<img data-img-id=\"fig-p15-05\" class=\"ds-note-img\" alt=\"图：2021年34题\">\n<p><span style=\"color:#7c3aed\">【例题·2021年408真题34题】</span>差分曼彻斯特波形求比特串：逐周期看起点不跳=1、跳=0，得<span style=\"color:#dc2626\"><strong>10111001（A）</strong></span>。</p>\n<img data-img-id=\"fig-p15-06\" class=\"ds-note-img\" alt=\"图：改造与速率计算\">\n<p>老师改造：同段波形按曼彻斯特解读，中间跳变\"下下上下上上下下\"→上0下1得11010001、下0上1得00101110，<strong>盯住中间跳变方向即可分辨两种曼彻斯特</strong>。<span style=\"color:#7c3aed\">【例题·编码速率】</span>以太网10Mb/s用曼彻斯特编码求波特率（每比特中间必跳变、对应2个电平）：</p>\n$$10\\ \\text{Mb/s}\\times 2=20\\ \\text{MBaud}$$\n<p><span style=\"color:#dc2626\"><strong>波特率=2倍比特率。</strong></span></p>\n<img data-img-id=\"fig-p15-07\" class=\"ds-note-img\" alt=\"图：知识总览\">\n<p>编码部分完毕，四种调制方法见下一P。</p>",
-   "images": [
-    {
-     "imgId": "fig-p15-01",
-     "file": "images/ch02/fig-p15-01.jpg"
-    },
-    {
-     "imgId": "fig-p15-02",
-     "file": "images/ch02/fig-p15-02.jpg"
-    },
-    {
-     "imgId": "fig-p15-03",
-     "file": "images/ch02/fig-p15-03.jpg"
-    },
-    {
-     "imgId": "fig-p15-04",
-     "file": "images/ch02/fig-p15-04.jpg"
-    },
-    {
-     "imgId": "fig-p15-05",
-     "file": "images/ch02/fig-p15-05.jpg"
-    },
-    {
-     "imgId": "fig-p15-06",
-     "file": "images/ch02/fig-p15-06.jpg"
-    },
-    {
-     "imgId": "fig-p15-07",
-     "file": "images/ch02/fig-p15-07.jpg"
-    }
-   ]
-  },
-  {
-   "tree": [
-    "第2章 物理层",
-    "2.1 通信基础",
-    "2.1.3_2 编码和调制（下）"
-   ],
-   "noteHtml": "<p><span style=\"font-size:20px;color:#7c3aed\"><strong>P16 2.1.3_2 编码和调制（下）（王道 2.1）</strong></span></p>\n<img data-img-id=\"fig-p16-01\" class=\"ds-note-img\" alt=\"图：基带信号与调制\">\n<p>本节学<strong>调制</strong>：用模拟信号表示二进制数据。<strong>基带信号</strong>=来自信源的数字信号（低0高1）。双绞线数字/模拟都能传；真空（太空）只能传电磁波这种模拟信号；且模拟信号抗干扰更强，<strong>长距离传输常先调制</strong>。</p>\n<img data-img-id=\"fig-p16-02\" class=\"ds-note-img\" alt=\"图：调幅调频调相\">\n<p>以 $y=A\\sin(2\\pi f t+\\varphi)$ 为纲：<strong>调幅AM（幅移键控ASK）</strong>调振幅（0/1两种幅值）；<strong>调频FM（FSK）</strong>调频率（$\\sin x$=0、$\\sin 2x$=1）；<strong>调相PM（PSK）</strong>调相位（$\\sin x$=0、$\\sin(x+\\pi)$=1）。只设计2种信号时每码元仅1bit；设计K种→1码元 $\\log_2 K$ bit（如4种幅值表示00/01/10/11）。</p>\n<img data-img-id=\"fig-p16-03\" class=\"ds-note-img\" alt=\"图：QAM\">\n<p><strong>QAM=ASK+PSK结合</strong>：M种振幅×N种相位=$M\\times N$ 种信号，<mark><strong>1码元携 $\\log_2(MN)$ bit</strong></mark>（复合函数式两两叠加）。</p>\n<img data-img-id=\"fig-p16-04\" class=\"ds-note-img\" alt=\"图：QAM后缀\">\n<p><span style=\"color:#7c3aed\">【补充·结合2023年408真题34题选项】</span>QAM后缀=信号种数：<strong>QAM-16→4bit</strong>、QAM-32→5bit、QAM-64→6bit、QAM-128→7bit。</p>\n<img data-img-id=\"fig-p16-05\" class=\"ds-note-img\" alt=\"图：例题3\">\n<p><span style=\"color:#7c3aed\">【例题3·2022年408真题34题】</span>带宽200kHz<strong>无噪声</strong>信道、4个幅值ASK：无噪声→奈氏，$2W=400\\text{k}$ Baud、每码元 $\\log_2 4=2$ bit，</p>\n$$2\\times 200\\text{k}\\times 2=800\\ \\text{kb/s}$$\n<p><span style=\"color:#dc2626\"><strong>答案800kb/s（C）。</strong></span></p>\n<img data-img-id=\"fig-p16-06\" class=\"ds-note-img\" alt=\"图：例题4\">\n<p><span style=\"color:#7c3aed\">【例题4·2009年408真题34题】</span>带宽3kHz无噪声信道、QAM调制4相位×4振幅：$4\\times 4=16$ 种码元→每码元 $\\log_2 16=4$ bit，</p>\n$$2\\times 3\\text{k}\\times 4=24\\ \\text{kb/s}$$\n<p><span style=\"color:#dc2626\"><strong>答案24kb/s（B）。</strong></span></p>\n<img data-img-id=\"fig-p16-07\" class=\"ds-note-img\" alt=\"图：知识回顾\">\n<p><strong>ASK调幅、FSK调频、PSK调相、QAM调幅+相（$\\log_2(MN)$ bit）</strong>；调制考原理+每码元比特数，编码考得更细（要能认波形）。</p>\n<img data-img-id=\"fig-p16-08\" class=\"ds-note-img\" alt=\"图：编码对比表\">\n<p>对照表格回顾五种编码三维特点。<span style=\"color:#dc2626\"><strong>曼彻斯特编码是以太网默认编码——考以太网物理层时的隐含条件</strong></span>。</p>",
-   "images": [
-    {
-     "imgId": "fig-p16-01",
-     "file": "images/ch02/fig-p16-01.jpg"
-    },
-    {
-     "imgId": "fig-p16-02",
-     "file": "images/ch02/fig-p16-02.jpg"
-    },
-    {
-     "imgId": "fig-p16-03",
-     "file": "images/ch02/fig-p16-03.jpg"
-    },
-    {
-     "imgId": "fig-p16-04",
-     "file": "images/ch02/fig-p16-04.jpg"
-    },
-    {
-     "imgId": "fig-p16-05",
-     "file": "images/ch02/fig-p16-05.jpg"
-    },
-    {
-     "imgId": "fig-p16-06",
-     "file": "images/ch02/fig-p16-06.jpg"
-    },
-    {
-     "imgId": "fig-p16-07",
-     "file": "images/ch02/fig-p16-07.jpg"
-    },
-    {
-     "imgId": "fig-p16-08",
-     "file": "images/ch02/fig-p16-08.jpg"
-    }
-   ]
-  },
-  {
-   "tree": [
-    "第2章 物理层",
-    "2.2 传输介质",
-    "2.2 传输介质"
-   ],
-   "noteHtml": "<p><span style=\"font-size:20px;color:#7c3aed\"><strong>P17 2.2 传输介质（王道 2.2）</strong></span></p>\n<img data-img-id=\"fig-p17-01\" class=\"ds-note-img\" alt=\"图：知识总览\">\n<p>传输介质（transmission medium，也译传输媒体）分<strong>导向性</strong>（沿固定方向=有线）与<strong>非导向性</strong>（四面八方=无线，电磁波为信号），相当于\"第0层\"；还学物理层与介质<strong>接口的特性</strong>。</p>\n<img data-img-id=\"fig-p17-02\" class=\"ds-note-img\" alt=\"图：传输媒体位置\">\n<img data-img-id=\"fig-p17-03\" class=\"ds-note-img\" alt=\"图：双绞线实物\">\n<p><strong>双绞线</strong>=两根导线绞合，网线内即4组。<span style=\"color:#7c3aed\">绞合像拧麻花，增强抗电磁干扰能力。</span>无屏蔽层=UTP、有=STP。</p>\n<img data-img-id=\"fig-p17-04\" class=\"ds-note-img\" alt=\"图：UTP与STP\">\n<p>提速率两手段：<strong>提高绞合度、加屏蔽层</strong>→信噪比↑→香农极限速率↑，成本也↑。<span style=\"color:#dc2626\"><strong>TP=twisted pair；局域网网线、早期电话线都是双绞线</strong></span>。</p>\n<img data-img-id=\"fig-p17-05\" class=\"ds-note-img\" alt=\"图：同轴电缆剖面\">\n<p><strong>同轴电缆</strong>=铜芯内导体（传信号）+绝缘层+网状屏蔽层（抗干扰）+外护套；铜芯越粗衰减越小、传得越远越贵。用于早期局域网与有线电视。</p>\n<img data-img-id=\"fig-p17-06\" class=\"ds-note-img\" alt=\"图：同轴电缆实物\">\n<img data-img-id=\"fig-p17-07\" class=\"ds-note-img\" alt=\"图：光纤结构\">\n<p><strong>光纤</strong>=纤芯+低折射率包层，靠<strong>全反射</strong>传光。<span style=\"color:#dc2626\"><strong>抗干扰最强、损耗最小（中继器最少）、纤细省布线</strong></span>。</p>\n<img data-img-id=\"fig-p17-08\" class=\"ds-note-img\" alt=\"图：单模与多模\">\n<p><strong>多模</strong>：纤芯粗、多条入射角光线同传、按出射角区分，色散失真大→近距离；<strong>单模</strong>：纤芯细至接近波长（约9μm）、近似直线传播、损耗低→远距离。<span style=\"color:#7c3aed\">黄皮=单模、橙/青绿皮=多模。</span></p>\n<img data-img-id=\"fig-p17-09\" class=\"ds-note-img\" alt=\"图：以太网命名\">\n<p><span style=\"color:#dc2626\"><strong>命名=速度+Base+介质信息</strong></span>（Base=基带传输：数字信号+曼彻斯特编码）：10Base5=10Mbps同轴电缆500m、10Base2≈185m；F=光纤、T=双绞线（1000Base-T、2.5GBase-T等）。曾考真题。</p>\n<img data-img-id=\"fig-p17-10\" class=\"ds-note-img\" alt=\"图：卫星锅\">\n<p><strong>无线电波</strong>（手机、WiFi）：穿透强、距离远、<strong>指向性弱</strong>（四面发散）。</p>\n<img data-img-id=\"fig-p17-11\" class=\"ds-note-img\" alt=\"图：卫星与星链\">\n<p>卫星通信用<strong>微波</strong>：$c=\\lambda f$，波长短→频率高→带宽大，但<strong>指向性强、直线传播</strong>（锅须对准卫星）。卫星=中继站，<strong>3颗同步卫星（36000km）覆盖全球</strong>但时延大；星链用近地卫星群降到约20ms。</p>\n<img data-img-id=\"fig-p17-12\" class=\"ds-note-img\" alt=\"图：无线分类\">\n<p>短波/超短波可靠电离层反射；微波=地面接力+卫星；红外线、激光本质也是电磁波：<strong>长波绕射（穿墙）好、适合远距离非直线；短波频率高带宽大、需直线或中继</strong>。</p>\n<img data-img-id=\"fig-p17-13\" class=\"ds-note-img\" alt=\"图：水晶头\">\n<p><strong>接口四特性</strong>：①<strong>机械特性</strong>——形状尺寸、引脚数目排列、锁定装置（水晶头8引脚线序）。</p>\n<img data-img-id=\"fig-p17-14\" class=\"ds-note-img\" alt=\"图：四大特性\">\n<p>②<strong>电气特性</strong>——各线<strong>电压范围</strong>、速率、最大线长；③<strong>功能特性</strong>——某电平<strong>代表何意义</strong>；④<strong>过程特性（规程）</strong>——事件出现顺序（插/拔网线的反应）。</p>\n<img data-img-id=\"fig-p17-15\" class=\"ds-note-img\" alt=\"图：电气参数表\">\n<img data-img-id=\"fig-p17-16\" class=\"ds-note-img\" alt=\"图：知识回顾\">\n<p><span style=\"color:#dc2626\"><strong>易混：电气特性只定电压范围不赋义；功能特性才赋义</strong></span>。双绞线→同轴→光纤：抗干扰依次增强、损耗依次降低。</p>",
-   "images": [
-    {
-     "imgId": "fig-p17-01",
-     "file": "images/ch02/fig-p17-01.jpg"
-    },
-    {
-     "imgId": "fig-p17-02",
-     "file": "images/ch02/fig-p17-02.jpg"
-    },
-    {
-     "imgId": "fig-p17-03",
-     "file": "images/ch02/fig-p17-03.jpg"
-    },
-    {
-     "imgId": "fig-p17-04",
-     "file": "images/ch02/fig-p17-04.jpg"
-    },
-    {
-     "imgId": "fig-p17-05",
-     "file": "images/ch02/fig-p17-05.jpg"
-    },
-    {
-     "imgId": "fig-p17-06",
-     "file": "images/ch02/fig-p17-06.jpg"
-    },
-    {
-     "imgId": "fig-p17-07",
-     "file": "images/ch02/fig-p17-07.jpg"
-    },
-    {
-     "imgId": "fig-p17-08",
-     "file": "images/ch02/fig-p17-08.jpg"
-    },
-    {
-     "imgId": "fig-p17-09",
-     "file": "images/ch02/fig-p17-09.jpg"
-    },
-    {
-     "imgId": "fig-p17-10",
-     "file": "images/ch02/fig-p17-10.jpg"
-    },
-    {
-     "imgId": "fig-p17-11",
-     "file": "images/ch02/fig-p17-11.jpg"
-    },
-    {
-     "imgId": "fig-p17-12",
-     "file": "images/ch02/fig-p17-12.jpg"
-    },
-    {
-     "imgId": "fig-p17-13",
-     "file": "images/ch02/fig-p17-13.jpg"
-    },
-    {
-     "imgId": "fig-p17-14",
-     "file": "images/ch02/fig-p17-14.jpg"
-    },
-    {
-     "imgId": "fig-p17-15",
-     "file": "images/ch02/fig-p17-15.jpg"
-    },
-    {
-     "imgId": "fig-p17-16",
-     "file": "images/ch02/fig-p17-16.jpg"
-    }
-   ]
-  },
-  {
-   "tree": [
-    "第2章 物理层",
-    "2.3 物理层设备",
-    "2.3 物理层设备"
-   ],
-   "noteHtml": "<p><span style=\"font-size:20px;color:#7c3aed\"><strong>P18 2.3 物理层设备（王道 2.3）</strong></span></p>\n<img data-img-id=\"fig-p18-01\" class=\"ds-note-img\" alt=\"图：中继器\">\n<p>信号传越远失真越重（介质有电阻），故以太网限长（10Base5=500m、10Base2≈185m）。<strong>中继器只有两端口</strong>：收到尚可识别的信号后<strong>整形再生</strong>转发到另一端口。<span style=\"color:#7c3aed\">例：规定0.5~1.5V为低电平，1V失真到0.8V仍算低，整形回标准值再发。</span>再生产生时延；双向可传不能同时→<strong>半双工</strong>；两端口分属两网段。</p>\n<img data-img-id=\"fig-p18-02\" class=\"ds-note-img\" alt=\"图：集线器\">\n<p><strong>集线器Hub=多端口中继器</strong>：一个端口收信号→整形再生→<strong>转发到其他所有端口</strong>（无寻址、逐口广播）；同时发送即冲突。</p>\n<img data-img-id=\"fig-p18-03\" class=\"ds-note-img\" alt=\"图：冲突域\">\n<p><span style=\"color:#dc2626\"><strong>两台主机同时发送导致冲突，即同一冲突域（碰撞域）</strong></span>。一个集线器连的所有主机同属一个冲突域，发前需信道征用（下章学）。</p>\n<img data-img-id=\"fig-p18-04\" class=\"ds-note-img\" alt=\"图：级联\">\n<p>三台集线器本是3个独立冲突域，再级联一台主干集线器后信号传到每条线路，<strong>合并为一个巨大冲突域</strong>→<mark><strong>集线器/中继器不能隔离冲突域</strong></mark>。</p>\n<img data-img-id=\"fig-p18-05\" class=\"ds-note-img\" alt=\"图：2020年35题\">\n<p><span style=\"color:#7c3aed\">【习题·2020年408真题35题】</span>树形网络（4集线器+2交换机）求冲突域/广播域数。图标：集线器=方框单箭头、交换机=方框双向箭头、路由器=圆柱多向箭头；100Base-T=100Mbps双绞线网段。<strong>交换机可隔离冲突域</strong>，两台隔开后<span style=\"color:#dc2626\"><strong>冲突域共4个</strong></span>（排除A、B）；广播域后续再定。<span style=\"color:#7c3aed\">冲突域是集线器最爱考的方向。</span></p>\n<img data-img-id=\"fig-p18-06\" class=\"ds-note-img\" alt=\"图：5-4-3原则\">\n<p><strong>不能无限串联</strong>：<strong>5-4-3原则</strong>——最多5个网段、4个中继器/集线器、仅3个网段可挂主机。一根同轴电缆分接多机=典型总线型网络。</p>\n<img data-img-id=\"fig-p18-07\" class=\"ds-note-img\" alt=\"图：星形与总线\">\n<p><span style=\"color:#dc2626\"><strong>集线器网络物理上星形、逻辑上总线型（广播式）</strong></span>，信号无差别送达各节点，存在信道争用。</p>\n<img data-img-id=\"fig-p18-08\" class=\"ds-note-img\" alt=\"图：共享带宽\">\n<p><strong>各网段共享总带宽</strong>：10Mbps集线器接8台主机，平均每台 $10\\div 8=1.25$ Mbps。</p>\n<img data-img-id=\"fig-p18-09\" class=\"ds-note-img\" alt=\"图：设备特性\">\n<p>两个与国内教材不同的点（<span style=\"color:#7c3aed\">老师：做题以教材为准，但需批判性了解现实</span>）：①现实中<strong>可连不同传输介质</strong>（某惠普集线器带同轴口+8个双绞线口）→也可连不同物理层协议（芯片可把归零编码转成等价曼彻斯特编码）；②现实中<strong>可连不同速率网段</strong>，速率向下兼容。教材口径：不能连不同协议或速率的网段。</p>\n<img data-img-id=\"fig-p18-10\" class=\"ds-note-img\" alt=\"图：知识回顾\">\n<p>小结：中继器两端口整形再生、集线器多口全转发；半双工、不隔离冲突域、5-4-3限串、物理星形逻辑总线、共享带宽。<strong>冲突域个数与隔离是核心考点</strong>。</p>",
-   "images": [
-    {
-     "imgId": "fig-p18-01",
-     "file": "images/ch02/fig-p18-01.jpg"
-    },
-    {
-     "imgId": "fig-p18-02",
-     "file": "images/ch02/fig-p18-02.jpg"
-    },
-    {
-     "imgId": "fig-p18-03",
-     "file": "images/ch02/fig-p18-03.jpg"
-    },
-    {
-     "imgId": "fig-p18-04",
-     "file": "images/ch02/fig-p18-04.jpg"
-    },
-    {
-     "imgId": "fig-p18-05",
-     "file": "images/ch02/fig-p18-05.jpg"
-    },
-    {
-     "imgId": "fig-p18-06",
-     "file": "images/ch02/fig-p18-06.jpg"
-    },
-    {
-     "imgId": "fig-p18-07",
-     "file": "images/ch02/fig-p18-07.jpg"
-    },
-    {
-     "imgId": "fig-p18-08",
-     "file": "images/ch02/fig-p18-08.jpg"
-    },
-    {
-     "imgId": "fig-p18-09",
-     "file": "images/ch02/fig-p18-09.jpg"
-    },
-    {
-     "imgId": "fig-p18-10",
-     "file": "images/ch02/fig-p18-10.jpg"
-    }
-   ]
-  }
- ]
+  ]
 }
