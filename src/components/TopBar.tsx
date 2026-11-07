@@ -27,7 +27,11 @@ const SYNC_TITLE: Record<string, string> = {
   uninit: '云端数据表还没建：请先在 Supabase SQL Editor 执行仓库里的 supabase_setup_cn.sql，执行完刷新本页即可',
 };
 
-export function TopBar() {
+export function TopBar({ mobileSidebarOpen, onToggleSidebar, onSelectDoc }: {
+  mobileSidebarOpen: boolean;
+  onToggleSidebar: () => void;
+  onSelectDoc: () => void;
+}) {
   const [q, setQ] = useState('');
   const [hits, setHits] = useState<SearchHit[] | null>(null);
   const [searchOpen, setSearchOpen] = useState(false);
@@ -51,6 +55,7 @@ export function TopBar() {
   function openHit(h: SearchHit): void {
     if (!h.isDoc) return;
     currentDocId.value = h.nodeId;
+    onSelectDoc();
     setSearchOpen(false);
     setQ('');
     setHits(null);
@@ -62,6 +67,14 @@ export function TopBar() {
   return (
     <header class="topbar">
       <span class="brand">计算机网络笔记</span>
+      <button
+        class="mobile-nav-toggle"
+        aria-controls="note-navigation"
+        aria-expanded={mobileSidebarOpen}
+        onClick={onToggleSidebar}
+      >
+        ☰ 目录
+      </button>
       <div class="search-wrap">
         <input
           class="search-box"

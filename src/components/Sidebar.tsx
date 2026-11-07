@@ -236,7 +236,7 @@ function modeFor(e: DragEvent, node: NodeRow, dragged: NodeRow): Hint | null {
   return canAdj ? (y < h / 2 ? 'before' : 'after') : null;
 }
 
-function TreeNode({ node }: { node: NodeRow }) {
+function TreeNode({ node, onSelectDoc }: { node: NodeRow; onSelectDoc: () => void }) {
   const isDoc = node.kind === 'doc';
   const depth = depthOf(node.id);
   const kids = isDoc ? [] : (childrenByParent.value.get(node.id) ?? []);
@@ -253,8 +253,10 @@ function TreeNode({ node }: { node: NodeRow }) {
         style={{ paddingLeft: `${(depth - 1) * 16 + 6}px` }}
         draggable={renaming.value !== node.id}
         onClick={() => {
-          if (isDoc) currentDocId.value = node.id;
-          else toggleExpand(node.id);
+          if (isDoc) {
+            currentDocId.value = node.id;
+            onSelectDoc();
+          } else toggleExpand(node.id);
         }}
         onDblClick={() => (renaming.value = node.id)}
         onDragStart={e => {
@@ -357,7 +359,7 @@ function TreeNode({ node }: { node: NodeRow }) {
       {!isDoc && open && (
         <div>
           {kids.map(k => (
-            <TreeNode key={k.id} node={k} />
+            <TreeNode key={k.id} node={k} onSelectDoc={onSelectDoc} />
           ))}
           {creating.value?.parentId === node.id && (
             <div class="tree-row creating" style={{ paddingLeft: `${childDepthPadding}px` }}>
@@ -378,10 +380,10 @@ function TreeNode({ node }: { node: NodeRow }) {
   );
 }
 
-export function Sidebar() {
+export function Sidebar({ onSelectDoc }: { onSelectDoc: () => void }) {
   const roots = childrenByParent.value.get(null) ?? [];
   return (
-    <aside class="sidebar">
+    <aside class="sidebar" id="note-navigation">
       <div class="sb-head">
         <span class="sb-title">目录</span>
         <button
@@ -407,7 +409,7 @@ export function Sidebar() {
         }}
       >
         {roots.map(n => (
-          <TreeNode key={n.id} node={n} />
+          <TreeNode key={n.id} node={n} onSelectDoc={onSelectDoc} />
         ))}
         {creating.value?.parentId === null && (
           <div class="tree-row creating">

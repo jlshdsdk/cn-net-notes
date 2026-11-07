@@ -10,6 +10,7 @@ import { initAuth, syncStatus } from './lib/sync';
 export function App() {
   const [ready, setReady] = useState(false);
   const [err, setErr] = useState('');
+  const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
 
   useEffect(() => {
     (async () => {
@@ -43,9 +44,18 @@ export function App() {
 
   return (
     <div class="app">
-      <TopBar />
-      <div class="main">
-        <Sidebar />
+      <TopBar
+        mobileSidebarOpen={mobileSidebarOpen}
+        onToggleSidebar={() => setMobileSidebarOpen(open => !open)}
+        onSelectDoc={() => setMobileSidebarOpen(false)}
+      />
+      <div class={`main${mobileSidebarOpen ? ' mobile-nav-open' : ''}`}>
+        <button
+          class="mobile-nav-backdrop"
+          aria-label="关闭目录"
+          onClick={() => setMobileSidebarOpen(false)}
+        />
+        <Sidebar onSelectDoc={() => setMobileSidebarOpen(false)} />
         <DocPane />
       </div>
       <ConfirmHost />

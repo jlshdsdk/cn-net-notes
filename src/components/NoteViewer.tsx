@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'preact/hooks';
 import 'katex/dist/katex.min.css';
 import { getDB } from '../lib/db';
 import { resolveImageUrl } from '../lib/images';
+import { applyLegacyNoteColors } from '../lib/legacyNoteColors';
 
 /**
  * 阅读态笔记视图：本地 HTML 直渲 + KaTeX 公式（$...$ 行内 / $$...$$ 块级）
@@ -27,6 +28,7 @@ export default function NoteViewer({ docId }: { docId: string }) {
   useEffect(() => {
     const el = hostRef.current;
     if (!el || html === null) return;
+    applyLegacyNoteColors(el);
     let cancelled = false;
     void (async () => {
       // 图片：data-img-id → 本地 blob（缺失则显示等待云同步提示）
